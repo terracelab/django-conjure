@@ -4,16 +4,15 @@
 
 This package is part of the Conjure monorepo. It ships the reusable engine: the API client, a frozen shadcn-style UI kit, composed admin components (data table, FK combobox, inline tables, filters, export, …), an app shell, a dashboard/login/style-guide, a golden codegen template, and a runtime model renderer. It does **not** ship any project-specific model pages — those are your output.
 
-- Docs: <https://conjure.terracelab.dev>
+- Docs: <https://docs.conjure.terracelab.dev>
 - Brand & color tokens: see `brand/tokens.css` in the repo root (this package mirrors it in `src/styles/tokens.css`).
 
-## Install
+## Status
 
-```bash
-npm i @terracelab/conjure-web
-```
-
-Or scaffold an admin app from this package as the starting point and own the code.
+**Not yet published to npm.** For the `0.1.x` line this package ships as source in the
+[django-conjure](https://github.com/terracelab/django-conjure) monorepo — clone the repo and
+work from `packages/web`. A published release (`npm i @terracelab/conjure-web`) is on the
+roadmap; until then, use it as a scaffold / starting point and own the code.
 
 ## Two modes
 

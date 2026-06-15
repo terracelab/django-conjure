@@ -17,6 +17,5 @@ real files here):
 | `og.png` | `src/layouts/Base.astro` (`og:image` / `twitter:image`) | 1200×630 PNG. Dark `#0b0b0f` background, "Conjure your admin." wordmark + accent glow. |
 | `demo.mp4` (or `demo.gif`) | `src/components/Hero.astro` 30-second demo slot | Looping screen capture: register a model → page appears. Replace the styled terminal placeholder in `Hero.astro` with a `<video>`/`<img>`. Keep ≤ ~3 MB; provide an `alt`/poster. |
 
-After adding `demo.*`, edit the `TODO(asset)` block in `Hero.astro`. The live
-demo (read-only `examples/demo-shop`) is a hosted route, not a file here — wire
-its URL in `src/components/DemoCTA.astro` (`demoUrl` + `demoLive`).
+After adding `demo.*`, edit the `TODO(asset)` block in `Hero.astro` to swap the
+styled terminal placeholder for the real `<video>`/`<img>`.

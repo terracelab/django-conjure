@@ -6,8 +6,8 @@ Built with [Astro](https://astro.build) — lightweight, static, fast.
 > Tagline: **Conjure your admin.** / 모델에서 어드민을 소환하다.
 
 This is the top-of-funnel site (hero, value props, install snippet, feature grid,
-comparison table, live-demo CTA). The product docs live in `apps/docs`
-(MkDocs) and are served under `conjure.terracelab.dev/docs`.
+comparison table). The product docs live in `apps/docs` (MkDocs) and are served at
+`docs.conjure.terracelab.dev`.
 
 ## Run locally
 
@@ -24,10 +24,12 @@ From the monorepo root you can also use `pnpm landing:dev` / `pnpm landing:build
 
 ## Deploy
 
-- **Target:** Vercel or Netlify (static output, zero server runtime).
-- **Domain:** `conjure.terracelab.dev` (root). Docs mount at `/docs`, the live
-  demo at `/demo` (read-only `examples/demo-shop`).
-- Build command `astro build`, output directory `dist/`.
+- **Target:** Vercel (static output, zero server runtime). In the Vercel project, set
+  **Root Directory** to `apps/landing`, build command `pnpm build`, output directory
+  `dist/`. Enable "Include source files outside of the Root Directory" so the pnpm
+  workspace resolves.
+- **Domain:** `conjure.terracelab.dev` (landing root). Docs are a separate subdomain
+  (`docs.conjure.terracelab.dev`, served from GitHub Pages).
 
 ## Brand tokens (shared)
 
@@ -51,16 +53,16 @@ apps/landing/
 ├── tailwind.config.mjs        # brand tokens → Tailwind colors
 ├── tsconfig.json
 ├── package.json
-├── public/                    # favicon.svg, robots.txt, og.png* / demo.* placeholders
+├── public/                    # favicon.svg, robots.txt, og.png* placeholder
 └── src/
     ├── layouts/Base.astro     # HTML shell, meta/OG, fonts, global token import
     ├── pages/index.astro      # composes the sections below
     ├── styles/                # tokens.css (copy of brand) + global.css
     └── components/            # Hero, ValueProps, InstallSteps, FeatureGrid,
-                               # Comparison, DemoCTA, Footer, CodeBlock, Nav
+                               # Comparison, Footer, CodeBlock, Nav
 ```
 
-`*` `og.png` and the demo GIF/video are placeholders — see `public/README.md`.
+`*` `og.png` is a placeholder — see `public/README.md`.
 
 ## License
 

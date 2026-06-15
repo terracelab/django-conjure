@@ -1,10 +1,11 @@
 # django-conjure
 
-> Conjure your Django admin — read your models, summon a CRUD API and dashboard.
+> Conjure your Django admin — read your models, summon a CRUD API + schema.
 
-The Python half of [Conjure](https://conjure.terracelab.dev). It introspects your models and
-serves a generic admin REST API (`/conjure/`) that the React package
-[`@terracelab/conjure-web`](https://www.npmjs.com/package/@terracelab/conjure-web) renders.
+The Python package behind [Conjure](https://conjure.terracelab.dev). It introspects your
+models and serves a generic admin **REST API** (`/conjure/`) plus a schema endpoint that a
+frontend — or codegen — can read. A matching React dashboard lives in the repo and is in
+active development; for the `0.1.x` line, point any client at the API below.
 
 ## Install
 
@@ -71,7 +72,7 @@ def signup_trend(request):
 ```
 
 Full docs, the settings reference, the REST contract, and the extension SDK live at
-**[conjure.terracelab.dev](https://conjure.terracelab.dev)**.
+**[docs.conjure.terracelab.dev](https://docs.conjure.terracelab.dev)**.
 
 ## Develop
 

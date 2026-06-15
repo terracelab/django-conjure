@@ -46,7 +46,7 @@ dev = [
 
 [project.urls]
 Homepage = "https://conjure.terracelab.dev"
-Documentation = "https://conjure.terracelab.dev"
+Documentation = "https://docs.conjure.terracelab.dev"
 Repository = "https://github.com/terracelab/django-conjure"
 Changelog = "https://github.com/terracelab/django-conjure/blob/main/CHANGELOG.md"
 Issues = "https://github.com/terracelab/django-conjure/issues"

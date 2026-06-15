@@ -2,7 +2,7 @@
 // Hero: tagline, one-liner, primary CTAs, and a 30-second demo slot.
 import Nav from "./Nav.astro";
 
-const getStarted = "https://conjure.terracelab.dev";
+const getStarted = "https://docs.conjure.terracelab.dev/getting-started/";
 const repo = "https://github.com/terracelab/django-conjure";
 ---
 
@@ -30,9 +30,9 @@ const repo = "https://github.com/terracelab/django-conjure";
       <p class="mt-3 text-base text-brand-400">모델에서 어드민을 소환하다.</p>
 
       <p class="mx-auto mt-6 max-w-2xl text-pretty text-lg text-fg-muted">
-        Conjure reads your Django models and summons a full admin — a generic CRUD
-        API plus a React dashboard. Install in three lines, own the generated code,
-        and keep your Django permissions.
+        Conjure reads your Django models and summons a generic CRUD REST API plus the
+        schema to drive a UI — in two lines, with your Django permissions intact. A
+        React dashboard that consumes it is in active development.
       </p>
 
       <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
@@ -80,7 +80,7 @@ const repo = "https://github.com/terracelab/django-conjure";
         <p><span class="text-fg-muted">$</span> pip install django-conjure</p>
         <p class="text-fg-muted">→ installed conjure</p>
         <p class="mt-2"><span class="text-fg-muted">$</span> python manage.py runserver</p>
-        <p class="text-success">→ admin summoned at /admin-panel/  ✦</p>
+        <p class="text-success">→ CRUD API + schema live at /conjure/  ✦</p>
         <p class="mt-3 text-fg-muted" aria-hidden="true">
           # a real demo GIF/video goes here (see public/README.md)
         </p>

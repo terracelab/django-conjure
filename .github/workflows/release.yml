@@ -96,7 +96,10 @@ jobs:
   npm:
     name: Publish to npm
     needs: release-please
-    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    # HELD for the 0.1.0 line: @terracelab/conjure-web is the dashboard's React
+    # source, not yet an importable npm library or a wheel-bundled asset. To enable
+    # npm publishing later, set the repository variable PUBLISH_NPM=true.
+    if: ${{ needs.release-please.outputs.releases_created == 'true' && vars.PUBLISH_NPM == 'true' }}
     runs-on: ubuntu-latest
     environment: npm
     permissions:

@@ -16,7 +16,8 @@
 | Tagline (EN) | **Conjure your admin.** |
 | Tagline (KO) | **모델에서 어드민을 소환하다.** |
 | GitHub | `github.com/terracelab/django-conjure` |
-| Docs domain | `conjure.terracelab.dev` |
+| Landing domain | `conjure.terracelab.dev` |
+| Docs domain | `docs.conjure.terracelab.dev` |
 
 ## Voice
 
@@ -62,6 +63,6 @@ Dark background, accent stroke. Keep it geometric, single-weight.
 |---|---|---|---|
 | Form | Django admin theme | runtime JS config | codegen + (optional) runtime |
 | Code ownership | ✗ | △ | ✅ you own the output |
-| Install-and-go | ✅ | △ | ✅ (runtime mode) |
+| Install-and-go | ✅ | △ | ✅ API · dashboard in progress |
 | Per-page customization | limited | △ | ✅ |
 | Permissions | Django perms | separate | Django perms (shared) |

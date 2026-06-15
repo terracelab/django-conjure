@@ -1,19 +1,18 @@
 ---
-// "Install in 3 lines" — snippets sourced from PACKAGE_GUIDE §5.
+// "Install in 3 lines" — snippets mirror the package quick start.
 import CodeBlock from "./CodeBlock.astro";
 
 const settings = `# settings.py
 INSTALLED_APPS += ["conjure"]
 
-CODEGEN_ADMIN = {
+CONJURE = {
     "AUTH": "session",                 # reuse Django login (works anywhere) / "jwt"
     "BRAND": {"name": "Acme Admin", "accent": "#4f46e5"},
 }`;
 
 const urls = `# urls.py
 urlpatterns += [
-    path("conjure/", include("conjure.urls")),          # REST API
-    path("admin-panel/", include("conjure.spa_urls")),  # bundled SPA (runtime mode)
+    path("conjure/", include("conjure.urls")),   # generic CRUD REST API + schema
 ]`;
 
 const adminConfig = `# myapp/admin_config.py  — discovered automatically, like admin.py
@@ -35,7 +34,7 @@ class ProductConfig(AdminConfig):
       </h2>
       <p class="mt-4 text-fg-muted">
         Drop it into an existing project. No migrations to your models, no rewrites —
-        register a config and the page appears.
+        register a config and the REST surface appears.
       </p>
     </div>
 

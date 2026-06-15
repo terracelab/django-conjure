@@ -6,13 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Releases are cut automatically by [release-please](https://github.com/googleapis/release-please)
 from [Conventional Commits](https://www.conventionalcommits.org/). The Python package
-(`django-conjure`) and the npm package (`@terracelab/conjure-web`) always ship the same `X.Y.Z`.
+(`django-conjure`) is published to PyPI; the `@terracelab/conjure-web` dashboard is
+version-locked in the repo and will publish to npm in a later release.
 
 ## [Unreleased]
 
 ### Added
-- Monorepo scaffold: `packages/conjure` (Django app), `packages/web` (React), `apps/docs`
-  (MkDocs Material), `apps/landing` (Astro), `examples/demo-shop`.
+- Monorepo scaffold: `packages/conjure` (Django app), `packages/web` (React dashboard
+  source), `apps/docs` (MkDocs Material), `apps/landing` (Astro).
 - `conjure` Django app: model introspection schema API, generic CRUD viewset
   (list/retrieve/create/update/delete + autocomplete/bulk/related), Django-permission gating,
   audit log, staff auth (session + JWT), dashboard widget registry.
@@ -21,6 +22,6 @@ from [Conventional Commits](https://www.conventionalcommits.org/). The Python pa
   `admin_config.py` auto-discovery, widget registry.
 - Docs site with versioned docs (`mike`) and code→docs auto-generation.
 - Landing site sharing brand tokens with the app.
-- CI/CD: test matrix, docs build/deploy, tag-driven PyPI + npm + versioned-docs release.
+- CI/CD: test matrix, docs build/deploy, tag-driven PyPI + versioned-docs release.
 
 [Unreleased]: https://github.com/terracelab/django-conjure/commits/main

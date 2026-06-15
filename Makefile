@@ -1,7 +1,7 @@
 # Conjure monorepo task runner.
 # Python lives in packages/conjure, JS in packages/web + apps/landing, docs in apps/docs.
 .DEFAULT_GOAL := help
-.PHONY: help install test lint fmt docs docs-serve web landing demo clean
+.PHONY: help install test lint fmt docs docs-serve web landing clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -32,9 +32,6 @@ web: ## Build the React admin web package
 
 landing: ## Build the landing site
 	pnpm landing:build
-
-demo: ## Run the demo-shop example
-	cd examples/demo-shop && python manage.py migrate && python manage.py runserver
 
 clean: ## Remove build artifacts
 	rm -rf packages/web/dist apps/landing/dist apps/docs/site

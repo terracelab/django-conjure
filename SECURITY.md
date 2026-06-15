@@ -39,4 +39,4 @@ receive fixes only at maintainers' discretion.
   enforce `is_staff` plus Django model/action permissions **server-side** — frontend visibility
   controls are UX only and never a security boundary.
 - PII-sensitive actions (e.g. exports) must be implemented as server endpoints; see the
-  [actions & permissions](https://conjure.terracelab.dev/actions-permissions/) docs.
+  [actions & permissions](https://docs.conjure.terracelab.dev/actions-permissions/) docs.

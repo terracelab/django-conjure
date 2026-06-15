@@ -4,7 +4,7 @@
 
 site_name: Conjure
 site_description: Conjure your Django admin — read your models, summon the admin.
-site_url: https://conjure.terracelab.dev
+site_url: https://docs.conjure.terracelab.dev
 site_author: Terrace Lab
 
 repo_name: terracelab/django-conjure
@@ -67,8 +67,6 @@ extra:
       link: https://github.com/terracelab/django-conjure
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/django-conjure/
-    - icon: fontawesome/brands/npm
-      link: https://www.npmjs.com/package/@terracelab/conjure-web
 
 markdown_extensions:
   - admonition

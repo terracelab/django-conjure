@@ -17,10 +17,10 @@ This is a monorepo (`terracelab/django-conjure`):
 | Path | What | Released as |
 |---|---|---|
 | `packages/conjure` | Python package (Django app, import name `conjure`) | PyPI `django-conjure` |
-| `packages/web` | Frontend package | npm `@terracelab/conjure-web` |
+| `packages/web` | React dashboard + codegen (source) | npm `@terracelab/conjure-web` *(publish on the roadmap)* |
 | `apps/docs` | Documentation site (MkDocs Material + `mike`) | GitHub Pages (versioned) |
-| `apps/landing` | Marketing / landing site (Astro) | static host |
-| `examples/` | Demo Django projects | — |
+| `apps/landing` | Marketing / landing site (Astro) | static host (Vercel) |
+| `examples/` | Demo Django projects *(planned)* | — |
 | `brand/` | Brand tokens and reference | — |
 
 The Python package and the web package are **version-locked**: they always release the
@@ -147,7 +147,7 @@ merge to main
         └─ merge the Release PR
              ├─ tag vX.Y.Z is created
              ├─ PyPI:  django-conjure published via Trusted Publishing (OIDC, tokenless)
-             ├─ npm:   @terracelab/conjure-web published with --provenance
+             ├─ npm:   @terracelab/conjure-web — HELD for the 0.1.x line (set repo var PUBLISH_NPM=true to enable)
              └─ docs:  mike deploy X.Y latest  → versioned docs go live in the same run
 ```
 
