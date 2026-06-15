@@ -9,12 +9,12 @@ and an example project all live together so **code and docs ship as one**.
 django-conjure/
 ├── packages/
 │   ├── conjure/      # PyPI: django-conjure  — Django app
-│   └── web/          # npm:  @terracelab/conjure-web — React dashboard + codegen
+│   └── web/          # React dashboard + codegen (source; npm release planned)
 ├── apps/
 │   ├── docs/         # this site (MkDocs Material + mike)
 │   └── landing/      # brand / marketing site (Astro)
 ├── examples/
-│   └── demo-shop/    # runnable Django project — the live demo
+│   └── demo-shop/    # runnable Django project — the live demo (planned)
 └── brand/            # tokens.css + BRAND.md — one source for all surfaces
 ```
 
@@ -27,7 +27,6 @@ Tooling: Python via `uv`/`hatch`, JS via `pnpm` workspaces, common tasks behind 
 make install     # python (editable) + pnpm + docs deps
 make test        # pytest (packages/conjure)
 make docs-serve  # live docs at localhost:8000
-make demo        # run the example admin (examples/demo-shop)
 ```
 
 ## Running the pieces
@@ -82,8 +81,8 @@ issue → branch → code + tests + docs + CHANGELOG entry
 
 - **Conventional Commits.** Release notes and version bumps are derived from them by
   release-please.
-- **One version for both packages.** The Python and npm packages always ship the same
-  `X.Y.Z` (API contract parity).
+- **One version for both packages.** Once the npm package is published (planned), the Python
+  and npm packages will ship the same `X.Y.Z` (API contract parity).
 - **Frozen UI kit.** Don't edit `components/ui/`; add variants in `components/composed/` and
   register them on `/style-guide`.
 - **Brand in one place.** Colors come from `brand/tokens.css`; don't hardcode hex in three

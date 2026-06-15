@@ -51,9 +51,11 @@ urlpatterns += [
 
 !!! info "Serving the dashboard"
     `conjure.urls` is the REST API. The React dashboard is served separately:
-    in **codegen mode** <span class="status available">✅</span> you build
-    `@terracelab/conjure-web` and host its `dist/` (your own static hosting, WhiteNoise, or a
-    CDN) pointed at this API. A bundled zero-build **runtime SPA** mounted at
+    in **codegen mode** <span class="status available">✅</span> you build the
+    `packages/web` React app from the monorepo source and host its `dist/` (your own static
+    hosting, WhiteNoise, or a CDN) pointed at this API. (An npm release of the dashboard as
+    `@terracelab/conjure-web` is planned; for 0.1.x, build it from source.) A bundled
+    zero-build **runtime SPA** mounted at
     `conjure.spa_urls` is <span class="status planned">📋 planned</span> (see the
     [roadmap](../roadmap.md)). Either way, the `conjure/` API include above is all the
     backend needs.
@@ -93,5 +95,5 @@ yet, so it may be empty — that's expected. Next:
 | Node (codegen mode only) | 18+ |
 
 The REST contract (`/conjure/*` + the schema JSON) is the public API and follows
-[SemVer](../contributing/releasing.md#versioning); the Python and npm packages always
-ship the same `X.Y.Z`.
+[SemVer](../contributing/releasing.md#versioning). Once the dashboard is published to npm
+(planned), the Python and npm packages are intended to ship the same `X.Y.Z`.

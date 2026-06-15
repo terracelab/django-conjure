@@ -5,15 +5,16 @@ that read the **same** introspection schema, so you can mix them per page.
 
 === "Runtime mode (zero build)"
 
-    <span class="status planned">📋 planned</span> The bundled SPA renders any registered
+    <span class="status planned">📋 planned</span> The bundled SPA will render any registered
     model from the live schema. You write **no frontend code**.
 
     ```bash
-    python manage.py collectstatic   # serve the bundled SPA once
+    python manage.py collectstatic   # serve the bundled SPA once (planned)
     ```
 
     Open `http://localhost:8000/admin-panel/`, log in with an `is_staff` account, and your
-    model is already in the sidebar with list / search / filter / CRUD working.
+    model appears in the sidebar. The runtime renderer covers list views today (search and
+    filter); create/edit is a documented stub for now.
 
     **Best for:** getting an admin up today, internal tools, models that don't need a
     bespoke UI.
@@ -24,7 +25,8 @@ that read the **same** introspection schema, so you can mix them per page.
     schema, then edit them like any other code in your repo.
 
     ```bash
-    npx create-conjure         # scaffold packages/web into your project 🟡
+    # build the dashboard from the monorepo source (packages/web);
+    # an npm release of the scaffolding tooling is planned 🟡
     # generate pages for a model from its schema, then:
     npm run build              # tsc strict + vite
     ```
@@ -78,7 +80,8 @@ The dashboard authenticates the way you configure `CONJURE["AUTH"]`.
 
 1. Log in with an `is_staff` account.
 2. Find your model in the sidebar (runtime) or open its route (codegen).
-3. Search, filter a column, create a row, edit it, delete it.
+3. Search and filter a column. In codegen pages you can also create, edit, and delete a
+   row; in runtime mode create/edit is still a stub.
 4. If you ran `migrate conjure`, the **audit log** now shows your writes with a diff.
 
 From here, make it yours: [theme it](../guides/theming.md),

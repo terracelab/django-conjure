@@ -9,11 +9,11 @@ goes deeper.
     | Artifact | Install from | Required? |
     |---|---|---|
     | `django-conjure` (Python) | PyPI | ✅ always |
-    | `@terracelab/conjure-web` (React) | npm | only for **codegen mode** / a custom frontend |
+    | `@terracelab/conjure-web` (React) | build from monorepo source (`packages/web`); npm release planned | only for **codegen mode** / a custom frontend |
 
     The **public contract** is the REST surface (`/conjure/*` + the schema JSON). It follows
-    [SemVer](../contributing/releasing.md#versioning), and the Python and npm packages always
-    ship the **same `X.Y.Z`** so the backend/frontend stay in lock-step. Internal Python
+    [SemVer](../contributing/releasing.md#versioning). The Python package and the React source
+    track the **same `X.Y.Z`** so the backend/frontend stay in lock-step. Internal Python
     modules (`conjure.viewsets`, etc.) are *not* a stable API — depend on the documented
     settings, registry, and REST shapes.
 
@@ -60,8 +60,8 @@ patches but not minors is the safe default while the API settles:
     ```
 
 !!! warning "Keep the two packages on the same `X.Y`"
-    If you also use the React package, pin it to the **same minor** as the Python package —
-    they share the schema/REST contract. `django-conjure 0.1.x` ↔ `@terracelab/conjure-web 0.1.x`.
+    If you also use the React frontend, build it from the matching tag of the monorepo source —
+    it shares the schema/REST contract. `django-conjure 0.1.x` ↔ `packages/web` at the same `0.1.x`.
     Mixing minors (e.g. backend `0.2` + frontend `0.1`) is unsupported.
 
 ### 1.2 Wire it up
@@ -207,7 +207,7 @@ python -c "import conjure; print(conjure.__version__)"
 
 Conjure is **SemVer**. Before upgrading, skim the
 [CHANGELOG](https://github.com/terracelab/django-conjure/blob/main/CHANGELOG.md) and that
-version's [docs](https://conjure.terracelab.dev) (the version switcher in the header lets you
+version's [docs](https://docs.conjure.terracelab.dev) (the version switcher in the header lets you
 read the docs for *your* version):
 
 | Bump | Means | Your effort |
@@ -231,11 +231,12 @@ Bump the pin, then install. Upgrade **both** packages to the same `X.Y` together
     pip install -U "django-conjure~=0.2.0"
     ```
 
-=== "React package (if used)"
+=== "React frontend (if used)"
 
     ```bash
-    # in your scaffolded web project
-    npm i @terracelab/conjure-web@^0.2.0
+    # rebuild from the matching tag of the monorepo source (packages/web);
+    # an npm release of @terracelab/conjure-web is planned
+    git -C path/to/django-conjure checkout v0.2.0
     ```
 
 ### 3.4 Post-upgrade checklist

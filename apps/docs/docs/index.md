@@ -42,13 +42,15 @@ class ProductConfig(AdminConfig):
 1.  `admin_config.py` files are auto-discovered on app `ready()`, exactly the way
     Django finds your `admin.py`. No central registry to edit.
 
-`Product` now has a list / search / filter / CRUD screen. In **runtime mode** it appears
-in the sidebar with zero frontend code; in **codegen mode** you generate plain React you
-own and edit per page.
+`Product` now has a list / search / filter / CRUD screen. In **codegen mode** you generate
+plain React you own and edit per page (today's stable path). A **runtime mode** that lets a
+registered model appear in the sidebar with zero frontend code is on the roadmap — the
+runtime renderer covers list views today, with create/edit as a documented stub.
 
 !!! tip "Two modes, one schema"
-    Both modes read the *same* introspection schema. Start on the bundled runtime
-    renderer, then **eject** any page to codegen when you need it to be special.
+    Both modes read the *same* introspection schema. Generate codegen pages today, and
+    when the runtime renderer lands you'll be able to start there and **eject** any page
+    to codegen when you need it to be special.
     See [Your first screen](getting-started/first-screen.md).
 
 ## Why Conjure
@@ -82,14 +84,15 @@ own and edit per page.
 
 |  | django-unfold / jazzmin | react-admin / Refine | **Conjure** |
 |---|---|---|---|
-| Form | Django admin theme | runtime JS config | codegen + (optional) runtime |
+| Form | Django admin theme | runtime JS config | codegen (runtime planned) |
 | Code ownership | ✗ | △ | ✅ you own the output |
-| Install-and-go | ✅ | △ | ✅ (runtime mode) |
+| Install-and-go | ✅ | △ | △ (runtime mode planned) |
 | Per-page customization | limited | △ | ✅ |
 | Permissions | Django perms | separate | **Django perms (shared)** |
 
-Conjure sits between "themed Django admin" and "build-your-own JS admin": install-and-go
-like the former, code-ownership like the latter, on the permissions you already trust.
+Conjure sits between "themed Django admin" and "build-your-own JS admin": code-ownership
+like the latter today, install-and-go (runtime mode) once it lands, on the permissions you
+already trust.
 
 ## Where to next
 
@@ -120,4 +123,5 @@ like the former, code-ownership like the latter, on the permissions you already 
 ---
 
 *Conjure is by [Terrace Lab](https://terracelab.dev). PyPI: `django-conjure` ·
-npm: `@terracelab/conjure-web` · MIT licensed.*
+React dashboard: build from the monorepo source (`packages/web`); an npm release is
+planned · MIT licensed.*

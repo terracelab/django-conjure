@@ -38,11 +38,16 @@ them.
 A common arrangement: Conjure as the day-to-day admin, Django admin parked at a different
 URL as an emergency fallback.
 
+!!! note "`conjure.spa_urls` is planned"
+    Runtime SPA bundling and the `conjure.spa_urls` mount are on the roadmap, not shipped in
+    0.1.x. For now, build the dashboard from the monorepo source (`packages/web`) and serve it
+    yourself; the mount below shows the intended end state.
+
 ```python title="urls.py"
 urlpatterns = [
     path("django-admin/", admin.site.urls),                  # fallback
     path("conjure/", include("conjure.urls")),               # API
-    path("admin-panel/", include("conjure.spa_urls")),       # primary UI
+    path("admin-panel/", include("conjure.spa_urls")),       # primary UI (planned)
 ]
 ```
 
