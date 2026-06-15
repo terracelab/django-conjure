@@ -1,0 +1,131 @@
+# Conjure documentation site — MkDocs Material + mike (versioned).
+# Brand is single-sourced from brand/tokens.css via docs/stylesheets/extra.css.
+# Docs ship with the release: `mike deploy X.Y latest` runs in the release pipeline.
+
+site_name: Conjure
+site_description: Conjure your Django admin — read your models, summon the admin.
+site_url: https://conjure.terracelab.dev
+site_author: Terrace Lab
+
+repo_name: terracelab/django-conjure
+repo_url: https://github.com/terracelab/django-conjure
+edit_uri: edit/main/apps/docs/docs/
+
+copyright: Copyright &copy; Terrace Lab — MIT licensed
+
+theme:
+  name: material
+  language: en
+  font:
+    text: Inter
+    code: JetBrains Mono
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/auto-fix # magic-wand glyph until the real logo lands
+  # favicon: uses Material's bundled default until brand/ ships a favicon.png
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.top
+    - navigation.footer
+    - navigation.tracking
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - search.suggest
+    - search.highlight
+    - toc.follow
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom # accent #4f46e5 applied via extra.css
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  version:
+    provider: mike
+    default: latest
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/terracelab/django-conjure
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/django-conjure/
+    - icon: fontawesome/brands/npm
+      link: https://www.npmjs.com/package/@terracelab/conjure-web
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      check_paths: true
+      base_path:
+        - docs # so `--8<-- "reference/_generated_config.md"` resolves from docs/
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Getting started:
+      - Overview: getting-started/index.md
+      - Installation: getting-started/installation.md
+      - Your first model: getting-started/first-model.md
+      - Your first screen: getting-started/first-screen.md
+  - Guides:
+      - Managing & updating: guides/managing-and-updating.md
+      - Registering models: guides/registering-models.md
+      - Custom pages: guides/custom-pages.md
+      - Theming: guides/theming.md
+      - Sections & tabs: guides/sections-and-tabs.md
+      - Exporting: guides/exporting.md
+  - Actions & permissions:
+      - Concept: actions-permissions/index.md
+      - Scenarios: actions-permissions/scenarios.md
+  - Reference:
+      - Configuration: reference/configuration.md
+      - REST API: reference/rest-api.md
+      - CLI: reference/cli.md
+      - Field support: reference/field-support.md
+  - Customization:
+      - Overview: customization/index.md
+      - Extension points: customization/extension-points.md
+  - Migrating:
+      - From Django admin: migrating/from-django-admin.md
+  - Contributing:
+      - Dev setup: contributing/index.md
+      - Releasing: contributing/releasing.md
+      - Extension development: contributing/extension-development.md
+  - Roadmap: roadmap.md

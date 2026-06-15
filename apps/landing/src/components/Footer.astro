@@ -1,0 +1,67 @@
+---
+// Footer: maker, resource links, license.
+const year = new Date().getFullYear();
+
+const groups = [
+  {
+    heading: "Project",
+    links: [
+      { label: "Docs", href: "https://conjure.terracelab.dev" },
+      { label: "GitHub", href: "https://github.com/terracelab/django-conjure" },
+      { label: "Changelog", href: "https://github.com/terracelab/django-conjure/blob/main/CHANGELOG.md" },
+    ],
+  },
+  {
+    heading: "Install",
+    links: [
+      { label: "PyPI — django-conjure", href: "https://pypi.org/project/django-conjure/" },
+      { label: "npm — @terracelab/conjure-web", href: "https://www.npmjs.com/package/@terracelab/conjure-web" },
+    ],
+  },
+];
+---
+
+<footer class="surface-dark border-t border-line">
+  <div class="container-page py-14">
+    <div class="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+      <div class="max-w-sm">
+        <a href="#main" class="flex items-center gap-2.5 font-semibold tracking-tight">
+          <img src="/favicon.svg" alt="" width="26" height="26" aria-hidden="true" />
+          <span>Conjure</span>
+        </a>
+        <p class="mt-3 text-sm text-fg-muted">
+          Conjure your Django admin — read your models, summon the admin.
+        </p>
+        <p class="mt-4 text-sm text-fg-muted">
+          by <a href="https://terracelab.dev" class="text-fg underline-offset-2 hover:underline">Terrace Lab</a>
+        </p>
+      </div>
+
+      <nav class="grid grid-cols-2 gap-10 sm:gap-16" aria-label="Footer">
+        {
+          groups.map((group) => (
+            <div>
+              <h2 class="text-xs font-semibold uppercase tracking-wide text-fg-muted">
+                {group.heading}
+              </h2>
+              <ul class="mt-3 space-y-2 text-sm">
+                {group.links.map((link) => (
+                  <li>
+                    <a class="text-fg-muted transition-colors hover:text-fg" href={link.href} rel="noopener">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </nav>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-2 border-t border-line pt-6 text-xs text-fg-muted sm:flex-row sm:items-center sm:justify-between">
+      <p>&copy; {year} Terrace Lab. Released under the MIT License.</p>
+      <p class="font-mono">Conjure your admin.</p>
+    </div>
+  </div>
+</footer>

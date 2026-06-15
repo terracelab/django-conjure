@@ -1,0 +1,56 @@
+---
+// Four core value props (see BRAND.md / PACKAGE_GUIDE §1 "핵심 가치").
+const props = [
+  {
+    title: "Two-line install",
+    body: "Add conjure to INSTALLED_APPS and one path() to your URLs. Your existing models are read-only inputs — no schema changes, no rewrites.",
+    icon: "bolt",
+  },
+  {
+    title: "You own the output",
+    body: "Codegen emits plain React pages you can edit and commit. Not a framework you rent — the generated admin is yours to keep.",
+    icon: "key",
+  },
+  {
+    title: "Django permissions, shared",
+    body: "Auth runs on is_staff plus your existing Groups and Permissions. The same access control as Django admin — one source of truth.",
+    icon: "shield",
+  },
+  {
+    title: "Extend without forking",
+    body: "Register field renderers, dashboard widgets, and actions through public hooks. Add capability without touching the core.",
+    icon: "puzzle",
+  },
+];
+
+// Minimal inline icon set (single-weight stroke, currentColor).
+const paths: Record<string, string> = {
+  bolt: "M13 2 4.5 13.5H11l-1 8.5L19.5 10H13l0-8Z",
+  key: "M15 7a4 4 0 1 0-3.8 4L8 14v3H5v3H2v-3.5L9.2 12.4A4 4 0 0 0 15 7Z",
+  shield: "M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3Z",
+  puzzle:
+    "M10 3a2 2 0 0 1 4 0v1h3a1 1 0 0 1 1 1v3h1a2 2 0 0 1 0 4h-1v3a1 1 0 0 1-1 1h-3v-1a2 2 0 0 0-4 0v1H7a1 1 0 0 1-1-1v-3H5a2 2 0 0 1 0-4h1V5a1 1 0 0 1 1-1h3V3Z",
+};
+---
+
+<section class="container-page py-20 sm:py-24" aria-labelledby="value-heading">
+  <h2 id="value-heading" class="sr-only">Why Conjure</h2>
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      props.map((p) => (
+        <li class="card flex flex-col gap-3">
+          <span
+            class="inline-flex h-10 w-10 items-center justify-center rounded-token bg-brand-500/10 text-brand-500"
+            aria-hidden="true"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+              <path d={paths[p.icon]} />
+            </svg>
+          </span>
+          <h3 class="text-base font-semibold">{p.title}</h3>
+          <p class="text-sm leading-relaxed text-fg-muted">{p.body}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

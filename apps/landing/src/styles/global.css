@@ -1,0 +1,79 @@
+/* Global base layer for the Conjure landing site.
+ * Tailwind utilities are layered on top; brand tokens come from tokens.css. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-app text-fg font-sans antialiased;
+  }
+
+  /* Visible focus ring for keyboard users, using the brand accent. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--brand-500));
+    outline-offset: 2px;
+    border-radius: var(--radius);
+  }
+
+  /* A dark, sidebar-colored region (hero / footer). Flips local tokens so any
+   * token-driven utility reads correctly against the near-black background. */
+  .surface-dark {
+    @apply bg-sidebar text-fg;
+    --fg: 244 244 245;
+    --fg-muted: 161 161 170;
+    --surface: 24 24 27;
+    --border: 39 39 42;
+    --brand-500: 129 140 248; /* lift accent on dark, matches [data-theme=dark] */
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-token px-5 py-2.5
+      text-sm font-medium transition-colors duration-150;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-500 text-white hover:bg-brand-600;
+  }
+
+  .btn-ghost {
+    @apply btn border border-line bg-transparent text-fg hover:bg-fg/5;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-brand-500;
+  }
+
+  .card {
+    @apply rounded-token border border-line bg-surface p-5;
+  }
+}

@@ -1,0 +1,98 @@
+---
+// Comparison table — exactly the positioning matrix from BRAND.md.
+type Cell = "yes" | "no" | "partial" | string;
+
+const columns = ["django-unfold / jazzmin", "react-admin / Refine", "Conjure"] as const;
+
+const rows: { label: string; cells: [Cell, Cell, Cell] }[] = [
+  {
+    label: "Form",
+    cells: ["Django admin theme", "Runtime JS config", "Codegen + (optional) runtime"],
+  },
+  { label: "Code ownership", cells: ["no", "partial", "yes"] },
+  { label: "Install-and-go", cells: ["yes", "partial", "yes"] },
+  { label: "Per-page customization", cells: ["Limited", "partial", "yes"] },
+  {
+    label: "Permissions",
+    cells: ["Django perms", "Separate", "Django perms (shared)"],
+  },
+];
+
+const isMark = (c: Cell): c is "yes" | "no" | "partial" =>
+  c === "yes" || c === "no" || c === "partial";
+
+const markLabel = { yes: "Yes", no: "No", partial: "Partial" };
+---
+
+<section id="compare" class="surface-dark py-20 sm:py-24" aria-labelledby="compare-heading">
+  <div class="container-page">
+    <div class="max-w-2xl">
+      <p class="eyebrow text-brand-400">How it compares</p>
+      <h2 id="compare-heading" class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+        Themes restyle. Runtime configs lock you in. Conjure hands you the code.
+      </h2>
+    </div>
+
+    <div class="mt-10 overflow-x-auto">
+      <table class="w-full min-w-[40rem] border-collapse text-left text-sm">
+        <caption class="sr-only">
+          Feature comparison of django-unfold/jazzmin, react-admin/Refine, and Conjure
+        </caption>
+        <thead>
+          <tr class="border-b border-line">
+            <th scope="col" class="py-3 pr-4 font-medium text-fg-muted"></th>
+            {
+              columns.map((c) => (
+                <th
+                  scope="col"
+                  class={`py-3 px-4 font-semibold ${
+                    c === "Conjure" ? "text-brand-400" : "text-fg"
+                  }`}
+                >
+                  {c}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr class="border-b border-line/60">
+                <th scope="row" class="py-3 pr-4 font-medium text-fg-muted">
+                  {row.label}
+                </th>
+                {row.cells.map((cell, i) => (
+                  <td class={`py-3 px-4 align-middle ${i === 2 ? "bg-brand-500/5" : ""}`}>
+                    {isMark(cell) ? (
+                      cell === "yes" ? (
+                        <span class="inline-flex items-center gap-1.5 text-success">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                          <span class="sr-only">{markLabel.yes}</span>
+                        </span>
+                      ) : cell === "no" ? (
+                        <span class="inline-flex items-center gap-1.5 text-fg-muted">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                          <span class="sr-only">{markLabel.no}</span>
+                        </span>
+                      ) : (
+                        <span class="inline-flex items-center gap-1.5 text-warning">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
+                          <span class="sr-only">{markLabel.partial}</span>
+                        </span>
+                      )
+                    ) : (
+                      <span class={i === 2 ? "font-medium text-fg" : "text-fg-muted"}>
+                        {cell}
+                      </span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

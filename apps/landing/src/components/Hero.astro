@@ -1,0 +1,90 @@
+---
+// Hero: tagline, one-liner, primary CTAs, and a 30-second demo slot.
+import Nav from "./Nav.astro";
+
+const getStarted = "https://conjure.terracelab.dev";
+const repo = "https://github.com/terracelab/django-conjure";
+---
+
+<header class="surface-dark relative isolate overflow-hidden">
+  <!-- Accent glow behind the hero. Decorative only. -->
+  <div
+    class="pointer-events-none absolute inset-x-0 -top-40 -z-10 flex justify-center animate-glow-pulse"
+    aria-hidden="true"
+  >
+    <div
+      class="h-[34rem] w-[34rem] rounded-full bg-brand-500/30 blur-[120px]"
+    >
+    </div>
+  </div>
+
+  <Nav />
+
+  <div class="container-page pb-20 pt-14 sm:pt-20">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="eyebrow text-brand-400">by Terrace Lab · open source</p>
+
+      <h1 class="mt-5 text-balance text-5xl font-semibold tracking-tight sm:text-6xl">
+        Conjure your admin.
+      </h1>
+      <p class="mt-3 text-base text-brand-400">모델에서 어드민을 소환하다.</p>
+
+      <p class="mx-auto mt-6 max-w-2xl text-pretty text-lg text-fg-muted">
+        Conjure reads your Django models and summons a full admin — a generic CRUD
+        API plus a React dashboard. Install in three lines, own the generated code,
+        and keep your Django permissions.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
+        <a href={getStarted} class="btn-primary text-base">Get started</a>
+        <a href={repo} class="btn-ghost text-base" rel="noopener">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+            ></path>
+          </svg>
+          GitHub
+        </a>
+      </div>
+
+      <p class="mt-4 font-mono text-xs text-fg-muted">pip install django-conjure</p>
+    </div>
+
+    <!-- 30-second demo slot.
+         TODO(asset): drop the real demo here — a looping GIF/MP4 or a recorded
+         terminal cast. Replace this styled placeholder with:
+           <video src="/demo.mp4" autoplay muted loop playsinline ... />
+         or <img src="/demo.gif" alt="Conjure generating an admin page" />.
+         See public/README.md for the asset spec. -->
+    <figure
+      class="mx-auto mt-14 max-w-4xl overflow-hidden rounded-token border border-line bg-surface/60 shadow-2xl backdrop-blur"
+    >
+      <div class="flex items-center gap-2 border-b border-line px-4 py-2.5">
+        <span class="flex gap-1.5" aria-hidden="true">
+          <span class="h-3 w-3 rounded-full bg-fg/20"></span>
+          <span class="h-3 w-3 rounded-full bg-fg/20"></span>
+          <span class="h-3 w-3 rounded-full bg-fg/20"></span>
+        </span>
+        <span class="ml-2 font-mono text-xs text-fg-muted">~/myproject</span>
+        <span class="ml-auto rounded-token bg-brand-500/15 px-2 py-0.5 text-xs text-brand-400">
+          30-second demo
+        </span>
+      </div>
+      <div class="px-5 py-6 text-left font-mono text-[13px] leading-relaxed">
+        <p><span class="text-fg-muted">$</span> pip install django-conjure</p>
+        <p class="text-fg-muted">→ installed conjure</p>
+        <p class="mt-2"><span class="text-fg-muted">$</span> python manage.py runserver</p>
+        <p class="text-success">→ admin summoned at /admin-panel/  ✦</p>
+        <p class="mt-3 text-fg-muted" aria-hidden="true">
+          # a real demo GIF/video goes here (see public/README.md)
+        </p>
+      </div>
+    </figure>
+  </div>
+</header>

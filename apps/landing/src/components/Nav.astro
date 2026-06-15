@@ -1,0 +1,38 @@
+---
+// Top navigation. Rendered on the dark hero, so it inherits .surface-dark tokens.
+const links = [
+  { label: "Features", href: "#features" },
+  { label: "Install", href: "#install" },
+  { label: "Compare", href: "#compare" },
+  { label: "Demo", href: "#demo" },
+  { label: "Docs", href: "https://conjure.terracelab.dev" },
+];
+const repo = "https://github.com/terracelab/django-conjure";
+---
+
+<nav class="container-page flex items-center justify-between py-5" aria-label="Primary">
+  <a href="#main" class="flex items-center gap-2.5 font-semibold tracking-tight">
+    <img src="/favicon.svg" alt="" width="28" height="28" aria-hidden="true" />
+    <span class="text-base">Conjure</span>
+  </a>
+
+  <ul class="hidden items-center gap-7 text-sm text-fg-muted md:flex">
+    {
+      links.map((link) => (
+        <li>
+          <a class="transition-colors hover:text-fg" href={link.href}>
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <a
+    href={repo}
+    class="btn-ghost"
+    rel="noopener"
+  >
+    GitHub
+  </a>
+</nav>

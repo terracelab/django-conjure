@@ -1,0 +1,57 @@
+{
+  "_comment": "Example schema snapshot — what /<api>/schema/{model}/ returns for each model. Codegen reads this to build schema.ts (zod + Record type) and columns.tsx. Copy to schema-snapshot.json and replace with your real models' schema (fetch it from the running backend).",
+  "blog.Post": {
+    "model": "blog.Post",
+    "app_label": "blog",
+    "model_name": "Post",
+    "verbose_name": "post",
+    "verbose_name_plural": "posts",
+    "pk_field": "id",
+    "fields": [
+      { "name": "id", "type": "BigAutoField", "verbose_name": "ID", "required": false, "editable": false, "null": false },
+      { "name": "category", "type": "ForeignKey", "verbose_name": "category", "required": true, "editable": true, "null": false, "related_model": "blog.Category", "related_search_fields": ["name"] },
+      { "name": "author", "type": "ForeignKey", "verbose_name": "author", "required": true, "editable": true, "null": false, "related_model": "auth.User", "related_search_fields": ["username", "email"] },
+      { "name": "title", "type": "CharField", "verbose_name": "title", "required": true, "editable": true, "null": false, "max_length": 200 },
+      { "name": "body", "type": "TextField", "verbose_name": "body", "required": false, "editable": true, "null": false },
+      { "name": "view_count", "type": "PositiveIntegerField", "verbose_name": "view count", "required": false, "editable": false, "null": false, "default": 0 },
+      { "name": "is_published", "type": "BooleanField", "verbose_name": "published", "required": false, "editable": true, "null": false, "default": false },
+      { "name": "is_featured", "type": "BooleanField", "verbose_name": "featured", "required": false, "editable": true, "null": false, "default": false },
+      { "name": "published_at", "type": "DateTimeField", "verbose_name": "published at", "required": false, "editable": true, "null": true },
+      { "name": "created_at", "type": "DateTimeField", "verbose_name": "created at", "required": false, "editable": false, "null": false },
+      { "name": "updated_at", "type": "DateTimeField", "verbose_name": "updated at", "required": false, "editable": false, "null": false }
+    ],
+    "list_display": ["id", "title", "author", "category", "view_count", "is_published", "created_at"],
+    "search_fields": ["title", "body"],
+    "list_filter": ["category", "is_published", "is_featured"],
+    "ordering": ["-created_at"],
+    "readonly_fields": ["view_count", "created_at", "updated_at"],
+    "is_readonly": false,
+    "inlines": [
+      { "model": "blog.PostImage", "fk_field": "post", "verbose_name": "post image" },
+      { "model": "blog.Comment", "fk_field": "post", "verbose_name": "comment" }
+    ],
+    "permissions": { "view": true, "add": true, "change": true, "delete": true }
+  },
+  "blog.Category": {
+    "model": "blog.Category",
+    "app_label": "blog",
+    "model_name": "Category",
+    "verbose_name": "category",
+    "verbose_name_plural": "categories",
+    "pk_field": "id",
+    "fields": [
+      { "name": "id", "type": "BigAutoField", "verbose_name": "ID", "required": false, "editable": false, "null": false },
+      { "name": "name", "type": "CharField", "verbose_name": "name", "required": true, "editable": true, "null": false, "max_length": 80 },
+      { "name": "slug", "type": "SlugField", "verbose_name": "slug", "required": true, "editable": true, "null": false, "max_length": 80 },
+      { "name": "order", "type": "IntegerField", "verbose_name": "order", "required": false, "editable": true, "null": false, "default": 0 }
+    ],
+    "list_display": ["id", "name", "slug", "order"],
+    "search_fields": ["name", "slug"],
+    "list_filter": [],
+    "ordering": ["order", "name"],
+    "readonly_fields": [],
+    "is_readonly": false,
+    "inlines": [],
+    "permissions": { "view": true, "add": true, "change": true, "delete": true }
+  }
+}

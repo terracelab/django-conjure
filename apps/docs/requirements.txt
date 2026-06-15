@@ -1,0 +1,7 @@
+# Conjure docs site build dependencies.
+# Install: pip install -r requirements.txt
+# Serve:   mkdocs serve     Build: mkdocs build     Deploy a version: mike deploy X.Y latest
+mkdocs-material>=9.5,<10
+mike>=2.1,<3
+pymdown-extensions>=10.7
+# pymdownx.emoji twemoji index needs Material's bundled emoji data (ships with mkdocs-material).

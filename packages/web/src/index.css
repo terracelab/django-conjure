@@ -1,0 +1,73 @@
+/* ──────────────────────────────────────────────────────────────
+ * Conjure token layer.
+ *
+ * Layer 1 (Primitive + brand) lives in ./styles/tokens.css — a verbatim copy of
+ * the canonical /brand/tokens.css. Change brand colors there, not here.
+ *
+ * Layer 2 (Semantic) is defined below: it maps the brand primitives to the
+ * semantic names the Tailwind config and all components reference
+ * (bg-surface, text-fg-muted, accent, status-*, …). Code/codegen uses the
+ * semantic layer ONLY — never reaches into raw brand primitives or hex values.
+ *
+ * Color tokens are "R G B" channels (space-separated, no rgb()/hex). The Tailwind
+ * config wraps them in rgb(var(--x) / <alpha-value>) so /80, /50 opacity modifiers
+ * work. When writing colors directly in CSS, always wrap with rgb(var(--x)).
+ * ────────────────────────────────────────────────────────────── */
+@import "./styles/tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ── Layer 2: Semantic (code references this layer only) ── */
+  /* Surfaces — derived from brand primitives in styles/tokens.css */
+  --bg-surface: var(--surface);
+  --bg-sidebar: var(--sidebar);
+  --bg-sidebar-hover: 63 63 70; /* gray-700 */
+  --fg-default: var(--fg);
+  --fg-on-sidebar: 228 228 231; /* gray-200 */
+  --fg-on-accent: 255 255 255;
+  --border-default: var(--border);
+  --accent: var(--brand-500);
+  --accent-hover: var(--brand-600);
+
+  /* Status — fixed meaning */
+  --status-success: var(--success);
+  --status-warning: var(--warning);
+  --status-danger: var(--danger);
+  --status-info: var(--info);
+
+  /* --gain / --loss / --bg-app / --fg-muted come straight from brand tokens. */
+
+  /* ── Density (high-density ERP feel) — brand owns --radius/--density-row-h/--text-body ── */
+  --density-input-h: var(--density-row-h);
+  --density-cell-px: 8px;
+
+  /* ── Typography ── */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --text-caption: 12px;
+  --text-emphasis: 14px;
+  --text-title: 18px;
+}
+
+@layer base {
+  body {
+    @apply bg-app font-sans text-body text-fg-default antialiased;
+  }
+  /* Numbers use tabular-nums globally — consistent table alignment */
+  html {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Accessibility floor: visible keyboard focus ring */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 1px;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+}

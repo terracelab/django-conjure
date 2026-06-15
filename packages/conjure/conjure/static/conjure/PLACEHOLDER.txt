@@ -1,0 +1,3 @@
+Runtime-mode SPA bundle lands here (collectstatic serves it).
+Build packages/web and copy its dist/ into this folder, or wire your own mount.
+Kept in VCS as a placeholder so the static dir always exists.

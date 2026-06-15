@@ -1,0 +1,22 @@
+{
+  "name": "django-conjure-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Monorepo for Conjure — conjure your Django admin.",
+  "homepage": "https://conjure.terracelab.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terracelab/django-conjure"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@9.12.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "web:build": "pnpm --filter @terracelab/conjure-web build",
+    "web:typecheck": "pnpm --filter @terracelab/conjure-web typecheck",
+    "landing:dev": "pnpm --filter conjure-landing dev",
+    "landing:build": "pnpm --filter conjure-landing build"
+  }
+}

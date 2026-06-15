@@ -1,0 +1,50 @@
+name: Bug report
+description: Report a problem with django-conjure
+title: "bug: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill out the sections below so we can reproduce it quickly.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight checklist
+      options:
+        - label: I searched existing issues and discussions and found no duplicate.
+          required: true
+        - label: I am using a supported version (Python 3.10+, Django 4.2+).
+          required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, including what you expected to happen instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps — ideally a minimal models.py / settings snippet.
+      placeholder: |
+        1. Define model ...
+        2. Add 'conjure' to INSTALLED_APPS ...
+        3. Visit /conjure/ ...
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: django-conjure, Django, Python, and browser (if the issue is in the UI).
+      placeholder: "django-conjure 0.1.0, Django 5.0, Python 3.12, Chrome 125"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / traceback
+      description: Paste any relevant traceback or console output.
+      render: shell

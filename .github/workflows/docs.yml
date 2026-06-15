@@ -1,0 +1,74 @@
+# Docs preview deploy — publishes the bleeding-edge "dev" docs on every push to main.
+#
+# This keeps a `dev` version of the site live (alongside released versions) so contributors
+# can see what's coming. Released versions (X.Y / latest) are published by release.yml.
+#
+# It runs only when docs source or the config reference source changes:
+#   - apps/docs/**                                   (handwritten docs + mkdocs.yml)
+#   - packages/conjure/conjure/conf.py               (config reference is generated from this)
+#
+# Deploy mechanism: `mike` writes the built site into the `gh-pages` branch, one folder
+# per version, and maintains a versions.json that the Material version switcher reads.
+#
+# ── ONE-TIME HUMAN SETUP ─────────────────────────────────────────────────────────────
+#   1. Settings → Pages → Build and deployment → Source: "Deploy from a branch",
+#      Branch: `gh-pages` / `/ (root)`. (Pages must be enabled on the gh-pages branch.)
+#   2. The first deploy creates the gh-pages branch automatically; enable Pages after it exists.
+#   3. Map the custom domain conjure.terracelab.dev in Pages settings (optional).
+# ─────────────────────────────────────────────────────────────────────────────────────
+
+name: Docs (dev)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/docs/**"
+      - "packages/conjure/conjure/conf.py"
+  # Allow manual re-deploys of the dev docs.
+  workflow_dispatch:
+
+# Needed so mike can push the built site to the gh-pages branch.
+permissions:
+  contents: write
+
+# Serialize docs deploys so concurrent pushes don't race on the gh-pages branch.
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy-dev:
+    name: Build & deploy dev docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # mike needs the gh-pages branch history to update versions.json.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: apps/docs/requirements.txt
+
+      - name: Install docs dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r apps/docs/requirements.txt
+
+      - name: Configure git identity for mike
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # Make sure the local gh-pages ref exists so mike updates rather than recreates it.
+      - name: Fetch gh-pages branch
+        run: git fetch origin gh-pages --depth=1 || echo "gh-pages does not exist yet — mike will create it."
+
+      # Deploy the current main as the "dev" version and push to gh-pages.
+      - name: Deploy dev docs
+        working-directory: apps/docs
+        run: mike deploy --push --update-aliases dev

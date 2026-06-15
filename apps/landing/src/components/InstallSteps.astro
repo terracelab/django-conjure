@@ -1,0 +1,51 @@
+---
+// "Install in 3 lines" — snippets sourced from PACKAGE_GUIDE §5.
+import CodeBlock from "./CodeBlock.astro";
+
+const settings = `# settings.py
+INSTALLED_APPS += ["conjure"]
+
+CODEGEN_ADMIN = {
+    "AUTH": "session",                 # reuse Django login (works anywhere) / "jwt"
+    "BRAND": {"name": "Acme Admin", "accent": "#4f46e5"},
+}`;
+
+const urls = `# urls.py
+urlpatterns += [
+    path("conjure/", include("conjure.urls")),          # REST API
+    path("admin-panel/", include("conjure.spa_urls")),  # bundled SPA (runtime mode)
+]`;
+
+const adminConfig = `# myapp/admin_config.py  — discovered automatically, like admin.py
+from conjure import register, AdminConfig
+from myapp.models import Product
+
+@register(Product)
+class ProductConfig(AdminConfig):
+    list_display = ["name", "price", "is_active"]
+    search_fields = ["name"]`;
+---
+
+<section id="install" class="surface-dark py-20 sm:py-24" aria-labelledby="install-heading">
+  <div class="container-page">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="eyebrow text-brand-400">Quick start</p>
+      <h2 id="install-heading" class="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+        Install in three lines
+      </h2>
+      <p class="mt-4 text-fg-muted">
+        Drop it into an existing project. No migrations to your models, no rewrites —
+        register a config and the page appears.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-10 grid max-w-4xl gap-4">
+      <CodeBlock filename="settings.py" lang="python" code={settings} />
+      <CodeBlock filename="urls.py" lang="python" code={urls} />
+      <CodeBlock filename="myapp/admin_config.py" lang="python" code={adminConfig} />
+      <p class="text-center font-mono text-xs text-fg-muted">
+        python manage.py migrate conjure  &nbsp;# audit-log table, once
+      </p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+// Reusable framed code block with an optional filename chrome bar.
+// Pass plain code as `code`; we render it escaped (no syntax highlighter dep).
+interface Props {
+  code: string;
+  filename?: string;
+  /** Language label shown in the chrome, e.g. "python", "bash". */
+  lang?: string;
+  class?: string;
+}
+
+const { code, filename, lang, class: className = "" } = Astro.props;
+const trimmed = code.replace(/^\n+|\n+$/g, "");
+---
+
+<figure class={`overflow-hidden rounded-token border border-line bg-surface ${className}`}>
+  {
+    (filename || lang) && (
+      <figcaption class="flex items-center gap-2 border-b border-line px-4 py-2 text-xs text-fg-muted">
+        <span class="flex gap-1.5" aria-hidden="true">
+          <span class="h-2.5 w-2.5 rounded-full bg-fg/15"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-fg/15"></span>
+          <span class="h-2.5 w-2.5 rounded-full bg-fg/15"></span>
+        </span>
+        {filename && <span class="font-mono">{filename}</span>}
+        {lang && <span class="ml-auto uppercase tracking-wide">{lang}</span>}
+      </figcaption>
+    )
+  }
+  <pre class="overflow-x-auto p-4 text-[13px] leading-relaxed"><code class="font-mono text-fg">{trimmed}</code></pre>
+</figure>

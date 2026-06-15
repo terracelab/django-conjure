@@ -1,0 +1,9 @@
+node_modules
+dist
+*.local
+.DS_Store
+*.tsbuildinfo
+
+# The root .gitignore may use a `lib/` pattern (python venv); re-include the TS lib dir.
+!src/lib/
+!src/lib/**

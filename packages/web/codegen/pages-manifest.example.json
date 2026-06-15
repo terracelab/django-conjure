@@ -1,0 +1,17 @@
+{
+  "_comment": "Model page registry (section structure) — the single source for router/sidebar/section-tabs assembly. group → section → models. The first model of each section is the 'main' (one sidebar row); the rest become top tabs on the main page. dir/kind are inferred by assemble.py from the kebab model name + file existence. Copy this to pages-manifest.json, edit, then run: python3 codegen/assemble.py",
+  "groups": [
+    {
+      "label": "Content",
+      "sections": [
+        {
+          "label": "Blog",
+          "models": [
+            { "model": "blog.Post", "label": "Posts" },
+            { "model": "blog.Category", "label": "Categories" }
+          ]
+        }
+      ]
+    }
+  ]
+}

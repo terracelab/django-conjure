@@ -1,0 +1,130 @@
+# CI — runs on every PR and on push to main.
+#
+# What it validates:
+#   - python:     Conjure (packages/conjure) across Python 3.10–3.13 × Django 4.2/5.x
+#                 — ruff lint, ruff format check, pytest.
+#   - web:        @terracelab/conjure-web (packages/web) — typecheck + build with pnpm.
+#   - docs-build: apps/docs builds with `mkdocs build --strict` (broken links / nav fail the build).
+#
+# Jobs are independent so a failure in one is easy to read. Superseded runs on the same
+# ref are cancelled via the concurrency group below.
+#
+# No human setup required for this workflow — it only reads the repo.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Cancel in-progress runs for the same PR/branch when a new commit lands.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: python (py${{ matrix.python-version }} / Django ${{ matrix.django }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        django: ["4.2", "5.x"]
+    defaults:
+      run:
+        working-directory: packages/conjure
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          # pyproject is the dependency source of truth for the cache key.
+          cache-dependency-path: packages/conjure/pyproject.toml
+
+      - name: Install package with dev extras
+        run: |
+          python -m pip install --upgrade pip
+          pip install ".[dev]"
+
+      - name: Pin Django for this matrix leg
+        run: |
+          if [ "${{ matrix.django }}" = "4.2" ]; then
+            pip install "Django>=4.2,<4.3"
+          else
+            pip install "Django>=5.0,<6.0"
+          fi
+          python -c "import django; print('Django', django.get_version())"
+
+      - name: Ruff lint
+        run: ruff check .
+
+      - name: Ruff format check
+        run: ruff format --check .
+
+      - name: Pytest
+        run: pytest
+
+  web:
+    name: web (typecheck + build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # Prefer a frozen install (reproducible). If no lockfile is committed yet,
+      # fall back to a normal install so the job is not blocked during bootstrap.
+      - name: Install dependencies
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          else
+            echo "::warning::pnpm-lock.yaml not found — running a non-frozen install. Commit a lockfile to make CI reproducible."
+            pnpm install --no-frozen-lockfile
+          fi
+
+      - name: Typecheck
+        run: pnpm --filter @terracelab/conjure-web typecheck
+
+      - name: Build
+        run: pnpm --filter @terracelab/conjure-web build
+
+  docs-build:
+    name: docs build (--strict)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: apps/docs/requirements.txt
+
+      - name: Install docs dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r apps/docs/requirements.txt
+
+      # --strict turns warnings (broken links, missing nav pages) into errors.
+      - name: Build docs
+        working-directory: apps/docs
+        run: mkdocs build --strict

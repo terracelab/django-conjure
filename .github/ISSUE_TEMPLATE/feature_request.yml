@@ -1,0 +1,37 @@
+name: Feature request
+description: Suggest an idea or enhancement
+title: "feat: "
+labels: ["enhancement", "triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What are you trying to do that Conjure makes hard or impossible today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: >
+        Describe the API or behavior you would like. Extension-point hooks
+        (register_field / register_widget / actions) are preferred over core changes
+        where possible.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you evaluated, and why they fall short.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Python package (conjure)
+        - Web package (conjure-web)
+        - Docs
+        - Other

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions & ideas (Discussions)
+    url: https://github.com/terracelab/django-conjure/discussions
+    about: Ask questions or propose ideas here instead of opening an issue.
+  - name: Security vulnerability
+    url: https://github.com/terracelab/django-conjure/security/policy
+    about: Please report vulnerabilities privately — do not open a public issue.

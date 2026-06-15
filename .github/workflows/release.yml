@@ -1,0 +1,187 @@
+# Release pipeline — "a release ships the package AND the versioned docs together".
+#
+# Flow (driven by Conventional Commits via release-please):
+#   1. Every push to main runs `release-please`. It maintains a single "Release PR" that
+#      accumulates changelog entries and bumps versions. packages/conjure and packages/web
+#      are LINKED, so they always release the SAME version (see release-please-config.json).
+#   2. When that Release PR is merged, release-please tags the release and sets
+#      `releases_created=true`. Only then do the downstream jobs run:
+#        - pypi:         build + publish django-conjure to PyPI via Trusted Publishing (OIDC).
+#        - npm:          build + publish @terracelab/conjure-web with provenance.
+#        - docs-release: `mike deploy X.Y latest` + `mike set-default latest` — the matching
+#                        versioned docs go live in the same run as the package.
+#
+# ── ONE-TIME HUMAN SETUP ─────────────────────────────────────────────────────────────
+#   PyPI Trusted Publishing (no token needed):
+#     PyPI → project `django-conjure` → Publishing → Add a GitHub trusted publisher:
+#       Owner: terracelab  Repo: django-conjure
+#       Workflow: release.yml   Environment: pypi
+#     (For the very first publish, create a "pending publisher" before the project exists.)
+#   npm:
+#     - Create the @terracelab npm org and add the publishing account as a member.
+#     - Create an automation access token and store it as repo/org secret `NPM_TOKEN`.
+#     - Provenance requires the npm package to be published from this public repo.
+#   GitHub Pages:
+#     - Settings → Pages → Source: branch `gh-pages` / root (see docs.yml header).
+#   GitHub Environments (recommended):
+#     - Create environments `pypi` and `npm` for extra protection / required reviewers.
+# ─────────────────────────────────────────────────────────────────────────────────────
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+# Default token perms; individual jobs widen as needed.
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  # ── Step 1: maintain the Release PR / cut the release ──────────────────────────────
+  release-please:
+    name: release-please
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create release commits, tags, and GitHub Releases
+      pull-requests: write # create/update the Release PR
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      # Root tag for the linked monorepo release, e.g. "v0.1.0".
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      # Plain version, e.g. "0.1.0".
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  # ── Step 2a: publish Python package to PyPI via OIDC Trusted Publishing ─────────────
+  pypi:
+    name: Publish to PyPI
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # REQUIRED for Trusted Publishing (OIDC) — no API token used
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sdist + wheel
+        working-directory: packages/conjure
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --sdist --wheel --outdir dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: packages/conjure/dist
+          # No `password:` — auth happens via OIDC against the configured trusted publisher.
+
+  # ── Step 2b: publish web package to npm with provenance ────────────────────────────
+  npm:
+    name: Publish to npm
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write # REQUIRED so `npm publish --provenance` can sign the build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          else
+            pnpm install --no-frozen-lockfile
+          fi
+
+      - name: Build web package
+        run: pnpm --filter @terracelab/conjure-web build
+
+      # `npm publish` (not pnpm) is used so --provenance attestation is generated.
+      - name: Publish @terracelab/conjure-web
+        working-directory: packages/web
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # ── Step 2c: publish the matching versioned docs (the "docs ship with release" rule) ─
+  docs-release:
+    name: Publish versioned docs
+    needs: release-please
+    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # mike pushes the built site to gh-pages
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # mike needs gh-pages history + versions.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: apps/docs/requirements.txt
+
+      - name: Install docs dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r apps/docs/requirements.txt
+
+      - name: Configure git identity for mike
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch gh-pages branch
+        run: git fetch origin gh-pages --depth=1 || echo "gh-pages does not exist yet — mike will create it."
+
+      # Derive the X.Y "minor" doc series from the full release version (X.Y.Z).
+      # Read the version from the post-release manifest (robust under release-please manifest
+      # mode, where the action's top-level `version` output can be empty). conjure/web are
+      # linked-versions, so packages/conjure is the canonical version for the docs series.
+      - name: Derive doc version (X.Y) from release
+        id: docver
+        run: |
+          VERSION="$(python -c "import json; print(json.load(open('.release-please-manifest.json'))['packages/conjure'])")"
+          XY="$(echo "$VERSION" | cut -d. -f1,2)"
+          echo "xy=$XY" >> "$GITHUB_OUTPUT"
+          echo "Releasing docs series $XY (from $VERSION)"
+
+      - name: Deploy versioned docs and set 'latest'
+        working-directory: apps/docs
+        run: |
+          mike deploy --push --update-aliases "${{ steps.docver.outputs.xy }}" latest
+          mike set-default --push latest

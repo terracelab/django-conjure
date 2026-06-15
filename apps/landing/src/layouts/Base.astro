@@ -1,0 +1,65 @@
+---
+// Base HTML shell: meta / OG tags, fonts, global token + style imports.
+import "../styles/tokens.css";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative path to the social share image. */
+  ogImage?: string;
+}
+
+const {
+  title = "Conjure — conjure your Django admin",
+  description = "Conjure reads your Django models and summons a full admin: CRUD API plus a React dashboard. Install in three lines, own the generated code, keep Django permissions.",
+  ogImage = "/og.png",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://conjure.terracelab.dev");
+const ogImageUrl = new URL(ogImage, Astro.site ?? "https://conjure.terracelab.dev");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0b0b0f" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Conjure" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <!-- og.png is a placeholder asset; see public/README.md for the spec. -->
+    <meta property="og:image" content={ogImageUrl.href} />
+    <meta property="og:image:alt" content="Conjure — conjure your Django admin" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl.href} />
+
+    <!-- Fonts: Inter via system stack first; webfont is progressive enhancement. -->
+    <link rel="preconnect" href="https://rsms.me/" crossorigin />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-token focus:bg-brand-500 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+    >
+      Skip to content
+    </a>
+    <slot />
+  </body>
+</html>
