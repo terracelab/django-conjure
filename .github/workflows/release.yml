@@ -173,12 +173,12 @@ jobs:
 
       # Derive the X.Y "minor" doc series from the full release version (X.Y.Z).
       # Read the version from the post-release manifest (robust under release-please manifest
-      # mode, where the action's top-level `version` output can be empty). conjure/web are
-      # linked-versions, so packages/conjure is the canonical version for the docs series.
+      # mode, where the action's top-level `version` output can be empty). The repo is a single
+      # locked version (root "." component), so that one key is the canonical version.
       - name: Derive doc version (X.Y) from release
         id: docver
         run: |
-          VERSION="$(python -c "import json; print(json.load(open('.release-please-manifest.json'))['packages/conjure'])")"
+          VERSION="$(python -c "import json; print(json.load(open('.release-please-manifest.json'))['.'])")"
           XY="$(echo "$VERSION" | cut -d. -f1,2)"
           echo "xy=$XY" >> "$GITHUB_OUTPUT"
           echo "Releasing docs series $XY (from $VERSION)"
