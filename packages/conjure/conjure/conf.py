@@ -30,6 +30,11 @@ DEFAULTS = {
     "AUDIT": True,
     # Auto-import every installed app's ``admin_config`` module on ready() (like admin.autodiscover).
     "AUTODISCOVER": True,
+    # Register every concrete project model not already registered (opt-in, install-and-go). Explicit
+    # @register wins; framework/internal models + secret-looking fields are skipped/redacted.
+    "AUTO_REGISTER": False,
+    # app_labels or "app_label.Model" strings to skip when AUTO_REGISTER is on.
+    "AUTO_REGISTER_EXCLUDE": [],
     # Logger used for non-fatal internal errors (e.g. audit write failures).
     "LOGGER_NAME": "conjure",
 }
