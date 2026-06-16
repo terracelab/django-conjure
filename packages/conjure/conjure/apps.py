@@ -16,3 +16,10 @@ class ConjureConfig(AppConfig):
             from conjure.discovery import autodiscover
 
             autodiscover()
+
+        # Optionally register every remaining project model (install-and-go). Runs after
+        # autodiscover so explicit @register configs always take precedence.
+        if conjure_settings.AUTO_REGISTER:
+            from conjure.registry import autoregister
+
+            autoregister()

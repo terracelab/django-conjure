@@ -70,6 +70,11 @@ DESCRIPTIONS.update({
     "MAX_PAGE_SIZE": "Upper bound a client may request via `?page_size=`.",
     "AUTODISCOVER": "Auto-import every installed app's `admin_config` module on `ready()` "
                     "(like `admin.autodiscover`).",
+    "AUTO_REGISTER": "Opt-in install-and-go: register every concrete project model not already "
+                     "registered. Explicit `@register` always wins; framework/internal models are "
+                     "skipped and secret-looking fields (password/token/secret/…) are redacted.",
+    "AUTO_REGISTER_EXCLUDE": "When `AUTO_REGISTER` is on, app labels (`\"myapp\"`) or model keys "
+                             "(`\"myapp.Model\"`) to skip.",
     "LOGGER_NAME": "Name of the `logging` logger used for non-fatal internal errors "
                    "(e.g. audit write failures).",
 })

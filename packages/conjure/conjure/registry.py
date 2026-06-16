@@ -8,6 +8,7 @@
 @Connection: conjure/schema.py, conjure/viewsets.py, conjure/discovery.py
 """
 
+from django.apps import apps as django_apps
 from django.db import models
 
 
@@ -128,3 +129,52 @@ def register(model):
 
 # Backwards-friendly alias mirroring Django's naming.
 admin_register = register
+
+
+# ── auto-registration (opt-in via CONJURE["AUTO_REGISTER"]) ──────────────────────
+# Framework/internal models that are noise or sensitive — never auto-registered.
+_AUTO_SKIP_APPS = frozenset({"admin", "contenttypes", "sessions"})
+_AUTO_SKIP_MODELS = frozenset({"auth.Permission", "authtoken.Token", "authtoken.TokenProxy"})
+# Field names that look secret — excluded from an auto-registered model's schema/forms/responses.
+# (Explicitly @register a model with your own config to override this safe default.)
+_SENSITIVE_SUBSTRINGS = ("password", "secret", "token", "api_key", "apikey", "private_key", "salt")
+
+
+def _sensitive_excludes(model):
+    out = []
+    for f in model._meta.get_fields():
+        name = getattr(f, "name", "")
+        if name and any(s in name.lower() for s in _SENSITIVE_SUBSTRINGS):
+            out.append(name)
+    return tuple(out)
+
+
+def autoregister():
+    """Register every concrete project model not already registered (opt-in).
+
+    Mirrors ``autodiscover()`` and runs right after it, so an explicit ``@register`` always wins.
+    Proxy models, auto-created M2M through tables, framework/internal models (admin/contenttypes/
+    sessions, Permission, DRF tokens) are skipped, and secret-looking fields are excluded. Extend
+    the skip set per project with ``CONJURE["AUTO_REGISTER_EXCLUDE"]`` (``"app_label"`` or
+    ``"app_label.Model"``).
+    """
+    from conjure.conf import conjure_settings
+
+    existing = {k.lower() for k, _ in registry.items()}
+    extra_skip = {s.lower() for s in (conjure_settings.AUTO_REGISTER_EXCLUDE or ())}
+
+    for model in django_apps.get_models():
+        opts = model._meta
+        key = f"{opts.app_label}.{model.__name__}"
+        if opts.app_label in _AUTO_SKIP_APPS or key in _AUTO_SKIP_MODELS:
+            continue
+        if opts.proxy or opts.auto_created:
+            continue
+        if key.lower() in existing or opts.app_label.lower() in extra_skip or key.lower() in extra_skip:
+            continue
+
+        excludes = _sensitive_excludes(model)
+        config_cls = (
+            type(f"{model.__name__}AutoConfig", (AdminConfig,), {"exclude": excludes}) if excludes else AdminConfig
+        )
+        registry.register(model, config_cls)
