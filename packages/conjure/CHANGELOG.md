@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/terracelab/django-conjure/compare/v0.1.1...v0.2.0) (2026-06-17)
+
+
+### Miscellaneous Chores
+
+* version alignment with `@terracelab/conjure-web` 0.2.0 (scaffolder CLI release); keeps the linked Python + npm packages in lockstep. No backend code changes.
+
 ## [0.1.1](https://github.com/terracelab/django-conjure/compare/v0.1.0...v0.1.1) (2026-06-16)
 
 
