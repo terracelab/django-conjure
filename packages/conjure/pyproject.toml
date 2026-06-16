@@ -59,6 +59,9 @@ include = ["/conjure", "/README.md", "/tests", "/LICENSE"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
+# Put the package root on sys.path so `tests.settings` imports under a non-editable
+# CI install (`pip install ".[dev]"`), not just an editable `-e` install.
+pythonpath = ["."]
 python_files = ["test_*.py"]
 testpaths = ["tests"]
 
