@@ -24,6 +24,10 @@ urlpatterns = [
     path("r/<str:model_key>/autocomplete/", AdminModelViewSet.as_view({"get": "autocomplete"}), name="autocomplete"),
     path("r/<str:model_key>/bulk/", AdminModelViewSet.as_view({"post": "bulk"}), name="bulk"),
     path("r/<str:model_key>/<str:pk>/related/", AdminModelViewSet.as_view({"get": "related"}), name="related"),
-    path("r/<str:model_key>/<str:pk>/", AdminModelViewSet.as_view({"get": "retrieve", "patch": "partial_update", "delete": "destroy"}), name="detail"),
+    path(
+        "r/<str:model_key>/<str:pk>/",
+        AdminModelViewSet.as_view({"get": "retrieve", "patch": "partial_update", "delete": "destroy"}),
+        name="detail",
+    ),
     path("r/<str:model_key>/", AdminModelViewSet.as_view({"get": "list", "post": "create"}), name="list"),
 ]

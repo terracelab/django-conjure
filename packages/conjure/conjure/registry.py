@@ -36,7 +36,11 @@ class AdminConfig:
     # ── inference helpers ──────────────────────────────────────
 
     def _concrete_fields(self):
-        return [f for f in self.model._meta.get_fields() if isinstance(f, models.Field) and not isinstance(f, models.ManyToManyField)]
+        return [
+            f
+            for f in self.model._meta.get_fields()
+            if isinstance(f, models.Field) and not isinstance(f, models.ManyToManyField)
+        ]
 
     def _editable_fields(self):
         return [f for f in self._concrete_fields() if f.editable and not f.primary_key]

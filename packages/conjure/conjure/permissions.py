@@ -26,7 +26,10 @@ WRITE_ACTIONS = {"create", "partial_update", "destroy", "bulk"}
 def get_model_permissions(user, model):
     """Current user's 4 model permissions — for the schema response."""
     opts = model._meta
-    return {codename: user.has_perm(f"{opts.app_label}.{codename}_{opts.model_name}") for codename in ("view", "add", "change", "delete")}
+    return {
+        codename: user.has_perm(f"{opts.app_label}.{codename}_{opts.model_name}")
+        for codename in ("view", "add", "change", "delete")
+    }
 
 
 class IsStaffUser(BasePermission):

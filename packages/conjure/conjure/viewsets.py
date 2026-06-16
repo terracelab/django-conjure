@@ -13,7 +13,6 @@ from django.contrib.admin.utils import NestedObjects
 from django.db import models, transaction
 from django.db.models import Q
 from django.http import Http404
-
 from rest_framework import status, viewsets
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.pagination import PageNumberPagination
@@ -74,14 +73,16 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
         try:
             return self._base_queryset(config).get(pk=self.kwargs["pk"])
         except config.model.DoesNotExist:
-            raise Http404
+            raise Http404 from None
 
     def _model_key(self, config):
         return f"{config.model._meta.app_label}.{config.model.__name__}"
 
     def _base_queryset(self, config):
         model = config.model
-        fk_names = [f.name for f in model._meta.get_fields() if isinstance(f, (models.ForeignKey, models.OneToOneField))]
+        fk_names = [
+            f.name for f in model._meta.get_fields() if isinstance(f, (models.ForeignKey, models.OneToOneField))
+        ]
         qs = model.objects.all()
         if fk_names:
             qs = qs.select_related(*fk_names)
@@ -125,7 +126,7 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
                         value = _parse_bool(value)
                     qs = qs.filter(**{f"{field_path}__{lookup}": value})
             except (ValueError, TypeError) as e:
-                raise ValidationError({raw_key: [f"Invalid filter value: {e}"]})
+                raise ValidationError({raw_key: [f"Invalid filter value: {e}"]}) from e
         return qs
 
     def _apply_search(self, qs, config, params):
@@ -167,7 +168,9 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
         with transaction.atomic():
             obj = serializer.save()
         audit.record(request, self._model_key(config), obj.pk, "create", object_repr=obj)
-        return Response(self.get_serializer_class(config)(obj, context={"request": request}).data, status=status.HTTP_201_CREATED)
+        return Response(
+            self.get_serializer_class(config)(obj, context={"request": request}).data, status=status.HTTP_201_CREATED
+        )
 
     def retrieve(self, request, model_key=None, pk=None):
         config = self.get_config()
@@ -184,7 +187,9 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
         with transaction.atomic():
             obj = serializer.save()
         after = serializer_cls(obj, context={"request": request}).data
-        audit.record(request, self._model_key(config), obj.pk, "update", object_repr=obj, diff=audit.build_diff(before, after))
+        audit.record(
+            request, self._model_key(config), obj.pk, "update", object_repr=obj, diff=audit.build_diff(before, after)
+        )
         return Response(after)
 
     def destroy(self, request, model_key=None, pk=None):
@@ -219,7 +224,9 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
         offset = (page - 1) * page_size
         rows = list(qs[offset : offset + page_size + 1])
         has_more = len(rows) > page_size
-        return Response({"results": [{"value": obj.pk, "label": str(obj)} for obj in rows[:page_size]], "has_more": has_more})
+        return Response(
+            {"results": [{"value": obj.pk, "label": str(obj)} for obj in rows[:page_size]], "has_more": has_more}
+        )
 
     def related(self, request, model_key=None, pk=None):
         """For the delete-confirm dialog — count objects that CASCADE-delete with this one."""
@@ -235,7 +242,13 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
                     continue
             else:
                 count = len(instances)
-            summary.append({"model": f"{model._meta.app_label}.{model.__name__}", "verbose_name": str(model._meta.verbose_name), "count": count})
+            summary.append(
+                {
+                    "model": f"{model._meta.app_label}.{model.__name__}",
+                    "verbose_name": str(model._meta.verbose_name),
+                    "count": count,
+                }
+            )
         return Response({"related": summary})
 
     def bulk(self, request, model_key=None):
@@ -273,11 +286,15 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
                         require_perm("change")
                         obj = config.model.objects.get(pk=op.get("pk"))
                         before = serializer_cls(obj, context={"request": request}).data
-                        serializer = serializer_cls(obj, data=op.get("data", {}), partial=True, context={"request": request})
+                        serializer = serializer_cls(
+                            obj, data=op.get("data", {}), partial=True, context={"request": request}
+                        )
                         serializer.is_valid(raise_exception=True)
                         obj = serializer.save()
                         after = serializer_cls(obj, context={"request": request}).data
-                        audit.record(request, key, obj.pk, "update", object_repr=obj, diff=audit.build_diff(before, after))
+                        audit.record(
+                            request, key, obj.pk, "update", object_repr=obj, diff=audit.build_diff(before, after)
+                        )
                         results.append({"op": "update", "pk": obj.pk})
                     elif op_type == "delete":
                         require_perm("delete")
@@ -300,17 +317,28 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
             count = qs.count()
             with transaction.atomic():
                 qs.delete()
-            audit.record(request, key, ",".join(str(i) for i in ids[:50]), "bulk_delete", object_repr=f"{count} deleted")
+            audit.record(
+                request, key, ",".join(str(i) for i in ids[:50]), "bulk_delete", object_repr=f"{count} deleted"
+            )
             return Response({"deleted": count})
         if action == "update":
             require_perm("change")
             data = request.data.get("data") or {}
-            editable = {f.name for f in opts.get_fields() if isinstance(f, models.Field) and f.editable and not f.primary_key}
+            editable = {
+                f.name for f in opts.get_fields() if isinstance(f, models.Field) and f.editable and not f.primary_key
+            }
             invalid = [k for k in data.keys() if k not in editable]
             if invalid:
                 raise ValidationError({"data": [f"Non-editable fields: {', '.join(invalid)}"]})
             with transaction.atomic():
                 count = qs.update(**data)
-            audit.record(request, key, ",".join(str(i) for i in ids[:50]), "bulk_update", object_repr=f"{count} updated", diff={k: [None, v] for k, v in data.items()})
+            audit.record(
+                request,
+                key,
+                ",".join(str(i) for i in ids[:50]),
+                "bulk_update",
+                object_repr=f"{count} updated",
+                diff={k: [None, v] for k, v in data.items()},
+            )
             return Response({"updated": count})
         raise ValidationError({"action": ["Unsupported action (delete|update)."]})

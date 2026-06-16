@@ -36,7 +36,9 @@ class AdminAuditLog(models.Model):
     object_pk = models.CharField(max_length=64, verbose_name=_("target pk"))
     object_repr = models.CharField(max_length=200, blank=True, default="", verbose_name=_("target repr"))
     action = models.CharField(max_length=20, choices=ACTION_CHOICES, verbose_name=_("action"))
-    diff = models.JSONField(null=True, blank=True, default=None, verbose_name=_("changes"))  # {"field": [before, after]}
+    diff = models.JSONField(
+        null=True, blank=True, default=None, verbose_name=_("changes")
+    )  # {"field": [before, after]}
     ip = models.GenericIPAddressField(null=True, blank=True, default=None, verbose_name=_("IP"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("recorded at"))
 

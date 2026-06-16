@@ -18,7 +18,10 @@ class Migration(migrations.Migration):
                 ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 ("model_label", models.CharField(max_length=100, verbose_name=_("target model"))),
                 ("object_pk", models.CharField(max_length=64, verbose_name=_("target pk"))),
-                ("object_repr", models.CharField(blank=True, default="", max_length=200, verbose_name=_("target repr"))),
+                (
+                    "object_repr",
+                    models.CharField(blank=True, default="", max_length=200, verbose_name=_("target repr")),
+                ),
                 (
                     "action",
                     models.CharField(

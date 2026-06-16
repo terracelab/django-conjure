@@ -1,5 +1,4 @@
 from conjure import AdminConfig, register
-
 from tests.testapp.models import ActivityLog, Category, Product, ProductImage
 
 

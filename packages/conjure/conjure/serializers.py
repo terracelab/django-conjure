@@ -7,7 +7,6 @@
 """
 
 from django.db import models
-
 from rest_framework import serializers
 
 
@@ -60,7 +59,9 @@ def build_serializer(config):
         meta_attrs["fields"] = "__all__"
     # Only real model fields among readonly_fields become read_only (ignore display-only names).
     model_field_names = {f.name for f in model._meta.get_fields() if isinstance(f, models.Field)}
-    readonly = tuple(name for name in (config.readonly_fields or ()) if name in model_field_names and name not in excluded)
+    readonly = tuple(
+        name for name in (config.readonly_fields or ()) if name in model_field_names and name not in excluded
+    )
     if readonly:
         meta_attrs["read_only_fields"] = readonly
     attrs["Meta"] = type("Meta", (), meta_attrs)

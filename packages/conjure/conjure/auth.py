@@ -14,7 +14,6 @@ from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.core.exceptions import ImproperlyConfigured
 from django.http import Http404
-
 from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import AllowAny
@@ -52,8 +51,7 @@ def _jwt_module():
         import rest_framework_simplejwt.serializers as ser
     except ImportError as e:  # pragma: no cover - guarded path
         raise ImproperlyConfigured(
-            "CONJURE['AUTH'] == 'jwt' requires the optional dependency: "
-            "pip install 'django-conjure[jwt]'"
+            "CONJURE['AUTH'] == 'jwt' requires the optional dependency: pip install 'django-conjure[jwt]'"
         ) from e
     return ser
 

@@ -10,7 +10,6 @@
 
 from django.db import models
 from django.http import Http404
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -34,7 +33,13 @@ def field_schema(field, config):
         "name": field.name,
         "type": type(field).__name__,
         "verbose_name": str(field.verbose_name),
-        "required": bool(field.editable and not field.blank and not field.has_default() and not field.null and not isinstance(field, models.BooleanField)),
+        "required": bool(
+            field.editable
+            and not field.blank
+            and not field.has_default()
+            and not field.null
+            and not isinstance(field, models.BooleanField)
+        ),
         "editable": bool(field.editable and not field.primary_key and field.name not in (config.readonly_fields or ())),
         "null": field.null,
     }
@@ -67,7 +72,9 @@ def model_schema(key, config, user):
     model = config.model
     opts = model._meta
     excluded = set(config.exclude or ())
-    fields = [field_schema(f, config) for f in opts.get_fields() if isinstance(f, models.Field) and f.name not in excluded]
+    fields = [
+        field_schema(f, config) for f in opts.get_fields() if isinstance(f, models.Field) and f.name not in excluded
+    ]
     return {
         "model": key,
         "app_label": opts.app_label,
