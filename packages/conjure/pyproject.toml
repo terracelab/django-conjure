@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-conjure"
-version = "0.1.0"
+version = "0.1.1"
 description = "Conjure your Django admin — read your models, summon a CRUD API and dashboard."
 readme = "README.md"
 requires-python = ">=3.10"

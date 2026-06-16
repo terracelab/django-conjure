@@ -1,6 +1,6 @@
 {
   "name": "@terracelab/conjure-web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Conjure — the React admin dashboard for django-conjure. Read your Django models, summon the admin.",
   "license": "MIT",
   "type": "module",
