@@ -1808,17 +1808,19 @@ project's other APIs.</p>
 <div class="admonition info">
 <p class="admonition-title">Serving the dashboard</p>
 <p><code>conjure.urls</code> is the REST API. The React dashboard is served separately:
-in <strong>codegen mode</strong> <span class="status available">✅</span> you build the
-<code>packages/web</code> React app from the monorepo source and host its <code>dist/</code> (your own static
-hosting, WhiteNoise, or a CDN) pointed at this API. (An npm release of the dashboard as
-<code>@terracelab/conjure-web</code> is planned; for 0.1.x, build it from source.) A bundled
-zero-build <strong>runtime SPA</strong> mounted at
-<code>conjure.spa_urls</code> is <span class="status planned">📋 planned</span> (see the
-<a href="../../roadmap/">roadmap</a>). Either way, the <code>conjure/</code> API include above is all the
-backend needs.</p>
+in <strong>codegen mode</strong> <span class="status available">✅</span> you scaffold the dashboard
+into your project, then build it and host its <code>dist/</code> (your own static hosting, WhiteNoise,
+or a CDN) pointed at this API:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w"> </span>&gt;<span class="w"> </span>schema-snapshot.json<span class="w">   </span><span class="c1"># dump your models</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>npx<span class="w"> </span>@terracelab/conjure-web<span class="w"> </span>init<span class="w"> </span>conjure-admin<span class="w">                </span><span class="c1"># scaffold + codegen</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">cd</span><span class="w"> </span>conjure-admin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>build<span class="w">                </span><span class="c1"># → dist/ to host</span>
+</span></code></pre></div>
+<p>A bundled zero-build <strong>runtime SPA</strong> mounted at <code>conjure.spa_urls</code> is
+<span class="status planned">📋 planned</span> (see the <a href="../../roadmap/">roadmap</a>). Either
+way, the <code>conjure/</code> API include above is all the backend needs.</p>
 </div>
 <h2 id="4-migrate-the-audit-log">4. Migrate the audit log<a class="headerlink" href="#4-migrate-the-audit-log" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span>conjure
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span>conjure
 </span></code></pre></div>
 <p>This creates a single table, <code>AdminAuditLog</code>, used to record a diff of every write.</p>
 <div class="admonition tip">
@@ -1829,7 +1831,7 @@ want the "recent activity" widget and the audit log page to fill in.</p>
 </div>
 <h2 id="5-verify">5. Verify<a class="headerlink" href="#5-verify" title="Permanent link">&para;</a></h2>
 <p>Start your server and hit the schema endpoint with a staff session or token:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8000/conjure/schema/<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8000/conjure/schema/<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
 </span></code></pre></div>
 <p>A JSON object keyed by <code>app.Model</code> confirms the install. You haven't registered anything
 yet, so it may be empty — that's expected. Next:

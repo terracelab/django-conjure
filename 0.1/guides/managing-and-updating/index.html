@@ -2110,7 +2110,7 @@ goes deeper.</p>
 </tr>
 <tr>
 <td><code>@terracelab/conjure-web</code> (React)</td>
-<td>build from monorepo source (<code>packages/web</code>); npm release planned</td>
+<td><code>npx @terracelab/conjure-web init</code> (scaffolds the dashboard you own)</td>
 <td>only for <strong>codegen mode</strong> / a custom frontend</td>
 </tr>
 </tbody>
@@ -2155,9 +2155,9 @@ patches but not minors is the safe default while the API settles:</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Keep the two packages on the same <code>X.Y</code></p>
-<p>If you also use the React frontend, build it from the matching tag of the monorepo source —
-it shares the schema/REST contract. <code>django-conjure 0.1.x</code> ↔ <code>packages/web</code> at the same <code>0.1.x</code>.
-Mixing minors (e.g. backend <code>0.2</code> + frontend <code>0.1</code>) is unsupported.</p>
+<p>If you also use the React frontend, scaffold it from the matching version of the CLI —
+it shares the schema/REST contract. <code>django-conjure 0.1.x</code> ↔ <code>@terracelab/conjure-web</code> at
+the same <code>0.1.x</code>. Mixing minors (e.g. backend <code>0.2</code> + frontend <code>0.1</code>) is unsupported.</p>
 </div>
 <h3 id="12-wire-it-up">1.2 Wire it up<a class="headerlink" href="#12-wire-it-up" title="Permanent link">&para;</a></h3>
 <div class="language-python highlight"><span class="filename">settings.py</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">INSTALLED_APPS</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;rest_framework&quot;</span><span class="p">,</span> <span class="s2">&quot;conjure&quot;</span><span class="p">]</span>   <span class="c1"># rest_framework only if not already present</span>
@@ -2191,8 +2191,8 @@ models; it never edits your apps. See the full walk-through in
 <tr>
 <td><strong>Codegen</strong> (own the React)</td>
 <td>✅ available</td>
-<td>build <code>@terracelab/conjure-web</code>, host <code>dist/</code> at the API</td>
-<td>committing the generated <code>.tsx</code> to your repo</td>
+<td><code>npx @terracelab/conjure-web init</code>, then build + host <code>dist/</code> at the API</td>
+<td>committing the scaffolded <code>.tsx</code> to your repo</td>
 </tr>
 <tr>
 <td><strong>Runtime SPA</strong> (zero build)</td>
@@ -2346,9 +2346,10 @@ Conjure's tables) and commit your working tree (so codegen regeneration is a cle
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># rebuild from the matching tag of the monorepo source (packages/web);</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># an npm release of @terracelab/conjure-web is planned</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>git<span class="w"> </span>-C<span class="w"> </span>path/to/django-conjure<span class="w"> </span>checkout<span class="w"> </span>v0.2.0
+<p>The dashboard you scaffolded is your own code, so upgrades are a re-dump + regenerate
+(see the post-upgrade checklist below). To pull template/codegen improvements from a newer
+release, re-run the scaffolder at the matching version into a scratch dir and diff:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>npx<span class="w"> </span>@terracelab/conjure-web@0.2.0<span class="w"> </span>init<span class="w"> </span>conjure-admin-next<span class="w">   </span><span class="c1"># diff against your project</span>
 </span></code></pre></div>
 </div>
 </div>
@@ -2362,7 +2363,7 @@ Conjure's tables) and commit your working tree (so codegen regeneration is a cle
    upgrade changed templates or your models' schema, re-dump the snapshot and regenerate
    affected pages. <code>// @custom</code>-marked blocks are preserved on regeneration; commit first so
    you can diff.
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w"> </span>-o<span class="w"> </span>packages/web/codegen/schema-snapshot.json
+   <div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w"> </span>-o<span class="w"> </span>conjure-admin/codegen/schema-snapshot.json
 </span></code></pre></div>
    See <a href="../custom-pages/">Custom pages</a>.</li>
 <li><strong>Re-run any sync commands</strong> — e.g. <code>python manage.py sync_admin_actions</code> once the
