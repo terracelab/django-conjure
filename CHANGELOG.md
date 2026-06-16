@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.2.1](https://github.com/terracelab/django-conjure/compare/v0.2.0...v0.2.1) (2026-06-16)
+
+
+### Bug Fixes
+
+* defer register_widget import to avoid AppRegistryNotReady on startup ([#7](https://github.com/terracelab/django-conjure/issues/7)) ([b917a4b](https://github.com/terracelab/django-conjure/commit/b917a4b8dd4a1d634ad8d1c00c06b866e6768a39))
+
 ## [0.2.0](https://github.com/terracelab/django-conjure/compare/v0.1.1...v0.2.0) (2026-06-17)
 
 
