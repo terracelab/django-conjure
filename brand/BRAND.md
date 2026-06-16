@@ -28,7 +28,7 @@ feature names stay plain.
 
 | Term | Meaning | Where it shows |
 |---|---|---|
-| **conjure** | generate / scaffold | `npx create-conjure`, codegen |
+| **conjure** | generate / scaffold | `npx @terracelab/conjure-web init`, codegen |
 | **spell** | an admin action (export, refund, send push) | action registry |
 | **summon** | render a model page | runtime page |
 | **spellbook** | the set of registered configs | docs metaphor only |

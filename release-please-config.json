@@ -1,9 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
-  "release-type": "node",
+  "release-type": "simple",
   "include-component-in-tag": false,
-  "separate-pull-requests": false,
-  "group-pull-request-title-pattern": "chore: release ${branch}",
+  "pull-request-title-pattern": "chore: release ${version}",
   "changelog-sections": [
     { "type": "feat", "section": "Features" },
     { "type": "fix", "section": "Bug Fixes" },
@@ -19,25 +18,14 @@
     { "type": "chore", "section": "Miscellaneous Chores", "hidden": true }
   ],
   "packages": {
-    "packages/conjure": {
-      "release-type": "python",
+    ".": {
+      "release-type": "simple",
       "package-name": "django-conjure",
-      "component": "conjure",
       "changelog-path": "CHANGELOG.md",
-      "extra-files": []
-    },
-    "packages/web": {
-      "release-type": "node",
-      "package-name": "@terracelab/conjure-web",
-      "component": "web",
-      "changelog-path": "CHANGELOG.md"
+      "extra-files": [
+        { "type": "toml", "path": "packages/conjure/pyproject.toml", "jsonpath": "$.project.version" },
+        { "type": "json", "path": "packages/web/package.json", "jsonpath": "$.version" }
+      ]
     }
-  },
-  "plugins": [
-    {
-      "type": "linked-versions",
-      "groupName": "conjure",
-      "components": ["conjure", "web"]
-    }
-  ]
+  }
 }
