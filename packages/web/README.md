@@ -4,7 +4,7 @@
 
 This package is part of the Conjure monorepo. It ships the reusable engine: the API client, a frozen shadcn-style UI kit, composed admin components (data table, FK combobox, inline tables, filters, export, …), an app shell, a dashboard/login/style-guide, a golden codegen template, and a runtime model renderer. It does **not** ship any project-specific model pages — those are your output.
 
-- Docs: <https://docs.conjure.terracelab.dev>
+- Docs: <https://docs.conjure.terracelab.co.kr>
 - Brand & color tokens: see `brand/tokens.css` in the repo root (this package mirrors it in `src/styles/tokens.css`).
 
 ## Status

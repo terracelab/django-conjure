@@ -16,8 +16,8 @@
 | Tagline (EN) | **Conjure your admin.** |
 | Tagline (KO) | **모델에서 어드민을 소환하다.** |
 | GitHub | `github.com/terracelab/django-conjure` |
-| Landing domain | `conjure.terracelab.dev` |
-| Docs domain | `docs.conjure.terracelab.dev` |
+| Landing domain | `conjure.terracelab.co.kr` |
+| Docs domain | `docs.conjure.terracelab.co.kr` |
 
 ## Voice
 

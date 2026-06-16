@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "Monorepo for Conjure — conjure your Django admin.",
-  "homepage": "https://conjure.terracelab.dev",
+  "homepage": "https://conjure.terracelab.co.kr",
   "repository": {
     "type": "git",
     "url": "https://github.com/terracelab/django-conjure"

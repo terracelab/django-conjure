@@ -5,12 +5,12 @@
 ### Conjure your Django admin — read your models, summon the admin.
 
 [![PyPI](https://img.shields.io/pypi/v/django-conjure?color=4f46e5&label=django-conjure)](https://pypi.org/project/django-conjure/)
-[![Docs](https://img.shields.io/badge/docs-docs.conjure.terracelab.dev-4f46e5)](https://docs.conjure.terracelab.dev)
+[![Docs](https://img.shields.io/badge/docs-docs.conjure.terracelab.co.kr-4f46e5)](https://docs.conjure.terracelab.co.kr)
 [![CI](https://github.com/terracelab/django-conjure/actions/workflows/ci.yml/badge.svg)](https://github.com/terracelab/django-conjure/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![Python](https://img.shields.io/pypi/pyversions/django-conjure)](https://pypi.org/project/django-conjure/)
 
-*by [Terrace Lab](https://terracelab.dev)*
+*by [Terrace Lab](https://terracelab.co.kr)*
 
 </div>
 
@@ -40,7 +40,7 @@ class ProductConfig(AdminConfig):
 ```
 
 That's it — `Product` now has a list / search / filter / CRUD REST surface plus the schema to
-drive a UI. [Read the 5-minute guide →](https://docs.conjure.terracelab.dev/getting-started/)
+drive a UI. [Read the 5-minute guide →](https://docs.conjure.terracelab.co.kr/getting-started/)
 
 ## Why Conjure
 
@@ -54,7 +54,7 @@ drive a UI. [Read the 5-minute guide →](https://docs.conjure.terracelab.dev/ge
 The matching dashboard lives in [`packages/web`](./packages/web) (React + Vite). For the
 `0.1.x` line it ships as **source, not a package**: the runtime renderer covers list views
 today, and per-page **codegen** lets you own the output. An install-and-go bundled dashboard
-and a published frontend package are on the [roadmap](https://docs.conjure.terracelab.dev/roadmap/).
+and a published frontend package are on the [roadmap](https://docs.conjure.terracelab.co.kr/roadmap/).
 Until then, point any client at the REST API + schema.
 
 |  | django-unfold / jazzmin | react-admin / Refine | **Conjure** |
@@ -88,14 +88,14 @@ make web         # build the React dashboard
 ```
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full dev setup, the
-["docs ship with the release"](https://docs.conjure.terracelab.dev/contributing/releasing/) flow,
-and the [extension SDK](https://docs.conjure.terracelab.dev/customization/).
+["docs ship with the release"](https://docs.conjure.terracelab.co.kr/contributing/releasing/) flow,
+and the [extension SDK](https://docs.conjure.terracelab.co.kr/customization/).
 
 ## Status
 
 Conjure is extracted from a production internal admin (75 models, ~150 routes). The core
 (introspection, CRUD, permissions, audit, widgets) is battle-tested; the runtime renderer,
-action/permission system, and CLI scaffolder are on the [roadmap](https://docs.conjure.terracelab.dev/roadmap/).
+action/permission system, and CLI scaffolder are on the [roadmap](https://docs.conjure.terracelab.co.kr/roadmap/).
 
 ## License
 

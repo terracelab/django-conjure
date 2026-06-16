@@ -207,7 +207,7 @@ python -c "import conjure; print(conjure.__version__)"
 
 Conjure is **SemVer**. Before upgrading, skim the
 [CHANGELOG](https://github.com/terracelab/django-conjure/blob/main/CHANGELOG.md) and that
-version's [docs](https://docs.conjure.terracelab.dev) (the version switcher in the header lets you
+version's [docs](https://docs.conjure.terracelab.co.kr) (the version switcher in the header lets you
 read the docs for *your* version):
 
 | Bump | Means | Your effort |

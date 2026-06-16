@@ -4,7 +4,7 @@
   "description": "Conjure — the React admin dashboard for django-conjure. Read your Django models, summon the admin.",
   "license": "MIT",
   "type": "module",
-  "homepage": "https://conjure.terracelab.dev",
+  "homepage": "https://conjure.terracelab.co.kr",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/terracelab/django-conjure.git",

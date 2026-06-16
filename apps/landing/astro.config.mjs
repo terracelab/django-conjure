@@ -4,7 +4,7 @@ import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://conjure.terracelab.dev",
+  site: "https://conjure.terracelab.co.kr",
   integrations: [
     tailwind({
       // We ship our own global stylesheet (src/styles/tokens.css) and base

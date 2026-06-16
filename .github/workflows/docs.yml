@@ -14,7 +14,7 @@
 #   1. Settings → Pages → Build and deployment → Source: "Deploy from a branch",
 #      Branch: `gh-pages` / `/ (root)`. (Pages must be enabled on the gh-pages branch.)
 #   2. The first deploy creates the gh-pages branch automatically; enable Pages after it exists.
-#   3. Map the custom domain docs.conjure.terracelab.dev in Pages settings (optional).
+#   3. Map the custom domain docs.conjure.terracelab.co.kr in Pages settings (optional).
 # ─────────────────────────────────────────────────────────────────────────────────────
 
 name: Docs (dev)

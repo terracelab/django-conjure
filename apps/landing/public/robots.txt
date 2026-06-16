@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://conjure.terracelab.dev/sitemap-index.xml
+Sitemap: https://conjure.terracelab.co.kr/sitemap-index.xml

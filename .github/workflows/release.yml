@@ -94,6 +94,9 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: packages/conjure/dist
+          # Idempotent: skip files already on PyPI so a manual re-dispatch (used to
+          # re-publish versioned docs) doesn't fail on the existing 0.1.0 artifacts.
+          skip-existing: true
           # No `password:` — auth happens via OIDC against the configured trusted publisher.
 
   # ── Step 2b: publish web package to npm with provenance ────────────────────────────

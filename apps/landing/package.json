@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Marketing / brand landing site for Conjure — conjure your Django admin.",
-  "homepage": "https://conjure.terracelab.dev",
+  "homepage": "https://conjure.terracelab.co.kr",
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",

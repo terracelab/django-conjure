@@ -1,7 +1,7 @@
 # Contributing to Conjure
 
 Thanks for helping conjure a better Django admin. Conjure is built by
-[Terrace Lab](https://terracelab.dev) and is MIT-licensed. This guide covers local setup,
+[Terrace Lab](https://terracelab.co.kr) and is MIT-licensed. This guide covers local setup,
 our commit conventions, and how releases work.
 
 > One rule above all: **features ship with docs.** A change to feature code without an
@@ -184,12 +184,12 @@ pages in the same PR.
 ## Code of Conduct
 
 Participation is governed by our [Code of Conduct](./CODE_OF_CONDUCT.md). Report concerns
-to conduct@terracelab.dev.
+to conduct@terracelab.co.kr.
 
 ## Security
 
 Please do **not** open public issues for vulnerabilities. See [SECURITY.md](./SECURITY.md)
-and email security@terracelab.dev.
+and email security@terracelab.co.kr.
 
 ## Questions
 

@@ -4,7 +4,7 @@
 
 **Please do not open a public issue for security problems.**
 
-Report vulnerabilities privately to **security@terracelab.dev**, or via GitHub's
+Report vulnerabilities privately to **security@terracelab.co.kr**, or via GitHub's
 [private vulnerability reporting](https://github.com/terracelab/django-conjure/security/advisories/new).
 
 Include, where possible:
@@ -39,4 +39,4 @@ receive fixes only at maintainers' discretion.
   enforce `is_staff` plus Django model/action permissions **server-side** — frontend visibility
   controls are UX only and never a security boundary.
 - PII-sensitive actions (e.g. exports) must be implemented as server endpoints; see the
-  [actions & permissions](https://docs.conjure.terracelab.dev/actions-permissions/) docs.
+  [actions & permissions](https://docs.conjure.terracelab.co.kr/actions-permissions/) docs.

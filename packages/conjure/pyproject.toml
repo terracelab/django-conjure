@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
-authors = [{ name = "Terrace Lab", email = "hello@terracelab.dev" }]
+authors = [{ name = "Terrace Lab", email = "hello@terracelab.co.kr" }]
 keywords = ["django", "admin", "dashboard", "crud", "rest", "codegen", "introspection"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -45,8 +45,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://conjure.terracelab.dev"
-Documentation = "https://docs.conjure.terracelab.dev"
+Homepage = "https://conjure.terracelab.co.kr"
+Documentation = "https://docs.conjure.terracelab.co.kr"
 Repository = "https://github.com/terracelab/django-conjure"
 Changelog = "https://github.com/terracelab/django-conjure/blob/main/CHANGELOG.md"
 Issues = "https://github.com/terracelab/django-conjure/issues"

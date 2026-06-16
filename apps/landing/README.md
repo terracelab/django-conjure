@@ -7,7 +7,7 @@ Built with [Astro](https://astro.build) — lightweight, static, fast.
 
 This is the top-of-funnel site (hero, value props, install snippet, feature grid,
 comparison table). The product docs live in `apps/docs` (MkDocs) and are served at
-`docs.conjure.terracelab.dev`.
+`docs.conjure.terracelab.co.kr`.
 
 ## Run locally
 
@@ -28,8 +28,8 @@ From the monorepo root you can also use `pnpm landing:dev` / `pnpm landing:build
   **Root Directory** to `apps/landing`, build command `pnpm build`, output directory
   `dist/`. Enable "Include source files outside of the Root Directory" so the pnpm
   workspace resolves.
-- **Domain:** `conjure.terracelab.dev` (landing root). Docs are a separate subdomain
-  (`docs.conjure.terracelab.dev`, served from GitHub Pages).
+- **Domain:** `conjure.terracelab.co.kr` (landing root). Docs are a separate subdomain
+  (`docs.conjure.terracelab.co.kr`, served from GitHub Pages).
 
 ## Brand tokens (shared)
 

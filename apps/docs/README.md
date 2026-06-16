@@ -1,6 +1,6 @@
 # Conjure docs site
 
-The documentation site for [Conjure](https://conjure.terracelab.dev), built with **MkDocs
+The documentation site for [Conjure](https://conjure.terracelab.co.kr), built with **MkDocs
 Material** and versioned with **mike**. It lives in the monorepo so docs ship with the
 release — the parts that describe the code are *generated from* the code.
 

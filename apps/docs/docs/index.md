@@ -122,6 +122,6 @@ already trust.
 
 ---
 
-*Conjure is by [Terrace Lab](https://terracelab.dev). PyPI: `django-conjure` ·
+*Conjure is by [Terrace Lab](https://terracelab.co.kr). PyPI: `django-conjure` ·
 React dashboard: build from the monorepo source (`packages/web`); an npm release is
 planned · MIT licensed.*
