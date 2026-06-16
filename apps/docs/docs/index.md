@@ -115,7 +115,7 @@ already trust.
 
 -   __:material-map: Roadmap__
 
-    Runtime renderer, actions & permissions, the `create-conjure` CLI —
+    Runtime SPA bundling, actions & permissions, and more —
     [see what's coming](roadmap.md).
 
 </div>
@@ -123,5 +123,4 @@ already trust.
 ---
 
 *Conjure is by [Terrace Lab](https://terracelab.co.kr). PyPI: `django-conjure` ·
-React dashboard: build from the monorepo source (`packages/web`); an npm release is
-planned · MIT licensed.*
+React dashboard: scaffold with `npx @terracelab/conjure-web init` · MIT licensed.*

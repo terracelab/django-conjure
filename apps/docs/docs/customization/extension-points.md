@@ -38,7 +38,8 @@ renders it. Without the pair, the field shows as raw text.
 === "Frontend"
 
     ```tsx
-    import { registerFieldRenderer } from "@terracelab/conjure-web";
+    // in your scaffolded dashboard (the code `npx @terracelab/conjure-web init` generated)
+    import { registerFieldRenderer } from "@/lib/field-renderers";
 
     registerFieldRenderer("color", {
       cell: ({ value }) => <span style={{ background: value }} className="swatch" />,

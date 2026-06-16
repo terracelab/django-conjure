@@ -1,5 +1,5 @@
 # Conjure monorepo task runner.
-# Python lives in packages/conjure, JS in packages/web + apps/landing, docs in apps/docs.
+# Python lives in packages/conjure, JS in packages/web/template + apps/landing, docs in apps/docs.
 .DEFAULT_GOAL := help
 .PHONY: help install test lint fmt docs docs-serve web landing clean
 
@@ -34,5 +34,5 @@ landing: ## Build the landing site
 	pnpm landing:build
 
 clean: ## Remove build artifacts
-	rm -rf packages/web/dist apps/landing/dist apps/docs/site
+	rm -rf packages/web/template/dist apps/landing/dist apps/docs/site
 	find . -name '__pycache__' -type d -prune -exec rm -rf {} +

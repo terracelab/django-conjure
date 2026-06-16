@@ -14,8 +14,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "web:build": "pnpm --filter @terracelab/conjure-web build",
-    "web:typecheck": "pnpm --filter @terracelab/conjure-web typecheck",
+    "web:build": "pnpm --filter conjure-admin build",
+    "web:typecheck": "pnpm --filter conjure-admin typecheck",
     "landing:dev": "pnpm --filter conjure-landing dev",
     "landing:build": "pnpm --filter conjure-landing build"
   }

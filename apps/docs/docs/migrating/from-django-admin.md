@@ -40,8 +40,8 @@ URL as an emergency fallback.
 
 !!! note "`conjure.spa_urls` is planned"
     Runtime SPA bundling and the `conjure.spa_urls` mount are on the roadmap, not shipped in
-    0.1.x. For now, build the dashboard from the monorepo source (`packages/web`) and serve it
-    yourself; the mount below shows the intended end state.
+    0.1.x. For now, scaffold the dashboard with `npx @terracelab/conjure-web init`, then build
+    and serve its `dist/` yourself; the mount below shows the intended end state.
 
 ```python title="urls.py"
 urlpatterns = [

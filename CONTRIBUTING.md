@@ -17,7 +17,7 @@ This is a monorepo (`terracelab/django-conjure`):
 | Path | What | Released as |
 |---|---|---|
 | `packages/conjure` | Python package (Django app, import name `conjure`) | PyPI `django-conjure` |
-| `packages/web` | React dashboard + codegen (source) | npm `@terracelab/conjure-web` *(publish on the roadmap)* |
+| `packages/web` | Scaffolder CLI (`bin/`) + the dashboard `template/` it generates | npm `@terracelab/conjure-web` |
 | `apps/docs` | Documentation site (MkDocs Material + `mike`) | GitHub Pages (versioned) |
 | `apps/landing` | Marketing / landing site (Astro) | static host (Vercel) |
 | `examples/` | Demo Django projects *(planned)* | — |
@@ -44,9 +44,9 @@ If you prefer to set up pieces by hand:
 cd packages/conjure
 pip install -e ".[dev]"
 
-# Web package
+# Web package (the dashboard app lives in packages/web/template)
 pnpm install
-pnpm --filter @terracelab/conjure-web build
+pnpm --filter conjure-admin build
 
 # Docs site
 pip install -r apps/docs/requirements.txt
@@ -63,8 +63,8 @@ ruff format .           # format (use --check in CI)
 pytest                  # tests
 
 # Web
-pnpm --filter @terracelab/conjure-web typecheck
-pnpm --filter @terracelab/conjure-web build
+pnpm --filter conjure-admin typecheck
+pnpm --filter conjure-admin build
 
 # Docs (must build cleanly with --strict)
 cd apps/docs && mkdocs build --strict
@@ -147,7 +147,7 @@ merge to main
         └─ merge the Release PR
              ├─ tag vX.Y.Z is created
              ├─ PyPI:  django-conjure published via Trusted Publishing (OIDC, tokenless)
-             ├─ npm:   @terracelab/conjure-web — HELD for the 0.1.x line (set repo var PUBLISH_NPM=true to enable)
+             ├─ npm:   @terracelab/conjure-web (scaffolder CLI) — gated on repo var PUBLISH_NPM=true
              └─ docs:  mike deploy X.Y latest  → versioned docs go live in the same run
 ```
 

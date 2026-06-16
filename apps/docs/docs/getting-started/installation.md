@@ -51,14 +51,19 @@ urlpatterns += [
 
 !!! info "Serving the dashboard"
     `conjure.urls` is the REST API. The React dashboard is served separately:
-    in **codegen mode** <span class="status available">✅</span> you build the
-    `packages/web` React app from the monorepo source and host its `dist/` (your own static
-    hosting, WhiteNoise, or a CDN) pointed at this API. (An npm release of the dashboard as
-    `@terracelab/conjure-web` is planned; for 0.1.x, build it from source.) A bundled
-    zero-build **runtime SPA** mounted at
-    `conjure.spa_urls` is <span class="status planned">📋 planned</span> (see the
-    [roadmap](../roadmap.md)). Either way, the `conjure/` API include above is all the
-    backend needs.
+    in **codegen mode** <span class="status available">✅</span> you scaffold the dashboard
+    into your project, then build it and host its `dist/` (your own static hosting, WhiteNoise,
+    or a CDN) pointed at this API:
+
+    ```bash
+    python manage.py conjure_dump_schema > schema-snapshot.json   # dump your models
+    npx @terracelab/conjure-web init conjure-admin                # scaffold + codegen
+    cd conjure-admin && pnpm install && pnpm build                # → dist/ to host
+    ```
+
+    A bundled zero-build **runtime SPA** mounted at `conjure.spa_urls` is
+    <span class="status planned">📋 planned</span> (see the [roadmap](../roadmap.md)). Either
+    way, the `conjure/` API include above is all the backend needs.
 
 ## 4. Migrate the audit log
 

@@ -7,7 +7,7 @@
 #   2. When that Release PR is merged, release-please tags the release and sets
 #      `releases_created=true`. Only then do the downstream jobs run:
 #        - pypi:         build + publish django-conjure to PyPI via Trusted Publishing (OIDC).
-#        - npm:          build + publish @terracelab/conjure-web with provenance.
+#        - npm:          publish the @terracelab/conjure-web scaffolder CLI with provenance.
 #        - docs-release: `mike deploy X.Y latest` + `mike set-default latest` — the matching
 #                        versioned docs go live in the same run as the package.
 #
@@ -99,14 +99,18 @@ jobs:
           skip-existing: true
           # No `password:` — auth happens via OIDC against the configured trusted publisher.
 
-  # ── Step 2b: publish web package to npm with provenance ────────────────────────────
+  # ── Step 2b: publish the scaffolder CLI to npm with provenance ──────────────────────
   npm:
     name: Publish to npm
     needs: release-please
-    # HELD for the 0.1.0 line: @terracelab/conjure-web is the dashboard's React
-    # source, not yet an importable npm library or a wheel-bundled asset. To enable
-    # npm publishing later, set the repository variable PUBLISH_NPM=true.
-    if: ${{ needs.release-please.outputs.releases_created == 'true' && vars.PUBLISH_NPM == 'true' }}
+    # @terracelab/conjure-web is the scaffolder CLI: `npx @terracelab/conjure-web init`
+    # drops the dashboard template + codegen into the user's project. It is a zero-dependency
+    # Node package (files: bin/ + template/) — nothing to install or build before publish.
+    #
+    # GATED behind the repo variable PUBLISH_NPM=true. Before flipping it ON, complete the
+    # one-time npm setup in this file's header (org, NPM_TOKEN secret, `npm` environment),
+    # or the publish step fails on a missing token.
+    if: ${{ (needs.release-please.outputs.releases_created == 'true' || github.event_name == 'workflow_dispatch') && vars.PUBLISH_NPM == 'true' }}
     runs-on: ubuntu-latest
     environment: npm
     permissions:
@@ -115,30 +119,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # pnpm version comes from the root package.json "packageManager" field —
-      # do NOT also set `version` here or action-setup errors (ERR_PNPM_BAD_PM_VERSION).
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Set up Node 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
           registry-url: "https://registry.npmjs.org"
 
-      - name: Install dependencies
-        run: |
-          if [ -f pnpm-lock.yaml ]; then
-            pnpm install --frozen-lockfile
-          else
-            pnpm install --no-frozen-lockfile
-          fi
+      # Sanity-check the published file set (bin/ + template/) before publishing.
+      - name: Verify package contents
+        working-directory: packages/web
+        run: npm pack --dry-run
 
-      - name: Build web package
-        run: pnpm --filter @terracelab/conjure-web build
-
-      # `npm publish` (not pnpm) is used so --provenance attestation is generated.
+      # `npm publish` generates the --provenance attestation (requires id-token: write).
+      # --provenance also works under workflow_dispatch since this is a public repo.
       - name: Publish @terracelab/conjure-web
         working-directory: packages/web
         run: npm publish --provenance --access public

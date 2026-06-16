@@ -22,7 +22,7 @@ the table exists.
 model to the snapshot file the frontend codegen reads.
 
 ```bash
-python manage.py conjure_dump_schema   # → packages/web/codegen/schema-snapshot.json
+python manage.py conjure_dump_schema > schema-snapshot.json   # feed it to the scaffolder
 ```
 
 Re-run it whenever you add a model or change fields, then regenerate the affected pages.
@@ -40,14 +40,18 @@ See [Actions & permissions](../actions-permissions/index.md).
 
 ## Frontend scaffolder
 
-### `create-conjure`
+### `@terracelab/conjure-web init`
 
-<span class="status setup">🟡</span> Scaffolds the React dashboard (`packages/web`) into
-your project for codegen mode.
+<span class="status available">✅</span> Scaffolds the React dashboard into your project for
+codegen mode, wires in your schema snapshot, and runs codegen. The output is a Vite + React
+app you own.
 
 ```bash
-npx @terracelab/create-conjure
+python manage.py conjure_dump_schema > schema-snapshot.json
+npx @terracelab/conjure-web init conjure-admin    # picks up ./schema-snapshot.json
 ```
+
+Options: `--snapshot <path>`, `--manifest <path>`, `--no-codegen`, `--force`.
 
 ### Codegen assembly
 

@@ -25,10 +25,10 @@ that read the **same** introspection schema, so you can mix them per page.
     schema, then edit them like any other code in your repo.
 
     ```bash
-    # build the dashboard from the monorepo source (packages/web);
-    # an npm release of the scaffolding tooling is planned 🟡
-    # generate pages for a model from its schema, then:
-    npm run build              # tsc strict + vite
+    # scaffold the dashboard into your project, then own + build it:
+    python manage.py conjure_dump_schema > schema-snapshot.json
+    npx @terracelab/conjure-web init conjure-admin
+    cd conjure-admin && pnpm install && pnpm build   # tsc strict + vite
     ```
 
     Each model gets a small page set (`schema`, `columns`, `index`, `form`, `detail`).
