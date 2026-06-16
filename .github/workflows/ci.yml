@@ -3,7 +3,7 @@
 # What it validates:
 #   - python:     Conjure (packages/conjure) across Python 3.10–3.13 × Django 4.2/5.x
 #                 — ruff lint, ruff format check, pytest.
-#   - web:        @terracelab/conjure-web (packages/web) — typecheck + build with pnpm.
+#   - web:        the dashboard app (packages/web/template, pkg `conjure-admin`) — typecheck + build with pnpm.
 #   - docs-build: apps/docs builds with `mkdocs build --strict` (broken links / nav fail the build).
 #
 # Jobs are independent so a failure in one is easy to read. Superseded runs on the same
@@ -101,10 +101,10 @@ jobs:
           fi
 
       - name: Typecheck
-        run: pnpm --filter @terracelab/conjure-web typecheck
+        run: pnpm --filter conjure-admin typecheck
 
       - name: Build
-        run: pnpm --filter @terracelab/conjure-web build
+        run: pnpm --filter conjure-admin build
 
   docs-build:
     name: docs build (--strict)

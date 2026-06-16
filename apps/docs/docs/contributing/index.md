@@ -9,7 +9,7 @@ and an example project all live together so **code and docs ship as one**.
 django-conjure/
 ├── packages/
 │   ├── conjure/      # PyPI: django-conjure  — Django app
-│   └── web/          # React dashboard + codegen (source; npm release planned)
+│   └── web/          # npm: @terracelab/conjure-web — scaffolder CLI (bin/ + template/ dashboard)
 ├── apps/
 │   ├── docs/         # this site (MkDocs Material + mike)
 │   └── landing/      # brand / marketing site (Astro)
@@ -41,7 +41,8 @@ make docs-serve  # live docs at localhost:8000
 === "Frontend"
 
     ```bash
-    cd packages/web
+    # packages/web is the publishable scaffolder CLI; the dashboard app lives in its template/
+    cd packages/web/template
     pnpm install
     pnpm dev                    # Vite dev server, proxies /conjure to localhost:8000
     pnpm typecheck && pnpm build
@@ -81,8 +82,8 @@ issue → branch → code + tests + docs + CHANGELOG entry
 
 - **Conventional Commits.** Release notes and version bumps are derived from them by
   release-please.
-- **One version for both packages.** Once the npm package is published (planned), the Python
-  and npm packages will ship the same `X.Y.Z` (API contract parity).
+- **One version for both packages.** The Python (`django-conjure`) and npm
+  (`@terracelab/conjure-web`) packages ship the same `X.Y.Z` (API contract parity).
 - **Frozen UI kit.** Don't edit `components/ui/`; add variants in `components/composed/` and
   register them on `/style-guide`.
 - **Brand in one place.** Colors come from `brand/tokens.css`; don't hardcode hex in three

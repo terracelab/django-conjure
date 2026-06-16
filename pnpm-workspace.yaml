@@ -1,3 +1,5 @@
 packages:
-  - "packages/web"
+  # packages/web is the publishable scaffolder CLI (zero deps, nothing to install).
+  # The dashboard app lives in its template/ and is the developable workspace member.
+  - "packages/web/template"
   - "apps/landing"

@@ -47,10 +47,10 @@ Export the decorator from `conjure/__init__.py` so it's part of the public API
 
 ## Adding a frontend half
 
-If the extension point is visual, expose a matching frontend registration from
-`@terracelab/conjure-web`:
+If the extension point is visual, expose a matching frontend registration in the scaffolded
+dashboard source (what `npx @terracelab/conjure-web init` generates):
 
-```tsx title="packages/web — frontend registry"
+```tsx title="your scaffolded app — src/lib/field-renderers.ts"
 const fieldRenderers = new Map<string, FieldRenderer>();
 
 export function registerFieldRenderer(type: string, r: FieldRenderer) {

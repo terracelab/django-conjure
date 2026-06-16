@@ -20,7 +20,7 @@ importers:
         specifier: ^3.4.14
         version: 3.4.19(yaml@2.9.0)
 
-  packages/web:
+  packages/web/template:
     dependencies:
       '@hookform/resolvers':
         specifier: ^3.9.1

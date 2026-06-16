@@ -51,11 +51,12 @@ drive a UI. [Read the 5-minute guide →](https://docs.conjure.terracelab.co.kr/
 
 ## The React dashboard (in progress)
 
-The matching dashboard lives in [`packages/web`](./packages/web) (React + Vite). For the
-`0.1.x` line it ships as **source, not a package**: the runtime renderer covers list views
-today, and per-page **codegen** lets you own the output. An install-and-go bundled dashboard
-and a published frontend package are on the [roadmap](https://docs.conjure.terracelab.co.kr/roadmap/).
-Until then, point any client at the REST API + schema.
+The matching dashboard is the [`@terracelab/conjure-web`](./packages/web) scaffolder — run
+`npx @terracelab/conjure-web init` to drop a React + Vite dashboard you **own** into your
+project (it runs codegen against your schema). The runtime renderer covers list views today,
+and per-page **codegen** lets you customize the output. An install-and-go bundled dashboard
+(`conjure.spa_urls`) is on the [roadmap](https://docs.conjure.terracelab.co.kr/roadmap/).
+Or point any client at the REST API + schema.
 
 |  | django-unfold / jazzmin | react-admin / Refine | **Conjure** |
 |---|---|---|---|
@@ -71,7 +72,7 @@ Until then, point any client at the REST API + schema.
 django-conjure/
 ├── packages/
 │   ├── conjure/      # PyPI: django-conjure  — Django app (introspection, CRUD API, auth, audit)
-│   └── web/          # React dashboard + codegen (source; npm publish on the roadmap)
+│   └── web/          # npm: @terracelab/conjure-web — scaffolder CLI (bin/ + template/ dashboard)
 ├── apps/
 │   ├── docs/         # docs site (MkDocs Material + mike, versioned)
 │   └── landing/      # brand / marketing site (Astro)

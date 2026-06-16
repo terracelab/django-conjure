@@ -36,7 +36,7 @@ battle-tested:
 |---|---|---|
 | Runtime `GenericModelPage` (zero-codegen) | <span class="status planned">📋</span> | Register a model → it appears, no build. |
 | Actions & permissions system | <span class="status planned">📋</span> | Design complete — see [the spec](actions-permissions/index.md). |
-| `create-conjure` CLI scaffolder | <span class="status planned">📋</span> | Golden template + rules as an `npx` scaffolder. |
+| `@terracelab/conjure-web init` CLI scaffolder | <span class="status available">✅</span> | Golden template + rules shipped as an `npx` scaffolder. |
 | Real `.xlsx` export, M2M editing, column toggle, virtual scroll | <span class="status planned">📋</span> | UX completeness. |
 | Field plugin SDK, i18n (EN/KO), security defaults | <span class="status planned">📋</span> | Hardening. |
 
@@ -56,7 +56,7 @@ graph LR
 | **P0** | Decouple | Settle project-specific knobs into settings → `conjure` as a standalone app. |
 | **P1** | Backend package | `admin_config.py` auto-discovery, session auth, widget registry, bundled migrations, `pyproject`. |
 | **P2** | Runtime SPA | `GenericModelPage` (schema-driven) + config endpoint (theme/nav) + bundle serving. |
-| **P3** | Codegen CLI | Golden template + rules packaged as the `create-conjure` scaffolder. |
+| **P3** | Codegen CLI | Golden template + rules packaged as the `@terracelab/conjure-web init` scaffolder. |
 | **P4** | Actions & permissions | `actions.py` + `sync_admin_actions` + action endpoint + `ActionBar`. ([spec](actions-permissions/index.md)) |
 | **P5** | Hardening | Field plugin SDK, i18n (EN/KO), secure defaults, docs site, Django-version test matrix. |
 
