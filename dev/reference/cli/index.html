@@ -1234,10 +1234,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#create-conjure" class="md-nav__link">
+  <a href="#terracelabconjure-web-init" class="md-nav__link">
     <span class="md-ellipsis">
       
-        create-conjure
+        @terracelab/conjure-web init
       
     </span>
   </a>
@@ -1787,10 +1787,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#create-conjure" class="md-nav__link">
+  <a href="#terracelabconjure-web-init" class="md-nav__link">
     <span class="md-ellipsis">
       
-        create-conjure
+        @terracelab/conjure-web init
       
     </span>
   </a>
@@ -1868,7 +1868,7 @@ the table exists.</p>
 <h3 id="conjure_dump_schema"><code>conjure_dump_schema</code><a class="headerlink" href="#conjure_dump_schema" title="Permanent link">&para;</a></h3>
 <p><span class="status available">✅</span> Dumps the introspection schema of every registered
 model to the snapshot file the frontend codegen reads.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w">   </span><span class="c1"># → packages/web/codegen/schema-snapshot.json</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w"> </span>&gt;<span class="w"> </span>schema-snapshot.json<span class="w">   </span><span class="c1"># feed it to the scaffolder</span>
 </span></code></pre></div>
 <p>Re-run it whenever you add a model or change fields, then regenerate the affected pages.</p>
 <h3 id="sync_admin_actions"><code>sync_admin_actions</code><a class="headerlink" href="#sync_admin_actions" title="Permanent link">&para;</a></h3>
@@ -1878,11 +1878,14 @@ declared action — <strong>no migration</strong>. Run on deploy and whenever yo
 </span></code></pre></div>
 <p>See <a href="../../actions-permissions/">Actions &amp; permissions</a>.</p>
 <h2 id="frontend-scaffolder">Frontend scaffolder<a class="headerlink" href="#frontend-scaffolder" title="Permanent link">&para;</a></h2>
-<h3 id="create-conjure"><code>create-conjure</code><a class="headerlink" href="#create-conjure" title="Permanent link">&para;</a></h3>
-<p><span class="status setup">🟡</span> Scaffolds the React dashboard (<code>packages/web</code>) into
-your project for codegen mode.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>npx<span class="w"> </span>@terracelab/create-conjure
+<h3 id="terracelabconjure-web-init"><code>@terracelab/conjure-web init</code><a class="headerlink" href="#terracelabconjure-web-init" title="Permanent link">&para;</a></h3>
+<p><span class="status available">✅</span> Scaffolds the React dashboard into your project for
+codegen mode, wires in your schema snapshot, and runs codegen. The output is a Vite + React
+app you own.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w"> </span>&gt;<span class="w"> </span>schema-snapshot.json
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>npx<span class="w"> </span>@terracelab/conjure-web<span class="w"> </span>init<span class="w"> </span>conjure-admin<span class="w">    </span><span class="c1"># picks up ./schema-snapshot.json</span>
 </span></code></pre></div>
+<p>Options: <code>--snapshot &lt;path&gt;</code>, <code>--manifest &lt;path&gt;</code>, <code>--no-codegen</code>, <code>--force</code>.</p>
 <h3 id="codegen-assembly">Codegen assembly<a class="headerlink" href="#codegen-assembly" title="Permanent link">&para;</a></h3>
 <p><span class="status available">✅</span> Rebuilds the router and sidebar from the page
 manifest after you add or move pages.</p>

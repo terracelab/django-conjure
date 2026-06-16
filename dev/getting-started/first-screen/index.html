@@ -1718,10 +1718,10 @@ bespoke UI.</p>
 <div class="tabbed-block">
 <p><span class="status available">✅ available</span> Scaffold plain React pages from the
 schema, then edit them like any other code in your repo.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># build the dashboard from the monorepo source (packages/web);</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># an npm release of the scaffolding tooling is planned 🟡</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># generate pages for a model from its schema, then:</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>npm<span class="w"> </span>run<span class="w"> </span>build<span class="w">              </span><span class="c1"># tsc strict + vite</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># scaffold the dashboard into your project, then own + build it:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w"> </span>&gt;<span class="w"> </span>schema-snapshot.json
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>npx<span class="w"> </span>@terracelab/conjure-web<span class="w"> </span>init<span class="w"> </span>conjure-admin
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nb">cd</span><span class="w"> </span>conjure-admin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>build<span class="w">   </span><span class="c1"># tsc strict + vite</span>
 </span></code></pre></div>
 <p>Each model gets a small page set (<code>schema</code>, <code>columns</code>, <code>index</code>, <code>form</code>, <code>detail</code>).
 They're ordinary <code>.tsx</code> files — change a cell, add a button, restyle a form.</p>

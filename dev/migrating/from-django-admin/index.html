@@ -1821,8 +1821,8 @@ URL as an emergency fallback.</p>
 <div class="admonition note">
 <p class="admonition-title"><code>conjure.spa_urls</code> is planned</p>
 <p>Runtime SPA bundling and the <code>conjure.spa_urls</code> mount are on the roadmap, not shipped in
-0.1.x. For now, build the dashboard from the monorepo source (<code>packages/web</code>) and serve it
-yourself; the mount below shows the intended end state.</p>
+0.1.x. For now, scaffold the dashboard with <code>npx @terracelab/conjure-web init</code>, then build
+and serve its <code>dist/</code> yourself; the mount below shows the intended end state.</p>
 </div>
 <div class="language-python highlight"><span class="filename">urls.py</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;django-admin/&quot;</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>                  <span class="c1"># fallback</span>

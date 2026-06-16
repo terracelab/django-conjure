@@ -1794,7 +1794,7 @@ and an example project all live together so <strong>code and docs ship as one</s
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>django-conjure/
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── packages/
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── conjure/      # PyPI: django-conjure  — Django app
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   └── web/          # React dashboard + codegen (source; npm release planned)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   └── web/          # npm: @terracelab/conjure-web — scaffolder CLI (bin/ + template/ dashboard)
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── apps/
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   ├── docs/         # this site (MkDocs Material + mike)
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   └── landing/      # brand / marketing site (Astro)
@@ -1818,10 +1818,11 @@ and an example project all live together so <strong>code and docs ship as one</s
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">cd</span><span class="w"> </span>packages/web
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>pnpm<span class="w"> </span>install
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>pnpm<span class="w"> </span>dev<span class="w">                    </span><span class="c1"># Vite dev server, proxies /conjure to localhost:8000</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>pnpm<span class="w"> </span>typecheck<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>build
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># packages/web is the publishable scaffolder CLI; the dashboard app lives in its template/</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">cd</span><span class="w"> </span>packages/web/template
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>pnpm<span class="w"> </span>install
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>pnpm<span class="w"> </span>dev<span class="w">                    </span><span class="c1"># Vite dev server, proxies /conjure to localhost:8000</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>pnpm<span class="w"> </span>typecheck<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>build
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1872,8 +1873,8 @@ in CI (a <code>pr-docs-gate</code> warns when a feature PR changes no docs/CHANG
 <ul>
 <li><strong>Conventional Commits.</strong> Release notes and version bumps are derived from them by
   release-please.</li>
-<li><strong>One version for both packages.</strong> Once the npm package is published (planned), the Python
-  and npm packages will ship the same <code>X.Y.Z</code> (API contract parity).</li>
+<li><strong>One version for both packages.</strong> The Python (<code>django-conjure</code>) and npm
+  (<code>@terracelab/conjure-web</code>) packages ship the same <code>X.Y.Z</code> (API contract parity).</li>
 <li><strong>Frozen UI kit.</strong> Don't edit <code>components/ui/</code>; add variants in <code>components/composed/</code> and
   register them on <code>/style-guide</code>.</li>
 <li><strong>Brand in one place.</strong> Colors come from <code>brand/tokens.css</code>; don't hardcode hex in three
