@@ -1,103 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/roadmap/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/roadmap/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/actions-permissions/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/actions-permissions/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/actions-permissions/scenarios/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/actions-permissions/scenarios/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/contributing/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/contributing/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/contributing/extension-development/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/contributing/extension-development/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/contributing/releasing/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/contributing/releasing/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/customization/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/customization/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/customization/extension-points/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/customization/extension-points/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/getting-started/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/getting-started/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/getting-started/first-model/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/getting-started/first-model/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/getting-started/first-screen/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/getting-started/first-screen/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/getting-started/installation/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/getting-started/installation/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/guides/custom-pages/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/guides/custom-pages/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/guides/exporting/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/guides/exporting/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/guides/managing-and-updating/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/guides/managing-and-updating/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/guides/registering-models/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/guides/registering-models/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/guides/sections-and-tabs/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/guides/sections-and-tabs/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/guides/theming/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/guides/theming/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/migrating/from-django-admin/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/migrating/from-django-admin/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/reference/_generated_config/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/reference/_generated_config/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/reference/cli/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/reference/cli/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/reference/configuration/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/reference/configuration/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/reference/field-support/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/reference/field-support/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
     <url>
-         <loc>https://docs.conjure.terracelab.dev/dev/reference/rest-api/</loc>
+         <loc>https://docs.conjure.terracelab.co.kr/dev/reference/rest-api/</loc>
          <lastmod>2026-06-16</lastmod>
     </url>
 </urlset>
