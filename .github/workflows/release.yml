@@ -32,6 +32,10 @@ name: Release
 on:
   push:
     branches: [main]
+  # Manual escape hatch: publish the current pyproject/manifest version on demand.
+  # Used when release-please cannot auto-tag a merged Release PR (e.g. a Release PR
+  # that was merged with a merge commit instead of a squash).
+  workflow_dispatch:
 
 # Default token perms; individual jobs widen as needed.
 permissions:
@@ -67,7 +71,7 @@ jobs:
   pypi:
     name: Publish to PyPI
     needs: release-please
-    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    if: ${{ needs.release-please.outputs.releases_created == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
@@ -142,7 +146,7 @@ jobs:
   docs-release:
     name: Publish versioned docs
     needs: release-please
-    if: ${{ needs.release-please.outputs.releases_created == 'true' }}
+    if: ${{ needs.release-please.outputs.releases_created == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write # mike pushes the built site to gh-pages
