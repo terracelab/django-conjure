@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.2.2](https://github.com/terracelab/django-conjure/compare/v0.2.1...v0.2.2) (2026-06-16)
+
+
+### Features
+
+* **conjure:** opt-in AUTO_REGISTER for install-and-go model registration ([#9](https://github.com/terracelab/django-conjure/issues/9)) ([7956189](https://github.com/terracelab/django-conjure/commit/7956189456d6b88b0594068240907489d73350c5))
+
 ## [0.2.1](https://github.com/terracelab/django-conjure/compare/v0.2.0...v0.2.1) (2026-06-16)
 
 
