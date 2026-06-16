@@ -1,4 +1,4 @@
 {
-  "packages/conjure": "0.0.0",
-  "packages/web": "0.0.0"
+  "packages/conjure": "0.1.0",
+  "packages/web": "0.1.0"
 }
