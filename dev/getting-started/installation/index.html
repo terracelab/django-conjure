@@ -1798,12 +1798,23 @@ default, or JWT (<code>pip install "django-conjure[jwt]"</code>). You <strong>do
 global <code>DEFAULT_AUTHENTICATION_CLASSES</code>, so enabling JWT for the admin won't affect your
 project's other APIs.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Session mode + a separately-served dev SPA</p>
+<p>Session writes are CSRF-protected. Conjure issues the <code>csrftoken</code> cookie on login/<code>auth/me</code>
+and the SPA sends it back as <code>X-CSRFToken</code> automatically. When the dashboard runs on a
+different origin than Django (e.g. the Vite dev server on <code>:5173</code> proxying to <code>:8000</code>), add
+that origin to Django's <code>CSRF_TRUSTED_ORIGINS</code>:</p>
+<div class="language-python highlight"><span class="filename">settings.py</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">CSRF_TRUSTED_ORIGINS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;http://localhost:5173&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Same-origin deploys (dist served by Django/your proxy) need nothing. Or use <code>"jwt"</code> mode,
+which carries a bearer token and skips CSRF entirely.</p>
+</div>
 <h2 id="3-wire-up-the-urls">3. Wire up the URLs<a class="headerlink" href="#3-wire-up-the-urls" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><span class="filename">urls.py</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">path</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">urlpatterns</span> <span class="o">+=</span> <span class="p">[</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;conjure/&quot;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s2">&quot;conjure.urls&quot;</span><span class="p">)),</span>          <span class="c1"># REST API (schema + CRUD)</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">]</span>
+<div class="language-python highlight"><span class="filename">urls.py</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">include</span><span class="p">,</span> <span class="n">path</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">urlpatterns</span> <span class="o">+=</span> <span class="p">[</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">path</span><span class="p">(</span><span class="s2">&quot;conjure/&quot;</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s2">&quot;conjure.urls&quot;</span><span class="p">)),</span>          <span class="c1"># REST API (schema + CRUD)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">]</span>
 </span></code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Serving the dashboard</p>
@@ -1811,16 +1822,16 @@ project's other APIs.</p>
 in <strong>codegen mode</strong> <span class="status available">✅</span> you scaffold the dashboard
 into your project, then build it and host its <code>dist/</code> (your own static hosting, WhiteNoise,
 or a CDN) pointed at this API:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w"> </span>&gt;<span class="w"> </span>schema-snapshot.json<span class="w">   </span><span class="c1"># dump your models</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>npx<span class="w"> </span>@terracelab/conjure-web<span class="w"> </span>init<span class="w"> </span>conjure-admin<span class="w">                </span><span class="c1"># scaffold + codegen</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">cd</span><span class="w"> </span>conjure-admin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>build<span class="w">                </span><span class="c1"># → dist/ to host</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>conjure_dump_schema<span class="w"> </span>&gt;<span class="w"> </span>schema-snapshot.json<span class="w">   </span><span class="c1"># dump your models</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>npx<span class="w"> </span>@terracelab/conjure-web<span class="w"> </span>init<span class="w"> </span>conjure-admin<span class="w">                </span><span class="c1"># scaffold + codegen</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">cd</span><span class="w"> </span>conjure-admin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>build<span class="w">                </span><span class="c1"># → dist/ to host</span>
 </span></code></pre></div>
 <p>A bundled zero-build <strong>runtime SPA</strong> mounted at <code>conjure.spa_urls</code> is
 <span class="status planned">📋 planned</span> (see the <a href="../../roadmap/">roadmap</a>). Either
 way, the <code>conjure/</code> API include above is all the backend needs.</p>
 </div>
 <h2 id="4-migrate-the-audit-log">4. Migrate the audit log<a class="headerlink" href="#4-migrate-the-audit-log" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span>conjure
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span>conjure
 </span></code></pre></div>
 <p>This creates a single table, <code>AdminAuditLog</code>, used to record a diff of every write.</p>
 <div class="admonition tip">
@@ -1831,7 +1842,7 @@ want the "recent activity" widget and the audit log page to fill in.</p>
 </div>
 <h2 id="5-verify">5. Verify<a class="headerlink" href="#5-verify" title="Permanent link">&para;</a></h2>
 <p>Start your server and hit the schema endpoint with a staff session or token:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8000/conjure/schema/<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8000/conjure/schema/<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
 </span></code></pre></div>
 <p>A JSON object keyed by <code>app.Model</code> confirms the install. You haven't registered anything
 yet, so it may be empty — that's expected. Next:
