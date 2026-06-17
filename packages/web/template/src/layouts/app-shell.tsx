@@ -1,7 +1,7 @@
 /** App shell — dark sidebar (collapsible groups) + header + content area (high-density ERP feel). */
 
 import { ChevronDown, LogOut } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { adminApi, queryKeys } from "@/lib/api";
 import { isLoggedIn, logout, tokenStore } from "@/lib/auth";
+import { applyAccent } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 import { type NavGroup, type NavItem, sidebarNav } from "./sidebar-nav";
@@ -30,6 +31,13 @@ function loadCollapsed(): Set<string> {
 export function AppShell() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState<Set<string>>(loadCollapsed);
+
+  // Header title + accent come from the backend brand (CONJURE["BRAND"]) via GET /config/.
+  const { data: config } = useQuery({ queryKey: queryKeys.config(), queryFn: adminApi.config });
+  const appTitle = config?.brand?.name ?? APP_TITLE;
+  useEffect(() => {
+    applyAccent(config?.brand?.accent);
+  }, [config]);
 
   // Schema-driven sidebar: every registered model becomes a nav item linking to the runtime
   // page (/g/{model}). Models that already have a hand-built codegen page (/m/{model}) keep it.
@@ -99,9 +107,9 @@ export function AppShell() {
       {/* Sidebar */}
       <aside className="fixed inset-y-0 left-0 z-40 flex w-52 flex-col bg-sidebar">
         <div className="flex h-12 items-center border-b border-white/10 px-4">
-          <span className="text-emphasis font-bold text-white">{APP_TITLE}</span>
+          <span className="text-emphasis font-bold text-white">{appTitle}</span>
         </div>
-        <nav className="scrollbar-thin flex-1 overflow-y-auto px-2 py-3">
+        <nav className="scrollbar-none flex-1 overflow-y-auto px-2 py-3">
           {navGroups.map((group) => {
             const isCollapsed = collapsed.has(group.label);
             const hasActive = group.items.some(isItemActive);

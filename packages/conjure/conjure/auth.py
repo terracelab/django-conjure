@@ -128,3 +128,18 @@ class MeView(ConjureAuthMixin, APIView):
     @method_decorator(ensure_csrf_cookie)
     def get(self, request):
         return Response(user_payload(request.user))
+
+
+class ConfigView(APIView):
+    """GET /config/ — public dashboard bootstrap config (brand, auth mode) for the SPA.
+
+    Public (AllowAny) so the login screen can brand itself before authentication.
+    Brand name/accent and the auth mode are not sensitive.
+    """
+
+    permission_classes = [AllowAny]
+    authentication_classes = []
+    swagger_schema = None
+
+    def get(self, request):
+        return Response({"brand": conjure_settings.BRAND, "auth": conjure_settings.AUTH})

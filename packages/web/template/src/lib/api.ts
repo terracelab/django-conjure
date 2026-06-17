@@ -11,6 +11,7 @@ import type {
   BaseRecord,
   BulkActionBody,
   BulkOperationsBody,
+  ConjureConfig,
   ListParams,
   ModelSchema,
   ModelSummary,
@@ -193,6 +194,9 @@ export const adminApi = {
 
   // ── Widgets ──
   widget: <T = Record<string, unknown>>(name: string) => request<T>("GET", `${API_BASE}/widgets/${name}/`),
+
+  // ── Config (public: brand + auth mode) ──
+  config: () => request<ConjureConfig>("GET", `${API_BASE}/config/`),
 };
 
 /** Query-key contract — [model, "list", params] / [model, "detail", pk] (do not change). */
@@ -201,5 +205,6 @@ export const queryKeys = {
   detail: (model: string, pk: number | string) => [model, "detail", pk] as const,
   schema: (model: string) => ["schema", model] as const,
   schemaList: () => ["schema", "_list"] as const,
+  config: () => ["config"] as const,
   widget: (name: string) => ["widget", name] as const,
 };
