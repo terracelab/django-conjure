@@ -13,6 +13,7 @@ from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from conjure.conf import conjure_settings
 from conjure.mixins import ConjureAuthMixin
 from conjure.permissions import IsStaffUser, get_model_permissions
 from conjure.registry import registry
@@ -108,9 +109,20 @@ class SchemaListView(ConjureAuthMixin, APIView):
     swagger_schema = None
 
     def get(self, request):
+        app_groups = conjure_settings.APP_GROUPS
+        order_index = {app: i for i, app in enumerate(app_groups)}
+        # Section map: lowercased model key -> (main key, index within section). First member = main.
+        section_of = {}
+        for members in conjure_settings.SECTIONS:
+            if not members:
+                continue
+            main = members[0]
+            for idx, member in enumerate(members):
+                section_of[member.lower()] = (main, idx)
         results = []
         for key, config in registry.items():
             opts = config.model._meta
+            section, section_order = section_of.get(key.lower(), (key, 0))
             results.append(
                 {
                     "model": key,
@@ -119,6 +131,13 @@ class SchemaListView(ConjureAuthMixin, APIView):
                     "verbose_name_plural": str(opts.verbose_name_plural),
                     "is_readonly": config.is_readonly,
                     "permissions": get_model_permissions(request.user, config.model),
+                    # Sidebar group (CONJURE["APP_GROUPS"]); defaults to app_label. order = dict position.
+                    "group": app_groups.get(opts.app_label, opts.app_label),
+                    "group_order": order_index.get(opts.app_label, 999),
+                    # Section (CONJURE["SECTIONS"]): main key shown in sidebar, members are tabs.
+                    # Standalone models are their own section. section_order = tab order (main = 0).
+                    "section": section,
+                    "section_order": section_order,
                 }
             )
         return Response({"models": results})

@@ -39,6 +39,19 @@ same way Django finds `admin.py`. There is no central registry file to maintain.
     global `DEFAULT_AUTHENTICATION_CLASSES`, so enabling JWT for the admin won't affect your
     project's other APIs.
 
+!!! note "Session mode + a separately-served dev SPA"
+    Session writes are CSRF-protected. Conjure issues the `csrftoken` cookie on login/`auth/me`
+    and the SPA sends it back as `X-CSRFToken` automatically. When the dashboard runs on a
+    different origin than Django (e.g. the Vite dev server on `:5173` proxying to `:8000`), add
+    that origin to Django's `CSRF_TRUSTED_ORIGINS`:
+
+    ```python title="settings.py"
+    CSRF_TRUSTED_ORIGINS = ["http://localhost:5173"]
+    ```
+
+    Same-origin deploys (dist served by Django/your proxy) need nothing. Or use `"jwt"` mode,
+    which carries a bearer token and skips CSRF entirely.
+
 ## 3. Wire up the URLs
 
 ```python title="urls.py"

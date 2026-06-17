@@ -31,7 +31,35 @@ it (a post's images, comments, reports). Putting those on tabs keeps the sidebar
 The tab bar is injected automatically by a `SectionTabs` wrapper around the list route —
 your 75 generated pages are **not modified** to gain tabs.
 
-## Configuring it
+## Runtime mode — configure from the backend
+
+In runtime mode you don't ship a manifest. The same **Group → Section → Tabs** structure is
+declared in your Django settings and delivered over the schema API, so the dashboard builds the
+sidebar live — set the config, refresh, done.
+
+```python title="settings.py"
+CONJURE = {
+    # Sidebar groups: app_label → group label. Apps sharing a label merge into one group;
+    # order follows this dict's insertion order; unlisted apps group by app_label (last).
+    "APP_GROUPS": {
+        "user": "Members", "device": "Members",
+        "subscription": "Billing", "order": "Billing",
+    },
+    # Sections: first model = main (the only sidebar row); the rest become its page tabs.
+    "SECTIONS": [
+        ["user.User", "user.SocialAccount", "user.UserConsent"],
+        ["subscription.Subscription", "subscription.Product"],
+    ],
+}
+```
+
+- A model in no `SECTIONS` list is its own sidebar row (standalone).
+- A model in no `APP_GROUPS` entry falls back to a group named after its `app_label`.
+- Because this lives in `settings.py`, it **survives re-init** — re-scaffolding the frontend never
+  wipes your navigation. Pairs with [`AUTO_REGISTER`](../reference/configuration.md) for true
+  install-and-go: register every model, then shape the nav from config alone.
+
+## Codegen mode — the manifest
 
 Navigation is declared in the codegen **manifest**, then assembled deterministically:
 
@@ -80,5 +108,6 @@ infers that from the model's kebab name and which files exist.
 - A section shows as **active** when you're on *any* of its models — including a satellite
   model's detail page reached through a tab.
 
-For runtime mode <span class="status planned">📋</span>, the same grouping is delivered by
-a config endpoint so the bundled SPA builds the identical sidebar without a manifest file.
+In **runtime mode** the same grouping comes from `CONJURE["APP_GROUPS"]` / `CONJURE["SECTIONS"]`
+(see above) — the SPA reads it from the schema API and builds the identical sidebar with no
+manifest file.

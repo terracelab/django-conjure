@@ -17,7 +17,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { BoolCell, DateCell, EntityLink, NumberCell, StatusBadge, ThumbCell } from "@/components/composed/cells";
@@ -26,6 +26,7 @@ import { EmptyState } from "@/components/composed/empty-state";
 import { ExportButton } from "@/components/composed/export-button";
 import { FilterBar } from "@/components/composed/filter-bar";
 import { PageHeader } from "@/components/composed/page-header";
+import { SectionTabs } from "@/components/composed/section-tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { adminApi, queryKeys } from "@/lib/api";
 import type { BaseRecord, FieldSchema, ListParams, ModelSchema } from "@/lib/types";
@@ -104,6 +105,18 @@ export default function GenericModelPage() {
     enabled: Boolean(model) && schemaQuery.isSuccess && pk === undefined,
   });
 
+  // Section tabs (CONJURE["SECTIONS"]): sibling models sharing this model's section, in tab order.
+  const schemaListQuery = useQuery({ queryKey: queryKeys.schemaList(), queryFn: adminApi.schemaList });
+  const sectionTabs = useMemo(() => {
+    const all = schemaListQuery.data?.models ?? [];
+    const current = all.find((m) => m.model === model);
+    if (!current) return undefined;
+    return all
+      .filter((m) => m.section === current.section)
+      .sort((a, b) => a.section_order - b.section_order)
+      .map((m) => ({ model: m.model, label: m.verbose_name, to: `/g/${m.model}` }));
+  }, [schemaListQuery.data, model]);
+
   if (!model) return <p className="py-20 text-center text-fg-muted">No model specified.</p>;
 
   // Detail / create / edit / delete — schema-driven runtime form (no per-model code).
@@ -116,7 +129,7 @@ export default function GenericModelPage() {
   const columns = buildColumns(schema);
 
   return (
-    <div>
+    <SectionTabs model={model} tabs={sectionTabs}>
       <PageHeader
         title={schema.verbose_name_plural || schema.verbose_name}
         description={`Runtime view — ${model}`}
@@ -146,6 +159,6 @@ export default function GenericModelPage() {
         loading={listQuery.isLoading}
         emptyState={<EmptyState message={`No ${schema.verbose_name_plural || schema.verbose_name} found.`} />}
       />
-    </div>
+    </SectionTabs>
   );
 }

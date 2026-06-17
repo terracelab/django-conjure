@@ -75,6 +75,12 @@ DESCRIPTIONS.update({
                      "skipped and secret-looking fields (password/token/secret/…) are redacted.",
     "AUTO_REGISTER_EXCLUDE": "When `AUTO_REGISTER` is on, app labels (`\"myapp\"`) or model keys "
                              "(`\"myapp.Model\"`) to skip.",
+    "APP_GROUPS": "Sidebar grouping: `app_label` → group label. Apps sharing a label merge into "
+                  "one group; group order follows the dict's insertion order; unlisted apps group "
+                  "by `app_label`, last. Drives the runtime sidebar — no codegen manifest needed.",
+    "SECTIONS": "Section tabs: a list of model-key lists. The first model is the section *main* "
+                "(the only one shown in the sidebar); the rest become tabs on the main's page. "
+                "Models in no section stand alone.",
     "LOGGER_NAME": "Name of the `logging` logger used for non-fatal internal errors "
                    "(e.g. audit write failures).",
 })

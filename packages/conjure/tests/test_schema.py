@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from rest_framework.test import APIClient
 
 
@@ -40,3 +40,41 @@ class SchemaTests(TestCase):
         client.force_authenticate(user=normal)
         response = client.get("/conjure/schema/")
         self.assertEqual(response.status_code, 403)
+
+
+class SchemaGroupingTests(TestCase):
+    """Sidebar grouping (APP_GROUPS) and section tabs (SECTIONS) surfaced on the schema list."""
+
+    def setUp(self):
+        self.admin = User.objects.create(username="admin", is_staff=True, is_superuser=True)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.admin)
+
+    def _models(self):
+        response = self.client.get("/conjure/schema/")
+        self.assertEqual(response.status_code, 200)
+        return {m["model"]: m for m in response.data["models"]}
+
+    def test_defaults_group_by_app_label_standalone_sections(self):
+        prod = self._models()["testapp.Product"]
+        self.assertEqual(prod["group"], "testapp")  # defaults to app_label
+        self.assertEqual(prod["section"], "testapp.Product")  # standalone = its own section
+        self.assertEqual(prod["section_order"], 0)
+
+    @override_settings(CONJURE={"APP_GROUPS": {"testapp": "Catalog"}})
+    def test_app_groups_label_and_order(self):
+        models = self._models()
+        self.assertEqual(models["testapp.Product"]["group"], "Catalog")
+        self.assertEqual(models["testapp.Product"]["group_order"], 0)
+        # an unlisted app keeps its label and sorts last
+        self.assertEqual(models["conjure.AdminAuditLog"]["group"], "conjure")
+        self.assertEqual(models["conjure.AdminAuditLog"]["group_order"], 999)
+
+    @override_settings(CONJURE={"SECTIONS": [["testapp.Product", "testapp.Category"]]})
+    def test_sections_main_and_tab_order(self):
+        models = self._models()
+        self.assertEqual(models["testapp.Product"]["section"], "testapp.Product")
+        self.assertEqual(models["testapp.Product"]["section_order"], 0)
+        # a member points at the section main and gets a later tab order
+        self.assertEqual(models["testapp.Category"]["section"], "testapp.Product")
+        self.assertEqual(models["testapp.Category"]["section_order"], 1)
