@@ -1804,6 +1804,16 @@ by hand — edit the source and re-run the generator.</strong></p>
 <td>When <code>AUTO_REGISTER</code> is on, app labels (<code>"myapp"</code>) or model keys (<code>"myapp.Model"</code>) to skip.</td>
 </tr>
 <tr>
+<td><code>APP_GROUPS</code></td>
+<td><code>{}</code></td>
+<td>Sidebar grouping: <code>app_label</code> → group label. Apps sharing a label merge into one group; group order follows the dict's insertion order; unlisted apps group by <code>app_label</code>, last. Drives the runtime sidebar — no codegen manifest needed.</td>
+</tr>
+<tr>
+<td><code>SECTIONS</code></td>
+<td><code>[]</code></td>
+<td>Section tabs: a list of model-key lists. The first model is the section <em>main</em> (the only one shown in the sidebar); the rest become tabs on the main's page. Models in no section stand alone.</td>
+</tr>
+<tr>
 <td><code>LOGGER_NAME</code></td>
 <td><code>"conjure"</code></td>
 <td>Name of the <code>logging</code> logger used for non-fatal internal errors (e.g. audit write failures).</td>
