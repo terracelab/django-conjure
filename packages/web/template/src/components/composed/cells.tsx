@@ -6,6 +6,7 @@
 import { Link } from "react-router-dom";
 
 import { Badge } from "@/components/ui/badge";
+import { sectionForModel } from "@/layouts/sections";
 import { formatCurrency, formatDateTime, formatNumber, formatPercent } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
@@ -53,8 +54,11 @@ export function DeltaCell({ value, percent = false }: { value: number | null | u
 /** FK display — links to the related detail page. Label comes from the backend {fk}_label. */
 export function EntityLink({ model, pk, label }: { model: string; pk: number | string | null | undefined; label?: string | null }) {
   if (pk === null || pk === undefined) return <span className="text-fg-muted">-</span>;
+  // Route to the codegen page (/m/) only when one exists for this model; otherwise the runtime
+  // page (/g/), which renders any registered model. Avoids dead /m/ links to runtime-only models.
+  const base = model in sectionForModel ? "m" : "g";
   return (
-    <Link to={`/m/${model}/${pk}`} className="text-accent hover:underline" onClick={(e) => e.stopPropagation()}>
+    <Link to={`/${base}/${model}/${pk}`} className="text-accent hover:underline" onClick={(e) => e.stopPropagation()}>
       {label ?? `#${pk}`}
     </Link>
   );
