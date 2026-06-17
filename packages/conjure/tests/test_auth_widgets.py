@@ -45,6 +45,35 @@ class SessionAuthTests(TestCase):
         self.assertEqual(response.status_code, 204)
 
 
+@override_settings(
+    MIDDLEWARE=[
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.middleware.csrf.CsrfViewMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+    ]
+)
+class CsrfCookieTests(TestCase):
+    """Session-auth SPAs need Django's csrftoken cookie to send X-CSRFToken on writes.
+    LoginView and MeView use @ensure_csrf_cookie so the SPA always has a usable token."""
+
+    def setUp(self):
+        self.client = APIClient()
+        self.staff = User.objects.create(username="staff", is_staff=True)
+        self.staff.set_password("pw-1!")
+        self.staff.save()
+
+    def test_login_sets_csrf_cookie(self):
+        response = self.client.post("/conjure/auth/login/", {"username": "staff", "password": "pw-1!"})
+        self.assertEqual(response.status_code, 200, response.data)
+        self.assertIn("csrftoken", response.cookies)
+
+    def test_me_refreshes_csrf_cookie(self):
+        self.client.force_authenticate(user=self.staff)
+        response = self.client.get("/conjure/auth/me/")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("csrftoken", response.cookies)
+
+
 @skipUnless(HAS_JWT, "djangorestframework-simplejwt not installed")
 @override_settings(CONJURE={"AUTH": "jwt"})
 class JwtAuthTests(TestCase):
