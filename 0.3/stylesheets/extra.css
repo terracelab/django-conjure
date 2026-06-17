@@ -1,0 +1,129 @@
+/*
+ * Conjure docs theme — maps the brand tokens (brand/tokens.css) onto
+ * MkDocs Material's CSS variables. The accent is #4f46e5 (--brand-500),
+ * the dark surfaces use #0b0b0f (--sidebar). Keep this in sync with
+ * brand/tokens.css — that file is the single source of truth.
+ *
+ * Brand tokens are stored as "R G B" channels so opacity modifiers work;
+ * Material wants hex, so we expose both: channel tokens for our own rules,
+ * hex for Material's --md-* variables.
+ */
+
+:root {
+  /* ── Conjure brand tokens (channels: "R G B") ───────────────────── */
+  --brand-400: 129 140 248; /* accent on dark  #818cf8 */
+  --brand-500: 79 70 229; /* accent          #4f46e5 */
+  --brand-600: 67 56 202; /* accent hover    #4338ca */
+  --sidebar: 11 11 15; /* dark sidebar / hero  #0b0b0f */
+  --success: 22 163 74; /* #16a34a */
+  --warning: 217 119 6; /* #d97706 */
+  --danger: 220 38 38; /* #dc2626 */
+  --info: 37 99 235; /* #2563eb */
+
+  /* density (ERP feel — radius <= 6px) */
+  --radius: 4px;
+
+  /* ── Map onto Material (palette: primary custom / accent custom) ── */
+  --md-primary-fg-color: #4f46e5;
+  --md-primary-fg-color--light: #818cf8;
+  --md-primary-fg-color--dark: #4338ca;
+  --md-accent-fg-color: #4338ca;
+  --md-accent-fg-color--transparent: rgb(var(--brand-500) / 0.1);
+
+  /* keep the header readable on the accent */
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: rgb(255 255 255 / 0.7);
+
+  /* code + admonition link tint */
+  --md-typeset-a-color: #4f46e5;
+}
+
+/* Dark scheme (Material's "slate"): lift the accent, darken surfaces to brand sidebar. */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #818cf8; /* --brand-400, lifted for contrast */
+  --md-primary-fg-color--light: #a5b4fc;
+  --md-primary-fg-color--dark: #4f46e5;
+  --md-accent-fg-color: #818cf8;
+  --md-typeset-a-color: #a5b4fc;
+
+  /* brand sidebar (#0b0b0f) for the deepest surfaces */
+  --md-default-bg-color: rgb(var(--sidebar)); /* 11 11 15 */
+  --md-footer-bg-color: rgb(var(--sidebar));
+}
+
+/* ── A light magic touch ───────────────────────────────────────────
+ * Hero gradient on the home title, subtle accent rings on code copy. */
+
+.md-typeset h1 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* The home page hero — a soft conjuring glow behind the lead. */
+.conjure-hero {
+  margin: 1.2rem 0 2rem;
+  padding: 2rem 1.6rem;
+  border-radius: calc(var(--radius) * 2);
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgb(var(--brand-500) / 0.14), transparent 55%),
+    radial-gradient(120% 140% at 100% 0%, rgb(var(--brand-400) / 0.12), transparent 55%),
+    rgb(var(--sidebar));
+  color: #f4f4f5;
+  border: 1px solid rgb(var(--brand-500) / 0.3);
+}
+.conjure-hero h1,
+.conjure-hero h2,
+.conjure-hero p {
+  color: #f4f4f5;
+}
+.conjure-hero .conjure-tagline {
+  font-size: 1.35rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #818cf8, #c7d2fe);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.conjure-hero code {
+  background: rgb(255 255 255 / 0.08);
+  color: #e0e7ff;
+}
+
+/* Status chips used inline next to feature names (✅ / 🟡 / 📋). */
+.status {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0.05rem 0.45rem;
+  border-radius: var(--radius);
+  vertical-align: middle;
+}
+.status.available {
+  color: rgb(var(--success));
+  background: rgb(var(--success) / 0.12);
+}
+.status.setup {
+  color: rgb(var(--warning));
+  background: rgb(var(--warning) / 0.12);
+}
+.status.planned {
+  color: rgb(var(--info));
+  background: rgb(var(--info) / 0.12);
+}
+
+/* Tables: tighten to the ERP density the brand calls for. */
+.md-typeset table:not([class]) th {
+  background: rgb(var(--brand-500) / 0.06);
+}
+
+/* Buttons (md-button) on the home page in the brand accent. */
+.md-typeset .md-button--primary {
+  background-color: var(--md-primary-fg-color);
+  border-color: var(--md-primary-fg-color);
+  color: #ffffff;
+}
+.md-typeset .md-button--primary:hover {
+  background-color: #4338ca; /* --brand-600 */
+  border-color: #4338ca;
+}
