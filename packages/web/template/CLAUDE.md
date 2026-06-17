@@ -4,7 +4,7 @@ This document is the **immutable contract** for model-page codegen. The golden t
 
 There are two delivery modes:
 
-- **Runtime mode** — `src/pages/GenericModelPage.tsx` renders any model from the schema API at runtime (list view works today; create/edit is a documented stub). Install-and-go, no per-model code.
+- **Runtime mode** — `src/pages/GenericModelPage.tsx` (list) + `src/pages/GenericModelDetail.tsx` (detail) render any model from the schema API at runtime: list, create, edit, delete, and inline children all work, no per-model code (`ManyToMany`/`JSON` are read-only — use codegen for bespoke controls). Install-and-go.
 - **Codegen mode** — clone `src/pages/_template/` per model for full, owned, customizable pages. This document governs codegen mode.
 
 ## File structure (fixed 5 files)

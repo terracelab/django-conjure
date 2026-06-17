@@ -53,9 +53,9 @@ npx @terracelab/conjure-web init [target] [options]
 The scaffolded project carries its own `codegen/` and the frozen rules in `CLAUDE.md`. Two
 delivery modes, mix freely:
 
-- **Runtime mode** — `src/pages/GenericModelPage.tsx` renders any model from the schema API at
-  runtime (`/g/{app.Model}`), no per-model code. List view works today; create/edit is a
-  documented stub.
+- **Runtime mode** — `GenericModelPage` (list) + `GenericModelDetail` (detail) render any model
+  from the schema API at runtime (`/g/{app.Model}`), no per-model code: list, create, edit, delete,
+  and inline children all work. (`ManyToMany`/`JSON` are read-only — use codegen for bespoke controls.)
 - **Codegen mode** — clone `src/pages/_template/` per model for full, owned, customizable pages,
   then re-run `python3 codegen/assemble.py` to wire them into the router + sidebar.
 

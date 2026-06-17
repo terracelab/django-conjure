@@ -43,9 +43,9 @@ class ProductConfig(AdminConfig):
     Django finds your `admin.py`. No central registry to edit.
 
 `Product` now has a list / search / filter / CRUD screen. In **codegen mode** you generate
-plain React you own and edit per page (today's stable path). A **runtime mode** that lets a
-registered model appear in the sidebar with zero frontend code is on the roadmap — the
-runtime renderer covers list views today, with create/edit as a documented stub.
+plain React you own and edit per page (full control). In **runtime mode** a registered model
+appears in the sidebar with zero frontend code — the runtime renderer now covers list, create,
+edit, and delete (plus inline children) straight from the schema.
 
 !!! tip "Two modes, one schema"
     Both modes read the *same* introspection schema. Generate codegen pages today, and

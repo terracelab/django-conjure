@@ -13,8 +13,8 @@ that read the **same** introspection schema, so you can mix them per page.
     ```
 
     Open `http://localhost:8000/admin-panel/`, log in with an `is_staff` account, and your
-    model appears in the sidebar. The runtime renderer covers list views today (search and
-    filter); create/edit is a documented stub for now.
+    model appears in the sidebar. The runtime renderer covers list (search and filter), create,
+    edit, and delete (plus inline children) straight from the schema.
 
     **Best for:** getting an admin up today, internal tools, models that don't need a
     bespoke UI.
@@ -80,8 +80,8 @@ The dashboard authenticates the way you configure `CONJURE["AUTH"]`.
 
 1. Log in with an `is_staff` account.
 2. Find your model in the sidebar (runtime) or open its route (codegen).
-3. Search and filter a column. In codegen pages you can also create, edit, and delete a
-   row; in runtime mode create/edit is still a stub.
+3. Search and filter a column, then create, edit, and delete a row — both codegen pages and
+   runtime mode support full CRUD (runtime builds the form from the schema).
 4. If you ran `migrate conjure`, the **audit log** now shows your writes with a diff.
 
 From here, make it yours: [theme it](../guides/theming.md),

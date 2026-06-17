@@ -7,8 +7,8 @@
  * Status:
  *   - LIST view: WORKING. Fetches /<api>/schema/{model}/ + /<api>/r/{model}/, derives columns from
  *     schema.list_display, and renders the shared DataTable with server-side pagination/sorting/search.
- *   - CREATE / EDIT: STUB (TODO). A runtime form-generator (schema → zod → controls) is not implemented.
- *     For full create/edit/inline support today, scaffold a model page from pages/_template/ via codegen.
+ *   - CREATE / EDIT / DELETE: WORKING via GenericModelDetail — a schema-driven form generator
+ *     (FieldSchema → control) mirroring the frozen pages/_template/ contract, including inline children.
  *
  * Wire it up in the router with a wildcard model route, e.g.:
  *   { path: "g/:model", element: <GenericModelPage /> }
@@ -30,8 +30,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { adminApi, queryKeys } from "@/lib/api";
 import type { BaseRecord, FieldSchema, ListParams, ModelSchema } from "@/lib/types";
 
+import GenericModelDetail from "./GenericModelDetail";
+
 /** Derive a DataTable cell renderer from a Django field schema (composed vocabulary only). */
-function renderCell(field: FieldSchema, row: BaseRecord) {
+export function renderCell(field: FieldSchema, row: BaseRecord) {
   const value = row[field.name];
   // FK → EntityLink (label from {fk}_label the backend includes)
   if ((field.type === "ForeignKey" || field.type === "OneToOneField") && field.related_model) {
@@ -99,22 +101,13 @@ export default function GenericModelPage() {
   const listQuery = useQuery({
     queryKey: queryKeys.list(model ?? "", params),
     queryFn: () => adminApi.list<BaseRecord>(model as string, params),
-    enabled: Boolean(model) && schemaQuery.isSuccess,
+    enabled: Boolean(model) && schemaQuery.isSuccess && pk === undefined,
   });
 
   if (!model) return <p className="py-20 text-center text-fg-muted">No model specified.</p>;
 
-  // TODO(runtime mode): create/edit detail view is not implemented yet.
-  // A schema-driven form generator (FieldSchema → zod schema → form controls, mirroring pages/_template/form.tsx)
-  // would go here. For now, runtime mode is list-only; use codegen for editable pages.
-  if (pk !== undefined) {
-    return (
-      <div>
-        <PageHeader title={`${schemaQuery.data?.verbose_name ?? model} #${pk}`} description="Runtime detail view" />
-        <EmptyState message="Runtime create/edit is not implemented yet (TODO). Generate a page from pages/_template/ for full editing support." />
-      </div>
-    );
-  }
+  // Detail / create / edit / delete — schema-driven runtime form (no per-model code).
+  if (pk !== undefined) return <GenericModelDetail model={model} pk={pk} />;
 
   if (schemaQuery.isLoading) return <Skeleton className="h-96 w-full" />;
   if (schemaQuery.isError || !schemaQuery.data) return <p className="py-20 text-center text-fg-muted">Could not load schema for {model}.</p>;
