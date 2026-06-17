@@ -18,10 +18,12 @@ Render model pages either way — or mix them.
 
 ### 1. Runtime SPA mode (install-and-go)
 
-`src/pages/GenericModelPage.tsx` renders **any** model purely from the schema API at runtime —
-no per-model code. The list view (schema-driven columns + server-side pagination/sorting/search
-+ export) works out of the box at `/g/{app.Model}`. Create/edit is currently a documented stub;
-use codegen mode for full editing.
+`src/pages/GenericModelPage.tsx` (list) + `src/pages/GenericModelDetail.tsx` (detail) render
+**any** model purely from the schema API at runtime — no per-model code. List (schema-driven
+columns + server-side pagination/sorting/search + export) at `/g/{app.Model}`, and
+**create / edit / delete + inline children** at `/g/{app.Model}/{pk}` (and `/new`), all
+generated from the schema. `ManyToMany` and `JSON` fields are shown read-only — use codegen mode
+when you need bespoke controls for those.
 
 ### 2. Codegen mode (you own the output)
 
