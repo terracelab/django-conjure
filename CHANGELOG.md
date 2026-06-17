@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.3.1](https://github.com/terracelab/django-conjure/compare/v0.3.0...v0.3.1) (2026-06-17)
+
+
+### Bug Fixes
+
+* **web:** schema-driven sidebar + correct FK link routing for runtime models ([#13](https://github.com/terracelab/django-conjure/issues/13)) ([0da071b](https://github.com/terracelab/django-conjure/commit/0da071bfc2928dfe50efedc4d48f363b29b2b67a))
+
 ## [0.3.0](https://github.com/terracelab/django-conjure/compare/v0.2.2...v0.3.0) (2026-06-17)
 
 
