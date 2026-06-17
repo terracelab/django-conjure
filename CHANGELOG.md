@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.4.0](https://github.com/terracelab/django-conjure/compare/v0.3.3...v0.4.0) (2026-06-17)
+
+
+### Features
+
+* runtime filters, row selection/export, and custom actions ([#19](https://github.com/terracelab/django-conjure/issues/19)) ([fa09d6f](https://github.com/terracelab/django-conjure/commit/fa09d6faea20b67c4a11bc1d1e311809ac72c475))
+
 ## [0.3.3](https://github.com/terracelab/django-conjure/compare/v0.3.2...v0.3.3) (2026-06-17)
 
 
