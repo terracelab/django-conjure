@@ -1710,8 +1710,8 @@ model from the live schema. You write <strong>no frontend code</strong>.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>collectstatic<span class="w">   </span><span class="c1"># serve the bundled SPA once (planned)</span>
 </span></code></pre></div>
 <p>Open <code>http://localhost:8000/admin-panel/</code>, log in with an <code>is_staff</code> account, and your
-model appears in the sidebar. The runtime renderer covers list views today (search and
-filter); create/edit is a documented stub for now.</p>
+model appears in the sidebar. The runtime renderer covers list (search and filter), create,
+edit, and delete (plus inline children) straight from the schema.</p>
 <p><strong>Best for:</strong> getting an admin up today, internal tools, models that don't need a
 bespoke UI.</p>
 </div>
@@ -1763,8 +1763,8 @@ refreshes on 401 automatically. See the <a href="../../reference/rest-api/">REST
 <ol>
 <li>Log in with an <code>is_staff</code> account.</li>
 <li>Find your model in the sidebar (runtime) or open its route (codegen).</li>
-<li>Search and filter a column. In codegen pages you can also create, edit, and delete a
-   row; in runtime mode create/edit is still a stub.</li>
+<li>Search and filter a column, then create, edit, and delete a row — both codegen pages and
+   runtime mode support full CRUD (runtime builds the form from the schema).</li>
 <li>If you ran <code>migrate conjure</code>, the <strong>audit log</strong> now shows your writes with a diff.</li>
 </ol>
 <p>From here, make it yours: <a href="../../guides/theming/">theme it</a>,

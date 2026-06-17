@@ -1748,9 +1748,9 @@ That's the whole ceremony.</p>
     Django finds your <code>admin.py</code>. No central registry to edit.</li>
 </ol>
 <p><code>Product</code> now has a list / search / filter / CRUD screen. In <strong>codegen mode</strong> you generate
-plain React you own and edit per page (today's stable path). A <strong>runtime mode</strong> that lets a
-registered model appear in the sidebar with zero frontend code is on the roadmap — the
-runtime renderer covers list views today, with create/edit as a documented stub.</p>
+plain React you own and edit per page (full control). In <strong>runtime mode</strong> a registered model
+appears in the sidebar with zero frontend code — the runtime renderer now covers list, create,
+edit, and delete (plus inline children) straight from the schema.</p>
 <div class="admonition tip">
 <p class="admonition-title">Two modes, one schema</p>
 <p>Both modes read the <em>same</em> introspection schema. Generate codegen pages today, and
