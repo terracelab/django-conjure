@@ -1001,6 +1001,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#actions-today-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions today (v1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-role-based-action-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned: role-based action permissions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#four-principles" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1691,6 +1713,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#actions-today-v1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Actions today (v1)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#planned-role-based-action-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Planned: role-based action permissions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#four-principles" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1789,14 +1833,45 @@
 
 <h1 id="actions-permissions">Actions &amp; permissions<a class="headerlink" href="#actions-permissions" title="Permanent link">&para;</a></h1>
 <div class="admonition info">
-<p class="admonition-title">Status: 📋 Planned / Design complete</p>
-<p>The action and permission system is <strong>designed, not yet implemented</strong>. This page
-documents the agreed design so you can plan around it. Track it on the
-<a href="../roadmap/">roadmap</a> (P4).</p>
+<p class="admonition-title">Status: ✅ v1 implemented · 📋 role-based permissions planned</p>
+<p>Custom actions ship today via <code>AdminConfig.actions</code> (see <strong>Actions today (v1)</strong> below).
+The fuller per-action <em>permission</em> model — a codename per (action × model),
+<code>sync_admin_actions</code>, role groups — is still planned (<a href="../roadmap/">roadmap</a> P4) and is
+documented after the v1 section.</p>
 </div>
 <p>An <strong>action</strong> (a <em>spell</em>, in Conjure's vocabulary) is something you do <em>to</em> rows beyond
 CRUD: export, issue a tax invoice, print a receipt, refund, send a push. The design lets
 you declare actions once, gate them per role, and enforce them on the server.</p>
+<h2 id="actions-today-v1">Actions today (v1)<a class="headerlink" href="#actions-today-v1" title="Permanent link">&para;</a></h2>
+<p>Declare actions on the backend <code>AdminConfig</code>, Django-admin style — a list of method names plus
+the methods themselves:</p>
+<div class="language-python highlight"><span class="filename">admin_config.py</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@register</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">UserConfig</span><span class="p">(</span><span class="n">AdminConfig</span><span class="p">):</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;send_welcome&quot;</span><span class="p">,</span> <span class="s2">&quot;deactivate&quot;</span><span class="p">]</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">send_welcome</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="c1"># runs on the targeted rows; return a dict (its &quot;message&quot; is toasted) or None</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">queryset</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="si">}</span><span class="s2"> queued&quot;</span><span class="p">}</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">send_welcome</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Send welcome&quot;</span>            <span class="c1"># optional; defaults from the method name</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">deactivate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">queryset</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2"> deactivated&quot;</span><span class="p">}</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">deactivate</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Deactivate&quot;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">deactivate</span><span class="o">.</span><span class="n">destructive</span> <span class="o">=</span> <span class="kc">True</span>                  <span class="c1"># red button + confirm dialog</span>
+</span></code></pre></div>
+<ul>
+<li>The schema exposes each model's <code>actions</code> (<code>name</code>, <code>label</code>, <code>destructive</code>) and the runtime
+  page renders them in the bulk-action bar — <strong>no per-model frontend code</strong>.</li>
+<li>Endpoint: <code>POST /conjure/r/{app.Model}/action/{name}/</code> with <code>{"ids": [...]}</code> (selected rows)
+  or <code>{"all_filtered": true, "params": {...}}</code> ("select all N"). For <code>all_filtered</code> the server
+  <strong>re-applies the filter</strong> — it never trusts a client-sent id list.</li>
+<li>Gating: <code>is_staff</code> + the model's <code>change</code> permission (superusers always pass). Declared
+  actions are <strong>not</strong> blocked by <code>is_readonly</code>, so a locked-down model can still expose curated
+  actions. Each run is wrapped in a transaction and written to <code>AdminAuditLog</code>.</li>
+</ul>
+<h2 id="planned-role-based-action-permissions">Planned: role-based action permissions<a class="headerlink" href="#planned-role-based-action-permissions" title="Permanent link">&para;</a></h2>
+<p>The design below extends v1 with a <em>permission per (action × model)</em> — so the same action can
+be allowed on Orders but not Subscriptions — plus <code>sync_admin_actions</code> and role groups.</p>
 <h2 id="four-principles">Four principles<a class="headerlink" href="#four-principles" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Permission = (action × model).</strong> Django permission codenames are bound to a model's
@@ -1813,25 +1888,25 @@ you declare actions once, gate them per role, and enforce them on the server.</p
    <code>request.user.has_perm(...)</code>. Hiding a button is UX, not security.</li>
 </ol>
 <h2 id="the-flow">The flow<a class="headerlink" href="#the-flow" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>graph TD
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  A[&quot;actions.py&lt;br/&gt;ADMIN_ACTIONS = [...]&quot;] --&gt;|sync_admin_actions| B[&quot;auth_permission rows&lt;br/&gt;(no migration)&quot;]
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  B --&gt; C[&quot;Django admin Group editor&lt;br/&gt;(define roles via checkboxes)&quot;]
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  C --&gt; D[&quot;Assign admins to groups&quot;]
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  A --&gt; E[&quot;schema sends per-(model,user)&lt;br/&gt;allowed_actions&quot;]
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  E --&gt; F[&quot;Frontend ActionBar&lt;br/&gt;(button + ⋯ menu; hides if not allowed)&quot;]
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  F --&gt;|POST /action/{key}/| G[&quot;Action endpoint&lt;br/&gt;has_perm enforced + audit log&quot;]
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  D --&gt; G
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>graph TD
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  A[&quot;actions.py&lt;br/&gt;ADMIN_ACTIONS = [...]&quot;] --&gt;|sync_admin_actions| B[&quot;auth_permission rows&lt;br/&gt;(no migration)&quot;]
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  B --&gt; C[&quot;Django admin Group editor&lt;br/&gt;(define roles via checkboxes)&quot;]
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  C --&gt; D[&quot;Assign admins to groups&quot;]
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  A --&gt; E[&quot;schema sends per-(model,user)&lt;br/&gt;allowed_actions&quot;]
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  E --&gt; F[&quot;Frontend ActionBar&lt;br/&gt;(button + ⋯ menu; hides if not allowed)&quot;]
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  F --&gt;|POST /action/{key}/| G[&quot;Action endpoint&lt;br/&gt;has_perm enforced + audit log&quot;]
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  D --&gt; G
 </span></code></pre></div>
 <h2 id="declaring-actions">Declaring actions<a class="headerlink" href="#declaring-actions" title="Permanent link">&para;</a></h2>
 <p>A single source of truth on the backend:</p>
-<div class="language-python highlight"><span class="filename">conjure/actions.py (design)</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">ADMIN_ACTIONS</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="c1"># model, codename, name, kind(client|server), scope(toolbar|bulk)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;user.User&quot;</span><span class="p">,</span>                 <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="s2">&quot;export&quot;</span><span class="p">,</span>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Export users&quot;</span><span class="p">,</span>        <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;bulk&quot;</span><span class="p">},</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;order.Order&quot;</span><span class="p">,</span>               <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="s2">&quot;print_receipt&quot;</span><span class="p">,</span>     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Print receipt&quot;</span><span class="p">,</span>       <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;bulk&quot;</span><span class="p">},</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;order.Order&quot;</span><span class="p">,</span>               <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="s2">&quot;issue_tax_invoice&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Issue tax invoice&quot;</span><span class="p">,</span>   <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;bulk&quot;</span><span class="p">},</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;subscription.Subscription&quot;</span><span class="p">,</span> <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="s2">&quot;print_receipt&quot;</span><span class="p">,</span>     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Print receipt&quot;</span><span class="p">,</span>       <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;bulk&quot;</span><span class="p">},</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;notification.Notification&quot;</span><span class="p">,</span> <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Send notification&quot;</span><span class="p">,</span>   <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;toolbar&quot;</span><span class="p">},</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">]</span>
+<div class="language-python highlight"><span class="filename">conjure/actions.py (design)</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">ADMIN_ACTIONS</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="c1"># model, codename, name, kind(client|server), scope(toolbar|bulk)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;user.User&quot;</span><span class="p">,</span>                 <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="s2">&quot;export&quot;</span><span class="p">,</span>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Export users&quot;</span><span class="p">,</span>        <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;bulk&quot;</span><span class="p">},</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;order.Order&quot;</span><span class="p">,</span>               <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="s2">&quot;print_receipt&quot;</span><span class="p">,</span>     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Print receipt&quot;</span><span class="p">,</span>       <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;bulk&quot;</span><span class="p">},</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;order.Order&quot;</span><span class="p">,</span>               <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="s2">&quot;issue_tax_invoice&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Issue tax invoice&quot;</span><span class="p">,</span>   <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;bulk&quot;</span><span class="p">},</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;subscription.Subscription&quot;</span><span class="p">,</span> <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="s2">&quot;print_receipt&quot;</span><span class="p">,</span>     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Print receipt&quot;</span><span class="p">,</span>       <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;bulk&quot;</span><span class="p">},</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;notification.Notification&quot;</span><span class="p">,</span> <span class="s2">&quot;codename&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Send notification&quot;</span><span class="p">,</span>   <span class="s2">&quot;kind&quot;</span><span class="p">:</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="s2">&quot;toolbar&quot;</span><span class="p">},</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">]</span>
 </span></code></pre></div>
 <ul>
 <li><code>codename: None</code> means <strong>no permission</strong> — available to every staff user (e.g. send
@@ -1841,14 +1916,14 @@ you declare actions once, gate them per role, and enforce them on the server.</p
   receipt case).</li>
 </ul>
 <h2 id="creating-the-permissions-no-migration">Creating the permissions (no migration)<a class="headerlink" href="#creating-the-permissions-no-migration" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>sync_admin_actions
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>manage.py<span class="w"> </span>sync_admin_actions
 </span></code></pre></div>
 <p>The command walks <code>ADMIN_ACTIONS</code> and <code>get_or_create</code>s a <code>Permission</code> on each action's
 model <code>ContentType</code>. Run it on deploy and whenever you add an action. The new permissions
 appear automatically as checkboxes under their model in the Django admin Group editor.</p>
 <h2 id="the-action-endpoint">The action endpoint<a class="headerlink" href="#the-action-endpoint" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>POST /conjure/r/{app}.{Model}/action/{codename}/
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>body: { &quot;ids&quot;: [...], &quot;params&quot;: { ... } }
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>POST /conjure/r/{app}.{Model}/action/{codename}/
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>body: { &quot;ids&quot;: [...], &quot;params&quot;: { ... } }
 </span></code></pre></div>
 <p>The endpoint requires <code>is_staff</code>, then checks the action's permission (<code>has_perm</code>, unless
 <code>codename</code> is <code>None</code>); superusers always pass. It dispatches to the action handler,
@@ -1861,20 +1936,20 @@ truly enforced — a client-only action is bypassable by anyone with view access
 </div>
 <h2 id="the-frontend-actionbar">The frontend ActionBar<a class="headerlink" href="#the-frontend-actionbar" title="Permanent link">&para;</a></h2>
 <p>The schema sends per-(model, user) <code>allowed_actions</code>:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">&quot;actions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;print_receipt&quot;</span><span class="p">,</span><span class="w">     </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Print receipt&quot;</span><span class="p">,</span><span class="w">     </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bulk&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;allowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">  </span><span class="p">},</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;issue_tax_invoice&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Issue tax invoice&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bulk&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;allowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">]</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">&quot;actions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;print_receipt&quot;</span><span class="p">,</span><span class="w">     </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Print receipt&quot;</span><span class="p">,</span><span class="w">     </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bulk&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;allowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">  </span><span class="p">},</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;issue_tax_invoice&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Issue tax invoice&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bulk&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;allowed&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="p">]</span>
 </span></code></pre></div>
 <p>A generic <code>&lt;ActionBar&gt;</code> uses <code>allowed</code> to <strong>filter visibility</strong>, renders the 1–2 common
 actions as buttons and the rest under a <code>⋯ more</code> dropdown (hybrid widget), routes
 <code>scope: "bulk"</code> actions to the selection bar and <code>scope: "toolbar"</code> to the page header, and
 handles confirm dialogs / toasts / refetch. A list page only needs one
 <code>&lt;ActionBar model params selectedIds refetch /&gt;</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>[ 3 selected ]  [ Delete ]  [ ⋯ more ▾ ]
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>                              ├ Print receipt
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>                              ├ Issue tax invoice
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>                              └ Export selected
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>[ 3 selected ]  [ Delete ]  [ ⋯ more ▾ ]
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>                              ├ Print receipt
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>                              ├ Issue tax invoice
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>                              └ Export selected
 </span></code></pre></div>
 <h2 id="worked-example">Worked example<a class="headerlink" href="#worked-example" title="Permanent link">&para;</a></h2>
 <p>The classic test case — "3 of 10 admins can export users; everyone can send notifications;
