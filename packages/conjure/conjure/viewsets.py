@@ -251,6 +251,32 @@ class AdminModelViewSet(ConjureAuthMixin, viewsets.ViewSet):
             )
         return Response({"related": summary})
 
+    def run_action(self, request, model_key=None, name=None):
+        """Run a declared AdminConfig action on the selected ids, or the whole filtered set.
+
+        Body: {"ids": [...]} or {"all_filtered": true, "params": {<filter/search params>}}.
+        For all_filtered the server re-applies the filter (never trusts a client id list).
+        """
+        config = self.get_config()
+        if name not in (getattr(config, "actions", ()) or ()):
+            raise Http404("Unknown action.")
+        handler = getattr(config, name, None)
+        if not callable(handler):
+            raise Http404("Unknown action.")
+        if request.data.get("all_filtered"):
+            params = request.data.get("params") or {}
+            qs = self._apply_search(self._apply_filters(self._base_queryset(config), config, params), config, params)
+        else:
+            ids = request.data.get("ids") or []
+            if not ids:
+                raise ValidationError({"ids": ["No target ids."]})
+            qs = self._base_queryset(config).filter(pk__in=ids)
+        count = qs.count()
+        with transaction.atomic():
+            result = handler(request, qs)
+        audit.record(request, self._model_key(config), "", f"action:{name}", object_repr=f"{count} rows")
+        return Response(result if isinstance(result, dict) else {"message": f"{count}건 처리 완료."})
+
     def bulk(self, request, model_key=None):
         """
         Bulk actions + atomic inline ops.

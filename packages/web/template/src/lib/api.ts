@@ -187,6 +187,9 @@ export const adminApi = {
   related: (model: string, pk: number | string) => request<RelatedSummary>("GET", `${API_BASE}/r/${model}/${pk}/related/`),
   bulk: (model: string, body: BulkActionBody | BulkOperationsBody) =>
     request<Record<string, unknown>>("POST", `${API_BASE}/r/${model}/bulk/`, body as unknown as Record<string, unknown>),
+  // Custom action: { ids } (selected) or { all_filtered: true, params } (whole filtered set).
+  action: (model: string, name: string, body: { ids?: (number | string)[]; all_filtered?: boolean; params?: Record<string, unknown> }) =>
+    request<{ message?: string }>("POST", `${API_BASE}/r/${model}/action/${name}/`, body),
 
   // ── Widgets ──
   widget: <T = Record<string, unknown>>(name: string) => request<T>("GET", `${API_BASE}/widgets/${name}/`),

@@ -6,8 +6,8 @@ const features = [
     body: "Reads model metadata — fields, types, choices, FKs, permissions — and serves it as JSON for codegen and runtime alike.",
   },
   {
-    title: "Generic CRUD, bulk & autocomplete",
-    body: "One generic ViewSet: list, retrieve, create, update, delete, plus server-side search, filter, sort, pagination, atomic bulk and autocomplete.",
+    title: "Generic CRUD, filter & export",
+    body: "One generic ViewSet — list/retrieve/create/update/delete with server-side search, filtering, sort, pagination and autocomplete. The runtime UI renders schema-driven filters, row selection and CSV export (selected rows or the whole filtered set) with no per-model code.",
   },
   {
     title: "Audit log",
@@ -30,9 +30,8 @@ const features = [
     body: "Accent and surface colors come from shared CSS tokens — the same ones this site uses. Re-theme without code changes.",
   },
   {
-    title: "Actions & permissions",
-    body: "Per-(action × model) spells — export, refund, issue invoice — gated by Django Groups. Synced without migrations.",
-    soon: true,
+    title: "Custom actions",
+    body: "Declare actions on AdminConfig (Django-admin style) — they run on selected rows or the whole filtered set, server-side and audited. Role-based per-(action × model) permissions are on the roadmap.",
   },
 ];
 ---

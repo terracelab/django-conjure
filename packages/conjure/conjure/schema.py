@@ -90,6 +90,7 @@ def model_schema(key, config, user):
         "ordering": config.get_ordering(),
         "readonly_fields": list(config.readonly_fields or ()),
         "is_readonly": config.is_readonly,
+        "actions": config.get_actions(),
         "inlines": [
             {
                 "model": f"{child._meta.app_label}.{child.__name__}",

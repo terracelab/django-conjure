@@ -54,6 +54,14 @@ export interface ModelSchema {
   is_readonly: boolean;
   inlines: InlineSchema[];
   permissions: ModelPermissions;
+  /** Custom actions (CONJURE AdminConfig.actions) run on selected rows. */
+  actions: ActionSpec[];
+}
+
+export interface ActionSpec {
+  name: string;
+  label: string;
+  destructive: boolean;
 }
 
 export interface ModelSummary {

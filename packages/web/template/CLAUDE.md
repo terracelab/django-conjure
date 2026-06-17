@@ -56,9 +56,10 @@ src/pages/{model-kebab}/
 Three kinds, distinguished by location:
 1. **Page (toolbar) actions** — selection-independent, buttons in PageHeader `actions`. e.g. Excel export `<ExportButton model={MODEL} params={params} />` (reflects current filters/search, generic), create button.
 2. **Bulk actions** — target selected rows. FilterBar `bulkActions` slot + `adminApi.bulk(model, {action:"update"|"delete", ids, data})`. e.g. the template's publish/unpublish/delete.
-3. **Backend custom actions** — heavy server-side work (large streaming .xlsx, external sends, etc.). Add an endpoint to the api viewset, then call it from the front end. (The generic core has no action registry yet — enhancement.)
+3. **Custom actions** — declare `actions = ["name"]` + `def name(self, request, queryset)` on the backend `AdminConfig` (Django-admin style; set `.label` / `.destructive = True` on the method). The runtime page (`GenericModelPage`) reads them from the schema and renders buttons in the bulk-action bar, calling `adminApi.action(model, name, {ids} | {all_filtered, params})` — the server runs the handler on the picked ids or re-applies the filter for "select all N". For heavier/bespoke work, add a dedicated viewset endpoint and call it directly.
 
-List pages include `<ExportButton>` in PageHeader `actions` by default.
+List pages include `<ExportButton>` in PageHeader `actions` by default. The runtime page also wires
+row selection, schema-driven filters (`list_filter`), and "export selected / all filtered" out of the box.
 
 ## Data contract (guaranteed by the backend)
 
