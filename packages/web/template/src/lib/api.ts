@@ -29,6 +29,15 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 const RAW_BASE = import.meta.env.VITE_API_BASE ?? "/conjure";
 export const API_BASE = "/" + RAW_BASE.replace(/^\/+|\/+$/g, "");
 
+/** Methods Django/DRF treats as safe — no CSRF token required. */
+const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS", "TRACE"]);
+
+/** Read a cookie by name — used for Django's csrftoken in session-auth mode. */
+function readCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 export class ApiError extends Error {
   status: number;
   /** DRF validation error body — {field: [messages]} shape. Used for per-field form mapping. */
@@ -94,6 +103,11 @@ const AUTH_PREFIX = `${API_BASE}/auth/`;
 async function request<T>(method: string, path: string, data?: Record<string, unknown>, retried = false): Promise<T> {
   const headers: Record<string, string> = {};
   if (tokenStore.access) headers.Authorization = `Bearer ${tokenStore.access}`;
+  // Session-auth writes need Django's CSRF token (set in the csrftoken cookie by /auth/login & /auth/me).
+  if (!SAFE_METHODS.has(method.toUpperCase())) {
+    const csrf = readCookie("csrftoken");
+    if (csrf) headers["X-CSRFToken"] = csrf;
+  }
   let body: BodyInit | undefined;
   if (data !== undefined) {
     const encoded = encodeBody(data);
@@ -118,6 +132,10 @@ function requestWithProgress<T>(method: string, path: string, data: Record<strin
     const xhr = new XMLHttpRequest();
     xhr.open(method, `${BASE_URL}${path}`);
     if (tokenStore.access) xhr.setRequestHeader("Authorization", `Bearer ${tokenStore.access}`);
+    if (!SAFE_METHODS.has(method.toUpperCase())) {
+      const csrf = readCookie("csrftoken");
+      if (csrf) xhr.setRequestHeader("X-CSRFToken", csrf);
+    }
     if (typeof body === "string") xhr.setRequestHeader("Content-Type", "application/json");
     xhr.upload.onprogress = (e) => {
       if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));

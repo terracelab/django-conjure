@@ -14,6 +14,8 @@ from django.contrib.auth import login as django_login
 from django.contrib.auth import logout as django_logout
 from django.core.exceptions import ImproperlyConfigured
 from django.http import Http404
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import AllowAny
@@ -63,6 +65,9 @@ class LoginView(APIView):
     authentication_classes = []
     swagger_schema = None
 
+    # Issue the CSRF cookie on login so a session-auth SPA can send X-CSRFToken on writes.
+    # (Harmless in jwt mode — the cookie just goes unused.)
+    @method_decorator(ensure_csrf_cookie)
     def post(self, request):
         if conjure_settings.AUTH == "jwt":
             serializer_cls = _jwt_module().TokenObtainPairSerializer
@@ -119,5 +124,7 @@ class MeView(ConjureAuthMixin, APIView):
     permission_classes = [IsStaffUser]
     swagger_schema = None
 
+    # Refresh the CSRF cookie on every auth check so the SPA always has a usable token.
+    @method_decorator(ensure_csrf_cookie)
     def get(self, request):
         return Response(user_payload(request.user))
