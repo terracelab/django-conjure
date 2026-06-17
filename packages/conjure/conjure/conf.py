@@ -35,6 +35,13 @@ DEFAULTS = {
     "AUTO_REGISTER": False,
     # app_labels or "app_label.Model" strings to skip when AUTO_REGISTER is on.
     "AUTO_REGISTER_EXCLUDE": [],
+    # Sidebar grouping: app_label -> group label. Apps sharing a label merge into one group;
+    # group order follows this dict's insertion order; unlisted apps group by app_label, last.
+    "APP_GROUPS": {},
+    # Section tabs: list of model-key lists. The first model is the section "main" (the only one
+    # shown in the sidebar); the rest become tabs on the main's page. Models in no section stand
+    # alone. e.g. [["user.User", "user.SocialAccount", "user.UserConsent"]].
+    "SECTIONS": [],
     # Logger used for non-fatal internal errors (e.g. audit write failures).
     "LOGGER_NAME": "conjure",
 }

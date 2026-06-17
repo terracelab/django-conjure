@@ -63,6 +63,15 @@ export interface ModelSummary {
   verbose_name_plural: string;
   is_readonly: boolean;
   permissions: ModelPermissions;
+  /** Sidebar group label (from CONJURE["APP_GROUPS"]; defaults to app_label). */
+  group: string;
+  /** Group ordering key (position in APP_GROUPS; unlisted apps sort last). */
+  group_order: number;
+  /** Section main model key (from CONJURE["SECTIONS"]). Only the main shows in the sidebar;
+   *  members are tabs on the main's page. Standalone models are their own section. */
+  section: string;
+  /** Tab order within the section (main = 0). */
+  section_order: number;
 }
 
 export interface AutocompleteItem {

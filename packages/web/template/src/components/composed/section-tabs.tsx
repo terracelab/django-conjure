@@ -6,18 +6,22 @@
 
 import { Link } from "react-router-dom";
 
-import { sectionForModel } from "@/layouts/sections";
+import { type SectionTab, sectionForModel } from "@/layouts/sections";
 import { cn } from "@/lib/utils";
 
-export function SectionTabs({ model, children }: { model: string; children: React.ReactNode }) {
-  const section = sectionForModel[model];
+/**
+ * `tabs` overrides the codegen `sections.ts` map — runtime pages (GenericModelPage) pass tabs
+ * built live from the schema API (CONJURE["SECTIONS"]); codegen pages omit it and use the map.
+ */
+export function SectionTabs({ model, tabs: tabsProp, children }: { model: string; tabs?: SectionTab[]; children: React.ReactNode }) {
+  const tabs = tabsProp ?? sectionForModel[model]?.tabs;
   // Single-model sections render without a tab bar.
-  if (!section || section.tabs.length <= 1) return <>{children}</>;
+  if (!tabs || tabs.length <= 1) return <>{children}</>;
 
   return (
     <div>
       <div className="mb-3 flex items-center gap-1 overflow-x-auto border-b border-border">
-        {section.tabs.map((tab) => {
+        {tabs.map((tab) => {
           const active = tab.model === model;
           return (
             <Link

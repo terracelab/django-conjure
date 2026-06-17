@@ -41,17 +41,32 @@ export function AppShell() {
 
   const navGroups: NavGroup[] = useMemo(() => {
     const base = [...sidebarNav];
-    const models = schema?.models ?? [];
+    const models = (schema?.models ?? []).filter((m) => m.permissions.view);
     if (!models.length) return base;
     const existing = new Set(base.flatMap((g) => g.items.flatMap((i) => i.members)));
-    const items: NavItem[] = models
-      .filter((m) => m.permissions.view)
-      .filter((m) => !existing.has(`/m/${m.model}`))
-      .map((m) => ({ label: m.verbose_name_plural, to: `/g/${m.model}`, members: [`/g/${m.model}`] }));
-    if (!items.length) return base;
-    const group: NavGroup = { label: "Models", items };
+
+    // Group by the backend-provided group label (configured via CONJURE["APP_GROUPS"]; defaults
+    // to app_label). Group order follows group_order; ties break alphabetically. Models with a
+    // hand-built codegen page (/m/{model}) are left in the static nav.
+    const map = new Map<string, { items: NavItem[]; order: number }>();
+    for (const m of models) {
+      if (existing.has(`/m/${m.model}`)) continue;
+      if (m.section && m.section !== m.model) continue; // section member → shown as a tab, not a sidebar row
+      const label = m.group || m.app_label;
+      const order = m.group_order ?? 999;
+      const g = map.get(label) ?? { items: [], order };
+      g.items.push({ label: m.verbose_name_plural, to: `/g/${m.model}`, members: [`/g/${m.model}`] });
+      g.order = Math.min(g.order, order);
+      map.set(label, g);
+    }
+    if (!map.size) return base;
+
+    const groups: NavGroup[] = [...map.entries()]
+      .sort((a, b) => a[1].order - b[1].order || a[0].localeCompare(b[0]))
+      .map(([label, g]) => ({ label, items: [...g.items].sort((x, y) => x.label.localeCompare(y.label)) }));
+
     const sysIdx = base.findIndex((g) => g.label === "System");
-    return sysIdx === -1 ? [...base, group] : [...base.slice(0, sysIdx), group, ...base.slice(sysIdx)];
+    return sysIdx === -1 ? [...base, ...groups] : [...base.slice(0, sysIdx), ...groups, ...base.slice(sysIdx)];
   }, [schema]);
 
   if (!isLoggedIn()) {
