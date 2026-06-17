@@ -66,7 +66,9 @@ for group in manifest["groups"]:
 all_models = [m for s in sections for m in s["models"]]
 
 # ── router.tsx ─────────────────────────────────────────────────
-imports = ['import { SectionTabs } from "@/components/composed/section-tabs";']
+# Only import SectionTabs when model routes exist — with no codegen pages an empty modelRoutes
+# would leave the import unused and fail the strict (noUnusedLocals) build.
+imports = ['import { SectionTabs } from "@/components/composed/section-tabs";'] if all_models else []
 routes = []
 seen_names = set()
 for m in all_models:
