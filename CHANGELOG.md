@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.5.0](https://github.com/terracelab/django-conjure/compare/v0.4.0...v0.5.0) (2026-06-17)
+
+
+### Features
+
+* backend-driven brand (CONJURE["BRAND"]) + hide sidebar scrollbar ([#21](https://github.com/terracelab/django-conjure/issues/21)) ([6ec2bef](https://github.com/terracelab/django-conjure/commit/6ec2bef75ce0c1a773acb0254cc34030c3315a96))
+
 ## [0.4.0](https://github.com/terracelab/django-conjure/compare/v0.3.3...v0.4.0) (2026-06-17)
 
 
