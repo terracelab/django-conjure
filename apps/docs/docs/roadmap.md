@@ -35,7 +35,8 @@ battle-tested:
 | Capability | Status | Note |
 |---|---|---|
 | Runtime `GenericModelPage` (zero-codegen) | <span class="status available">✅</span> | Register a model → it appears with full list + create/edit/delete + inlines, no per-model code. |
-| Actions & permissions system | <span class="status planned">📋</span> | Design complete — see [the spec](actions-permissions/index.md). |
+| Custom actions (`AdminConfig.actions`) | <span class="status available">✅</span> | v1 shipped — selected rows or whole filtered set, server-enforced + audited. |
+| Role-based action permissions (per action × model) | <span class="status planned">📋</span> | Design complete — see [the spec](actions-permissions/index.md). |
 | `@terracelab/conjure-web init` CLI scaffolder | <span class="status available">✅</span> | Golden template + rules shipped as an `npx` scaffolder. |
 | Real `.xlsx` export, M2M editing, column toggle, virtual scroll | <span class="status planned">📋</span> | UX completeness. |
 | Field plugin SDK, i18n (EN/KO), security defaults | <span class="status planned">📋</span> | Hardening. |

@@ -30,6 +30,7 @@ class AdminConfig:
     autocomplete_search_fields = None  # FK autocomplete search targets (on the related model)
     inlines = ()  # [(child_model, parent_fk_name)] — inline editing on the detail page
     is_readonly = False  # read-only model (log/history) — blocks add/change/delete entirely
+    actions = ()  # method names exposed as bulk actions: def name(self, request, queryset) -> dict | None
 
     def __init__(self, model):
         self.model = model
@@ -84,6 +85,22 @@ class AdminConfig:
         if self.autocomplete_search_fields:
             return list(self.autocomplete_search_fields)
         return self.get_search_fields() or [self.model._meta.pk.name]
+
+    def get_actions(self):
+        """[{name, label, destructive}] for declared, callable action methods."""
+        specs = []
+        for name in self.actions or ():
+            fn = getattr(self, name, None)
+            if not callable(fn):
+                continue
+            specs.append(
+                {
+                    "name": name,
+                    "label": getattr(fn, "label", None) or name.replace("_", " ").strip().capitalize(),
+                    "destructive": bool(getattr(fn, "destructive", False)),
+                }
+            )
+        return specs
 
 
 class AdminRegistry:

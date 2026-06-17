@@ -1,13 +1,49 @@
 # Actions & permissions
 
-!!! info "Status: 📋 Planned / Design complete"
-    The action and permission system is **designed, not yet implemented**. This page
-    documents the agreed design so you can plan around it. Track it on the
-    [roadmap](../roadmap.md) (P4).
+!!! info "Status: ✅ v1 implemented · 📋 role-based permissions planned"
+    Custom actions ship today via `AdminConfig.actions` (see **Actions today (v1)** below).
+    The fuller per-action *permission* model — a codename per (action × model),
+    `sync_admin_actions`, role groups — is still planned ([roadmap](../roadmap.md) P4) and is
+    documented after the v1 section.
 
 An **action** (a *spell*, in Conjure's vocabulary) is something you do *to* rows beyond
 CRUD: export, issue a tax invoice, print a receipt, refund, send a push. The design lets
 you declare actions once, gate them per role, and enforce them on the server.
+
+## Actions today (v1)
+
+Declare actions on the backend `AdminConfig`, Django-admin style — a list of method names plus
+the methods themselves:
+
+```python title="admin_config.py"
+@register(User)
+class UserConfig(AdminConfig):
+    actions = ["send_welcome", "deactivate"]
+
+    def send_welcome(self, request, queryset):
+        # runs on the targeted rows; return a dict (its "message" is toasted) or None
+        return {"message": f"{queryset.count()} queued"}
+    send_welcome.label = "Send welcome"            # optional; defaults from the method name
+
+    def deactivate(self, request, queryset):
+        return {"message": f"{queryset.update(is_active=False)} deactivated"}
+    deactivate.label = "Deactivate"
+    deactivate.destructive = True                  # red button + confirm dialog
+```
+
+- The schema exposes each model's `actions` (`name`, `label`, `destructive`) and the runtime
+  page renders them in the bulk-action bar — **no per-model frontend code**.
+- Endpoint: `POST /conjure/r/{app.Model}/action/{name}/` with `{"ids": [...]}` (selected rows)
+  or `{"all_filtered": true, "params": {...}}` ("select all N"). For `all_filtered` the server
+  **re-applies the filter** — it never trusts a client-sent id list.
+- Gating: `is_staff` + the model's `change` permission (superusers always pass). Declared
+  actions are **not** blocked by `is_readonly`, so a locked-down model can still expose curated
+  actions. Each run is wrapped in a transaction and written to `AdminAuditLog`.
+
+## Planned: role-based action permissions
+
+The design below extends v1 with a *permission per (action × model)* — so the same action can
+be allowed on Orders but not Subscriptions — plus `sync_admin_actions` and role groups.
 
 ## Four principles
 
