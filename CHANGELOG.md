@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.3.2](https://github.com/terracelab/django-conjure/compare/v0.3.1...v0.3.2) (2026-06-17)
+
+
+### Bug Fixes
+
+* **auth:** send CSRF token for session-auth writes ([#15](https://github.com/terracelab/django-conjure/issues/15)) ([0edc005](https://github.com/terracelab/django-conjure/commit/0edc0052f4aa2186a08e88e1c4af193b01ad7ecd))
+
 ## [0.3.1](https://github.com/terracelab/django-conjure/compare/v0.3.0...v0.3.1) (2026-06-17)
 
 
