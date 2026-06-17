@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.3.0](https://github.com/terracelab/django-conjure/compare/v0.2.2...v0.3.0) (2026-06-17)
+
+
+### Features
+
+* **web:** runtime create/edit/delete + inlines (GenericModelDetail) ([#11](https://github.com/terracelab/django-conjure/issues/11)) ([3e6f20e](https://github.com/terracelab/django-conjure/commit/3e6f20ead594d02f7cd85cb6bb4bdb45b433c085))
+
 ## [0.2.2](https://github.com/terracelab/django-conjure/compare/v0.2.1...v0.2.2) (2026-06-16)
 
 
