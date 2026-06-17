@@ -70,4 +70,12 @@
   .scrollbar-thin {
     scrollbar-width: thin;
   }
+
+  /* Scrollable but with no visible scrollbar (sidebar default). */
+  .scrollbar-none {
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
 }

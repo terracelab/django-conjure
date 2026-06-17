@@ -69,3 +69,16 @@ export function applyThemeFromEnv(): void {
     root.style.setProperty("--brand-600", hover);
   }
 }
+
+/** Apply a single accent color (hex or "R G B") at runtime — e.g. the backend BRAND.accent. */
+export function applyAccent(value: string | null | undefined): void {
+  if (!value) return;
+  const channels = toChannels(value);
+  if (!channels) return;
+  const root = document.documentElement;
+  root.style.setProperty("--accent", channels);
+  root.style.setProperty("--brand-500", channels);
+  const hover = darken(channels);
+  root.style.setProperty("--accent-hover", hover);
+  root.style.setProperty("--brand-600", hover);
+}

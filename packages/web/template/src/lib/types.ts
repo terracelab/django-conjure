@@ -64,6 +64,12 @@ export interface ActionSpec {
   destructive: boolean;
 }
 
+/** Public dashboard config (GET /config/) — drives the header title + accent. */
+export interface ConjureConfig {
+  brand: { name: string; accent: string };
+  auth: string;
+}
+
 export interface ModelSummary {
   model: string;
   app_label: string;

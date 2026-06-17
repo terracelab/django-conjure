@@ -5,7 +5,7 @@ Mount anywhere, e.g. ``path("conjure/", include("conjure.urls"))``.
 
 from django.urls import path
 
-from conjure.auth import LoginView, LogoutView, MeView, RefreshView
+from conjure.auth import ConfigView, LoginView, LogoutView, MeView, RefreshView
 from conjure.schema import SchemaDetailView, SchemaListView
 from conjure.viewsets import AdminModelViewSet
 from conjure.widgets import WidgetView
@@ -17,6 +17,7 @@ urlpatterns = [
     path("auth/refresh/", RefreshView.as_view(), name="refresh"),
     path("auth/logout/", LogoutView.as_view(), name="logout"),
     path("auth/me/", MeView.as_view(), name="me"),
+    path("config/", ConfigView.as_view(), name="config"),
     path("schema/", SchemaListView.as_view(), name="schema-list"),
     path("schema/<str:model_key>/", SchemaDetailView.as_view(), name="schema-detail"),
     path("widgets/<str:name>/", WidgetView.as_view(), name="widget"),
