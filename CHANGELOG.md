@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.3.3](https://github.com/terracelab/django-conjure/compare/v0.3.2...v0.3.3) (2026-06-17)
+
+
+### Features
+
+* **web:** runtime sidebar grouping (APP_GROUPS) + section tabs (SECTIONS) ([#17](https://github.com/terracelab/django-conjure/issues/17)) ([6ffb035](https://github.com/terracelab/django-conjure/commit/6ffb03527e3d77c66e7cf4dbb8a56a2496d72f18))
+
 ## [0.3.2](https://github.com/terracelab/django-conjure/compare/v0.3.1...v0.3.2) (2026-06-17)
 
 
