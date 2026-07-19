@@ -81,6 +81,9 @@ DESCRIPTIONS.update({
     "SECTIONS": "Section tabs: a list of model-key lists. The first model is the section *main* "
                 "(the only one shown in the sidebar); the rest become tabs on the main's page. "
                 "Models in no section stand alone.",
+    "MODEL_ORDER": "Row order within a sidebar group: a list of `\"app_label.Model\"` strings. "
+                   "List position = row order (same convention as `APP_GROUPS`); unlisted models "
+                   "sort last, keeping alphabetical label order. Matching is case-insensitive.",
     "LOGGER_NAME": "Name of the `logging` logger used for non-fatal internal errors "
                    "(e.g. audit write failures).",
 })

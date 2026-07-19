@@ -112,6 +112,7 @@ class SchemaListView(ConjureAuthMixin, APIView):
     def get(self, request):
         app_groups = conjure_settings.APP_GROUPS
         order_index = {app: i for i, app in enumerate(app_groups)}
+        model_order_index = {m.lower(): i for i, m in enumerate(conjure_settings.MODEL_ORDER)}
         # Section map: lowercased model key -> (main key, index within section). First member = main.
         section_of = {}
         for members in conjure_settings.SECTIONS:
@@ -135,6 +136,8 @@ class SchemaListView(ConjureAuthMixin, APIView):
                     # Sidebar group (CONJURE["APP_GROUPS"]); defaults to app_label. order = dict position.
                     "group": app_groups.get(opts.app_label, opts.app_label),
                     "group_order": order_index.get(opts.app_label, 999),
+                    # Row order within the group (CONJURE["MODEL_ORDER"]); list position, unlisted last.
+                    "model_order": model_order_index.get(key.lower(), 999),
                     # Section (CONJURE["SECTIONS"]): main key shown in sidebar, members are tabs.
                     # Standalone models are their own section. section_order = tab order (main = 0).
                     "section": section,

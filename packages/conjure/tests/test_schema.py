@@ -70,6 +70,17 @@ class SchemaGroupingTests(TestCase):
         self.assertEqual(models["conjure.AdminAuditLog"]["group"], "conjure")
         self.assertEqual(models["conjure.AdminAuditLog"]["group_order"], 999)
 
+    @override_settings(CONJURE={"MODEL_ORDER": ["testapp.Category", "testapp.product"]})
+    def test_model_order_position_and_default(self):
+        models = self._models()
+        self.assertEqual(models["testapp.Category"]["model_order"], 0)
+        self.assertEqual(models["testapp.Product"]["model_order"], 1)  # case-insensitive match
+        # an unlisted model sorts last
+        self.assertEqual(models["conjure.AdminAuditLog"]["model_order"], 999)
+
+    def test_model_order_defaults_to_999(self):
+        self.assertEqual(self._models()["testapp.Product"]["model_order"], 999)
+
     @override_settings(CONJURE={"SECTIONS": [["testapp.Product", "testapp.Category"]]})
     def test_sections_main_and_tab_order(self):
         models = self._models()
