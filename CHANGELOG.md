@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.6.0](https://github.com/terracelab/django-conjure/compare/v0.5.0...v0.6.0) (2026-07-19)
+
+
+### Features
+
+* CONJURE["MODEL_ORDER"] — row order within sidebar groups ([#23](https://github.com/terracelab/django-conjure/issues/23)) ([d4b12cd](https://github.com/terracelab/django-conjure/commit/d4b12cd2c579ce94a517b751493ae1d4b2124767))
+
 ## [0.5.0](https://github.com/terracelab/django-conjure/compare/v0.4.0...v0.5.0) (2026-06-17)
 
 
