@@ -1,6 +1,6 @@
 {
   "name": "@terracelab/conjure-web",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Scaffolder for the Conjure React admin dashboard. `npx @terracelab/conjure-web init` drops the dashboard source into your project and runs codegen against your Django schema.",
   "license": "MIT",
   "type": "module",
