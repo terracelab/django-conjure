@@ -17,6 +17,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { ColumnDef, RowSelectionState, SortingState } from "@tanstack/react-table";
+import { Plus } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -217,7 +218,17 @@ export default function GenericModelPage() {
       <PageHeader
         title={schema.verbose_name_plural || schema.verbose_name}
         description={`Runtime view — ${model}`}
-        actions={<ExportButton model={model} params={params} />}
+        actions={
+          <>
+            {schema.permissions.add && !schema.is_readonly && (
+              <Button onClick={() => navigate(`/g/${model}/new`)}>
+                <Plus className="h-3.5 w-3.5" />
+                {schema.verbose_name} 추가
+              </Button>
+            )}
+            <ExportButton model={model} params={params} />
+          </>
+        }
       />
 
       <FilterBar
