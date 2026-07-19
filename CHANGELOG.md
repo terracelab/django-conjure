@@ -9,6 +9,13 @@ Versions are **locked**: the Python package (`django-conjure`, PyPI) and the
 history before this consolidation lives in `packages/conjure/CHANGELOG.md` and
 `packages/web/CHANGELOG.md`.
 
+## [0.6.1](https://github.com/terracelab/django-conjure/compare/v0.6.0...v0.6.1) (2026-07-19)
+
+
+### Bug Fixes
+
+* **web:** add create button to runtime list page (GenericModelPage) ([#25](https://github.com/terracelab/django-conjure/issues/25)) ([77c56f8](https://github.com/terracelab/django-conjure/commit/77c56f860f9e85ccea4fd1ea0d1f4d2840a2e9db))
+
 ## [0.6.0](https://github.com/terracelab/django-conjure/compare/v0.5.0...v0.6.0) (2026-07-19)
 
 
