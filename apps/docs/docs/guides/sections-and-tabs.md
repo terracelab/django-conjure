@@ -50,11 +50,18 @@ CONJURE = {
         ["user.User", "user.SocialAccount", "user.UserConsent"],
         ["subscription.Subscription", "subscription.Product"],
     ],
+    # Row order within a group: list position = order (same convention as APP_GROUPS).
+    "MODEL_ORDER": [
+        "user.User",          # first row of the "Members" group
+        "device.Device",
+    ],
 }
 ```
 
 - A model in no `SECTIONS` list is its own sidebar row (standalone).
 - A model in no `APP_GROUPS` entry falls back to a group named after its `app_label`.
+- A model not listed in `MODEL_ORDER` sorts after listed ones, alphabetically. Matching is
+  case-insensitive.
 - Because this lives in `settings.py`, it **survives re-init** — re-scaffolding the frontend never
   wipes your navigation. Pairs with [`AUTO_REGISTER`](../reference/configuration.md) for true
   install-and-go: register every model, then shape the nav from config alone.

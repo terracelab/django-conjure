@@ -81,6 +81,9 @@ export interface ModelSummary {
   group: string;
   /** Group ordering key (position in APP_GROUPS; unlisted apps sort last). */
   group_order: number;
+  /** Row order within the group (position in MODEL_ORDER; unlisted models sort last).
+   *  Optional — older backends don't send it. */
+  model_order?: number;
   /** Section main model key (from CONJURE["SECTIONS"]). Only the main shows in the sidebar;
    *  members are tabs on the main's page. Standalone models are their own section. */
   section: string;

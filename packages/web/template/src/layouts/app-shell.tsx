@@ -54,16 +54,20 @@ export function AppShell() {
     const existing = new Set(base.flatMap((g) => g.items.flatMap((i) => i.members)));
 
     // Group by the backend-provided group label (configured via CONJURE["APP_GROUPS"]; defaults
-    // to app_label). Group order follows group_order; ties break alphabetically. Models with a
-    // hand-built codegen page (/m/{model}) are left in the static nav.
-    const map = new Map<string, { items: NavItem[]; order: number }>();
+    // to app_label). Group order follows group_order; ties break alphabetically. Row order within
+    // a group follows model_order (CONJURE["MODEL_ORDER"]); ties break alphabetically. Models with
+    // a hand-built codegen page (/m/{model}) are left in the static nav.
+    const map = new Map<string, { items: { item: NavItem; row: number }[]; order: number }>();
     for (const m of models) {
       if (existing.has(`/m/${m.model}`)) continue;
       if (m.section && m.section !== m.model) continue; // section member → shown as a tab, not a sidebar row
       const label = m.group || m.app_label;
       const order = m.group_order ?? 999;
       const g = map.get(label) ?? { items: [], order };
-      g.items.push({ label: m.verbose_name_plural, to: `/g/${m.model}`, members: [`/g/${m.model}`] });
+      g.items.push({
+        item: { label: m.verbose_name_plural, to: `/g/${m.model}`, members: [`/g/${m.model}`] },
+        row: m.model_order ?? 999,
+      });
       g.order = Math.min(g.order, order);
       map.set(label, g);
     }
@@ -71,10 +75,24 @@ export function AppShell() {
 
     const groups: NavGroup[] = [...map.entries()]
       .sort((a, b) => a[1].order - b[1].order || a[0].localeCompare(b[0]))
-      .map(([label, g]) => ({ label, items: [...g.items].sort((x, y) => x.label.localeCompare(y.label)) }));
+      .map(([label, g]) => ({
+        label,
+        items: [...g.items].sort((x, y) => x.row - y.row || x.item.label.localeCompare(y.item.label)).map((x) => x.item),
+      }));
 
-    const sysIdx = base.findIndex((g) => g.label === "System");
-    return sysIdx === -1 ? [...base, ...groups] : [...base.slice(0, sysIdx), ...groups, ...base.slice(sysIdx)];
+    // A runtime group whose label matches a static group merges into it (copy-on-merge — never
+    // mutate the sidebarNav module objects, or a useMemo re-run would append duplicates).
+    const merged = [...base];
+    const staticIdx = new Map(merged.map((g, i) => [g.label, i]));
+    const extra: NavGroup[] = [];
+    for (const g of groups) {
+      const i = staticIdx.get(g.label);
+      if (i === undefined) extra.push(g);
+      else merged[i] = { ...merged[i], items: [...merged[i].items, ...g.items] };
+    }
+
+    const sysIdx = merged.findIndex((g) => g.label === "System");
+    return sysIdx === -1 ? [...merged, ...extra] : [...merged.slice(0, sysIdx), ...extra, ...merged.slice(sysIdx)];
   }, [schema]);
 
   if (!isLoggedIn()) {

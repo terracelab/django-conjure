@@ -42,6 +42,9 @@ DEFAULTS = {
     # shown in the sidebar); the rest become tabs on the main's page. Models in no section stand
     # alone. e.g. [["user.User", "user.SocialAccount", "user.UserConsent"]].
     "SECTIONS": [],
+    # Row order within a sidebar group: "app_label.Model" strings, list position = row order
+    # (same convention as APP_GROUPS); unlisted models sort last, keeping label order.
+    "MODEL_ORDER": [],
     # Logger used for non-fatal internal errors (e.g. audit write failures).
     "LOGGER_NAME": "conjure",
 }
